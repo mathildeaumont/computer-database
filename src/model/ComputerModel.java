@@ -8,9 +8,9 @@ public class ComputerModel {
 	private String name;
 	private Date introducedDate;
 	private Date discontinuedDate;
-	private String manufacturer;
+	private long manufacturer;
 	
-	public ComputerModel(long id, String name, Date introducedDate, Date discontinuedDate, String manufacturer) {
+	public ComputerModel(long id, String name, Date introducedDate, Date discontinuedDate, long manufacturer) {
 		this.id = id;
 		this.setName(name);
 		this.setIntroducedDate(introducedDate);
@@ -50,11 +50,11 @@ public class ComputerModel {
 		this.discontinuedDate = discontinuedDate;
 	}
 
-	public String getManufacturer() {
+	public long getManufacturer() {
 		return manufacturer;
 	}
 
-	public void setManufacturer(String manufacturer) {
+	public void setManufacturer(long manufacturer) {
 		this.manufacturer = manufacturer;
 	}
 
