@@ -10,6 +10,8 @@ import java.util.List;
 
 import model.CompanyModel;
 import model.ComputerModel;
+import model.ListCompaniesModel;
+import model.ListComputersModel;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
@@ -25,7 +27,7 @@ public class ComputerJDBC {
     
 	public ComputerJDBC() {
 		try {
-			Class.forName( "com.mysql.jdbc.Driver" );
+			Class.forName("com.mysql.jdbc.Driver");
 	    } catch (ClassNotFoundException e) {
 	    	e.printStackTrace();
 	    }
@@ -33,13 +35,13 @@ public class ComputerJDBC {
 	    statement = null;
 	}
 	
-	public List<ComputerModel> getAllComputers() {
-		List<ComputerModel> listComputers = new ArrayList<ComputerModel>();
+	public ListComputersModel getAllComputers() {
+		ListComputersModel listComputers = new ListComputersModel();
 		ResultSet resultat = null;
 	    try {
 	        connexion = (Connection) DriverManager.getConnection(url, user, pwd);
 	        statement = (Statement) connexion.createStatement();
-	        resultat = statement.executeQuery( "SELECT * FROM computer;" );
+	        resultat = statement.executeQuery("SELECT * FROM computer;");
 	        while (resultat.next()) {
 	            int idComputer = resultat.getInt("id");
 	            String name = resultat.getString("name");
@@ -48,7 +50,7 @@ public class ComputerJDBC {
 	            int companyId = resultat.getInt("company_id");
 	            ComputerModel model = new ComputerModel(idComputer, name, introduced, discontinued, companyId);
 	            System.out.println(model);
-	            listComputers.add(model);
+	            listComputers.addComputer(model);
 	        }
 	    } catch (SQLException e) {
 	    	e.printStackTrace();
@@ -75,19 +77,19 @@ public class ComputerJDBC {
 	    return listComputers;
 	}
 	
-	public List<CompanyModel> getAllCompanies() {
-		List<CompanyModel> listCompanies = new ArrayList<CompanyModel>();
+	public ListCompaniesModel getAllCompanies() {
+		ListCompaniesModel listCompanies = new ListCompaniesModel();
 		ResultSet resultat = null;
 	    try {
 	        connexion = (Connection) DriverManager.getConnection(url, user, pwd);
 	        statement = (Statement) connexion.createStatement();
-	        resultat = statement.executeQuery( "SELECT * FROM company;" );
+	        resultat = statement.executeQuery("SELECT * FROM company;");
 	        while (resultat.next()) {
 	            int idCompany = resultat.getInt("id");
 	            String name = resultat.getString("name");
 	            CompanyModel model = new CompanyModel(idCompany, name);
 	            System.out.println(model);
-	            listCompanies.add(model);
+	            listCompanies.addCompany(model);
 	        }
 	    } catch (SQLException e) {
 	    	e.printStackTrace();
@@ -114,11 +116,64 @@ public class ComputerJDBC {
 	    return listCompanies;
 	}
 	
+	public ComputerModel getComputerDetails(int idComputer) {
+		ComputerModel model = null;
+		ResultSet resultat = null;
+	    try {
+	        connexion = (Connection) DriverManager.getConnection(url, user, pwd);
+	        statement = (Statement) connexion.createStatement();
+	        resultat = statement.executeQuery("SELECT * FROM computer WHERE id = " + idComputer + ";");
+	        resultat.next();
+	        int id = resultat.getInt("id");
+            String name = resultat.getString("name");
+            Date introduced = resultat.getDate("introduced");
+            Date discontinued = resultat.getDate("discontinued");
+            int companyId = resultat.getInt("company_id");
+            model = new ComputerModel(id, name, introduced, discontinued, companyId);
+            System.out.println(model);
+	    } catch (SQLException e) {
+	    	e.printStackTrace();
+	    } finally {
+	        if (resultat != null) {
+	            try {
+	                resultat.close();
+	            } catch (SQLException ignore) {
+	            }
+	        }
+	        if (statement != null) {
+	            try {
+	                statement.close();
+	            } catch (SQLException ignore) {
+	            }
+	        }
+	        if (connexion != null) {
+	            try {
+	                connexion.close();
+	            } catch (SQLException ignore) {
+	            }
+	        }
+	    }
+	    return model;
+	}
+	
+	public void createComputer() {
+		
+	}
+	
+	public void updateComputer() {
+			
+	}
+
+	public void deleteComputer() {
+		
+	}
 	public static void main(String[] args) {
 		ComputerJDBC computerJDBC = new ComputerJDBC();
 		System.out.println("COMPUTERS\n");
-		List<ComputerModel> computers = computerJDBC.getAllComputers();
+		ListComputersModel computers = computerJDBC.getAllComputers();
 		System.out.println("\nCOMPANIES\n");
-		List<CompanyModel> companies = computerJDBC.getAllCompanies();
+		ListCompaniesModel companies = computerJDBC.getAllCompanies();
+		System.out.println("\nDETAILS DE L'ORDINATEUR 150\n");
+		ComputerModel computer = computerJDBC.getComputerDetails(150);
 	}
 }
