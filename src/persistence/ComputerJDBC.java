@@ -10,8 +10,6 @@ import java.util.List;
 
 import model.CompanyModel;
 import model.ComputerModel;
-import model.ListCompaniesModel;
-import model.ListComputersModel;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
@@ -35,22 +33,22 @@ public class ComputerJDBC {
 	    statement = null;
 	}
 	
-	public ListComputersModel getAllComputers() {
-		ListComputersModel listComputers = new ListComputersModel();
+	public List<ComputerModel> getAllComputers() {
+		List<ComputerModel> listComputers = new ArrayList<ComputerModel>();
 		ResultSet resultat = null;
 	    try {
 	        connexion = (Connection) DriverManager.getConnection(url, user, pwd);
 	        statement = (Statement) connexion.createStatement();
 	        resultat = statement.executeQuery("SELECT * FROM computer;");
 	        while (resultat.next()) {
-	            int idComputer = resultat.getInt("id");
+	            long idComputer = resultat.getLong("id");
 	            String name = resultat.getString("name");
 	            Date introduced = resultat.getDate("introduced");
 	            Date discontinued = resultat.getDate("discontinued");
 	            int companyId = resultat.getInt("company_id");
 	            ComputerModel model = new ComputerModel(idComputer, name, introduced, discontinued, companyId);
 	            System.out.println(model);
-	            listComputers.addComputer(model);
+	            listComputers.add(model);
 	        }
 	    } catch (SQLException e) {
 	    	e.printStackTrace();
@@ -77,19 +75,19 @@ public class ComputerJDBC {
 	    return listComputers;
 	}
 	
-	public ListCompaniesModel getAllCompanies() {
-		ListCompaniesModel listCompanies = new ListCompaniesModel();
+	public List<CompanyModel> getAllCompanies() {
+		List<CompanyModel> listCompanies = new ArrayList<CompanyModel>();
 		ResultSet resultat = null;
 	    try {
 	        connexion = (Connection) DriverManager.getConnection(url, user, pwd);
 	        statement = (Statement) connexion.createStatement();
 	        resultat = statement.executeQuery("SELECT * FROM company;");
 	        while (resultat.next()) {
-	            int idCompany = resultat.getInt("id");
+	            long idCompany = resultat.getLong("id");
 	            String name = resultat.getString("name");
 	            CompanyModel model = new CompanyModel(idCompany, name);
 	            System.out.println(model);
-	            listCompanies.addCompany(model);
+	            listCompanies.add(model);
 	        }
 	    } catch (SQLException e) {
 	    	e.printStackTrace();
@@ -124,11 +122,11 @@ public class ComputerJDBC {
 	        statement = (Statement) connexion.createStatement();
 	        resultat = statement.executeQuery("SELECT * FROM computer WHERE id = " + idComputer + ";");
 	        resultat.next();
-	        int id = resultat.getInt("id");
+	        long id = resultat.getLong("id");
             String name = resultat.getString("name");
             Date introduced = resultat.getDate("introduced");
             Date discontinued = resultat.getDate("discontinued");
-            int companyId = resultat.getInt("company_id");
+            long companyId = resultat.getLong("company_id");
             model = new ComputerModel(id, name, introduced, discontinued, companyId);
             System.out.println(model);
 	    } catch (SQLException e) {
@@ -156,8 +154,12 @@ public class ComputerJDBC {
 	    return model;
 	}
 	
-	public void createComputer() {
-		
+	public void createComputer(ComputerModel computer) {
+		long id = computer.getId();
+		String name = computer.getName();
+		Date introduced = computer.getIntroducedDate();
+		Date discontinued = computer.getDiscontinuedDate();
+		long companyId = computer.getManufacturer();
 	}
 	
 	public void updateComputer() {
@@ -170,9 +172,9 @@ public class ComputerJDBC {
 	public static void main(String[] args) {
 		ComputerJDBC computerJDBC = new ComputerJDBC();
 		System.out.println("COMPUTERS\n");
-		ListComputersModel computers = computerJDBC.getAllComputers();
+		List<ComputerModel> computers = computerJDBC.getAllComputers();
 		System.out.println("\nCOMPANIES\n");
-		ListCompaniesModel companies = computerJDBC.getAllCompanies();
+		List<CompanyModel> companies = computerJDBC.getAllCompanies();
 		System.out.println("\nDETAILS DE L'ORDINATEUR 150\n");
 		ComputerModel computer = computerJDBC.getComputerDetails(150);
 	}
