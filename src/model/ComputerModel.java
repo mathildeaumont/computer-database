@@ -57,5 +57,20 @@ public class ComputerModel {
 	public void setManufacturer(long manufacturer) {
 		this.manufacturer = manufacturer;
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(id);
+		sb.append(" \t");
+		sb.append(name);
+		sb.append(" \t\t");
+		sb.append(introducedDate);
+		sb.append(" \t");
+		sb.append(discontinuedDate);
+		sb.append(" \t");
+		sb.append(manufacturer);
+		return sb.toString();
+	}
 
 }

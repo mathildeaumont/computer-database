@@ -25,4 +25,13 @@ public class CompanyModel {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(id);
+		sb.append(" \t");
+		sb.append(name);
+		return sb.toString();
+	}
 }
