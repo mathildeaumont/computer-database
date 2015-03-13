@@ -1,16 +1,16 @@
 package model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class ComputerModel {
 
 	private long id;
 	private String name;
-	private Date introducedDate;
-	private Date discontinuedDate;
+	private LocalDateTime introducedDate;
+	private LocalDateTime discontinuedDate;
 	private long manufacturer;
 	
-	public ComputerModel(long id, String name, Date introducedDate, Date discontinuedDate, long manufacturer) {
+	public ComputerModel(long id, String name, LocalDateTime introducedDate, LocalDateTime discontinuedDate, long manufacturer) {
 		this.id = id;
 		this.setName(name);
 		this.setIntroducedDate(introducedDate);
@@ -34,19 +34,19 @@ public class ComputerModel {
 		this.name = name;
 	}
 
-	public Date getIntroducedDate() {
+	public LocalDateTime getIntroducedDate() {
 		return introducedDate;
 	}
 
-	public void setIntroducedDate(Date introducedDate) {
+	public void setIntroducedDate(LocalDateTime introducedDate) {
 		this.introducedDate = introducedDate;
 	}
 
-	public Date getDiscontinuedDate() {
+	public LocalDateTime getDiscontinuedDate() {
 		return discontinuedDate;
 	}
 
-	public void setDiscontinuedDate(Date discontinuedDate) {
+	public void setDiscontinuedDate(LocalDateTime discontinuedDate) {
 		this.discontinuedDate = discontinuedDate;
 	}
 
