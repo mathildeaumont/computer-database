@@ -10,8 +10,8 @@ import persistence.JDBCConnection;
 public class ComputerDatabase {
 	
 	public static void main(String[] args) {
-		JDBCConnection JDBCConnection = new JDBCConnection();
-		ComputerJDBC computerJDBC = new ComputerJDBC(JDBCConnection);
+		//JDBCConnection JDBCConnection = //new JDBCConnection();
+		ComputerJDBC computerJDBC = new ComputerJDBC(JDBCConnection.getInstance());
 	
 		String in = "";
 		Scanner scanIn = new Scanner(System.in);
@@ -20,15 +20,15 @@ public class ComputerDatabase {
 			long id;
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 			switch (in) {
-				case "computers" : 
+				case "computers": 
 					System.out.println("Computers list :");
 					computerJDBC.getAllComputers();
 					break;
-				case "companies" : 
+				case "companies": 
 					System.out.println("Companies list :");
 					computerJDBC.getAllCompanies();
 					break;
-				case "details" :
+				case "details":
 					System.out.println("Enter a computer id :");
 					in = scanIn.nextLine();
 					try {
@@ -38,12 +38,12 @@ public class ComputerDatabase {
 						System.out.println("A number is required");
 					}
 					break;
-				case "create" :
+				case "create":
 					System.out.println("Enter a computer name :");
 					in = scanIn.nextLine();
 					computerJDBC.createComputer(in);	
 					break;
-				case "update" :
+				case "update":
 					System.out.println("Enter a computer id :");
 					in = scanIn.nextLine();
 					try {
@@ -84,7 +84,7 @@ public class ComputerDatabase {
 					}
 					computerJDBC.updateComputer(id, name, introduced, discontinued, companyId);
 					break;
-				case "delete" :
+				case "delete":
 					System.out.println("Enter a computer id :");
 					in = scanIn.nextLine();
 					try {
@@ -95,33 +95,11 @@ public class ComputerDatabase {
 						break;
 					}
 					break;
+				case "exit":
+					scanIn.close();
+					break;
 				default: break;
 			}
-			scanIn.close();
 		}
-		
-		/*System.out.println("COMPUTERS\n");
-		List<ComputerModel> computers = computerJDBC.getAllComputers();
-		System.out.println("\nCOMPANIES\n");
-		List<CompanyModel> companies = computerJDBC.getAllCompanies();
-		System.out.println("\nDETAILS DE L'ORDINATEUR 150\n");
-		ComputerModel computer = computerJDBC.getComputerDetails(150);
-
-		//ComputerModel c = new ComputerModel(575, "test", null, null, 1);
-		//computerJDBC.createComputer("test");		
-		String str = "1986-04-08 12:30";
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
-		
-		str = "1995-04-08 12:30";
-		LocalDateTime dateTime2 = LocalDateTime.parse(str, formatter);
-		computerJDBC.updateComputer(580, "test2", dateTime, dateTime2, 1);
-		
-		computerJDBC.deleteComputer(579);
-		
-		System.out.println("COMPUTERS\n");
-		computers = computerJDBC.getAllComputers();*/
-		
-		JDBCConnection.closeConnection();
 	}
 }

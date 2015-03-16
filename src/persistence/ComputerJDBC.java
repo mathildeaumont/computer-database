@@ -16,11 +16,12 @@ public class ComputerJDBC {
 	private Statement statement;
 	private JDBCConnection JDBCConnection;
 
+	 
 	public ComputerJDBC(JDBCConnection connection) {
 		JDBCConnection = connection;
 		statement = null;
 	}
-
+	
 	public void getAllComputers() {
 		List<ComputerModel> listComputers = new ArrayList<ComputerModel>();
 		ResultSet resultat = null;
