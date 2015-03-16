@@ -2,10 +2,8 @@ package ui;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
-import model.CompanyModel;
-import model.ComputerModel;
+import java.util.Scanner;
 import persistence.ComputerJDBC;
 import persistence.JDBCConnection;
 
@@ -14,8 +12,95 @@ public class ComputerDatabase {
 	public static void main(String[] args) {
 		JDBCConnection JDBCConnection = new JDBCConnection();
 		ComputerJDBC computerJDBC = new ComputerJDBC(JDBCConnection);
+	
+		String in = "";
+		Scanner scanIn = new Scanner(System.in);
+		while (!in.equals("exit")) {
+			in = scanIn.nextLine();
+			long id;
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+			switch (in) {
+				case "computers" : 
+					System.out.println("Computers list :");
+					computerJDBC.getAllComputers();
+					break;
+				case "companies" : 
+					System.out.println("Companies list :");
+					computerJDBC.getAllCompanies();
+					break;
+				case "details" :
+					System.out.println("Enter a computer id :");
+					in = scanIn.nextLine();
+					try {
+						id = Long.parseLong(in);
+						computerJDBC.getComputerDetails(id);
+					} catch (NumberFormatException nfe) {
+						System.out.println("A number is required");
+					}
+					break;
+				case "create" :
+					System.out.println("Enter a computer name :");
+					in = scanIn.nextLine();
+					computerJDBC.createComputer(in);	
+					break;
+				case "update" :
+					System.out.println("Enter a computer id :");
+					in = scanIn.nextLine();
+					try {
+						id = Long.parseLong(in);
+					} catch (NumberFormatException nfe) {
+						System.out.println("A number is required");
+						break;
+					}
+					System.out.println("Enter a name :");
+					in = scanIn.nextLine();
+					String name = in;
+					System.out.println("Enter an introduced date :");
+					in = scanIn.nextLine();
+					LocalDateTime introduced;
+					try {
+						introduced = LocalDateTime.parse(in, formatter);
+					} catch (Exception e) {
+						System.out.println("Bad date format");
+						break;
+					}
+					System.out.println("Enter a discontinued date :");
+					in = scanIn.nextLine();
+					LocalDateTime discontinued;
+					try {
+						discontinued = LocalDateTime.parse(in, formatter);
+					} catch (Exception e) {
+						System.out.println("Bad date format");
+						break;
+					}
+					System.out.println("Enter a company id :");
+					in = scanIn.nextLine();
+					long companyId;
+					try {
+						companyId = Long.parseLong(in);
+					} catch (NumberFormatException nfe) {
+						System.out.println("A number is required");
+						break;
+					}
+					computerJDBC.updateComputer(id, name, introduced, discontinued, companyId);
+					break;
+				case "delete" :
+					System.out.println("Enter a computer id :");
+					in = scanIn.nextLine();
+					try {
+						id = Long.parseLong(in);
+						computerJDBC.deleteComputer(id);
+					} catch (NumberFormatException nfe) {
+						System.out.println("A number is required");
+						break;
+					}
+					break;
+				default: break;
+			}
+			scanIn.close();
+		}
 		
-		System.out.println("COMPUTERS\n");
+		/*System.out.println("COMPUTERS\n");
 		List<ComputerModel> computers = computerJDBC.getAllComputers();
 		System.out.println("\nCOMPANIES\n");
 		List<CompanyModel> companies = computerJDBC.getAllCompanies();
@@ -23,8 +108,7 @@ public class ComputerDatabase {
 		ComputerModel computer = computerJDBC.getComputerDetails(150);
 
 		//ComputerModel c = new ComputerModel(575, "test", null, null, 1);
-		//computerJDBC.createComputer("test");
-		
+		//computerJDBC.createComputer("test");		
 		String str = "1986-04-08 12:30";
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
@@ -36,7 +120,7 @@ public class ComputerDatabase {
 		computerJDBC.deleteComputer(579);
 		
 		System.out.println("COMPUTERS\n");
-		computers = computerJDBC.getAllComputers();
+		computers = computerJDBC.getAllComputers();*/
 		
 		JDBCConnection.closeConnection();
 	}

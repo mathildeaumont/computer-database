@@ -14,16 +14,10 @@ public class JDBCConnection {
 
     
 	public JDBCConnection() {
-		/*try {
-			Class.forName("com.mysql.jdbc.Driver");
-	    } catch (ClassNotFoundException e) {
-	    	e.printStackTrace();
-	    }*/
 	    setConnection(null);
 	    try {
 			connection = (Connection) DriverManager.getConnection(url, user, pwd);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

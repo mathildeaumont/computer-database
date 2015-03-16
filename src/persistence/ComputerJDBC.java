@@ -21,8 +21,7 @@ public class ComputerJDBC {
 		statement = null;
 	}
 
-	public List<ComputerModel> getAllComputers() {
-
+	public void getAllComputers() {
 		List<ComputerModel> listComputers = new ArrayList<ComputerModel>();
 		ResultSet resultat = null;
 		try {
@@ -56,10 +55,9 @@ public class ComputerJDBC {
 				}
 			}
 		}
-		return listComputers;
 	}
 
-	public List<CompanyModel> getAllCompanies() {
+	public void getAllCompanies() {
 		List<CompanyModel> listCompanies = new ArrayList<CompanyModel>();
 		ResultSet resultat = null;
 		try {
@@ -88,10 +86,9 @@ public class ComputerJDBC {
 				}
 			}
 		}
-		return listCompanies;
 	}
 
-	public ComputerModel getComputerDetails(int idComputer) {
+	public void getComputerDetails(long idComputer) {
 		ComputerModel model = null;
 		ResultSet resultat = null;
 		try {
@@ -108,7 +105,7 @@ public class ComputerJDBC {
 			model = new ComputerModel(id, name, introduced, discontinued, companyId);
 			System.out.println(model);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("This computer doesn\'t exist.");
 		} finally {
 			if (resultat != null) {
 				try {
@@ -123,15 +120,9 @@ public class ComputerJDBC {
 				}
 			}
 		}
-		return model;
 	}
 
 	public void createComputer(String name) {
-		/*long id = computer.getId();
-		String name = computer.getName();
-		Date introduced = computer.getIntroducedDate();
-		Date discontinued = computer.getDiscontinuedDate();
-		long companyId = computer.getManufacturer();*/
 		long id = 0;
 		ResultSet resultat = null;
 		try {
@@ -170,14 +161,30 @@ public class ComputerJDBC {
 	public void updateComputer(long computerId, String name, LocalDateTime introduced, LocalDateTime discontinued, long companyId) {
 		try {
 			statement = (Statement) JDBCConnection.getConnection().createStatement();
-			statement.executeUpdate("UPDATE computer SET name = '" + name + "', introduced = '" + introduced + "', discontinued = '" + discontinued + "', company_id ='" + companyId + "' WHERE id=" + computerId + ";");
+			ResultSet resultat = statement.executeQuery("SELECT * FROM computer WHERE id = " + computerId + ";");
+			resultat.next();
+			if (name.equals("")) {
+				name = resultat.getString("name");
+			}
+			if (introduced == null) {
+				introduced = resultat.getTimestamp("introduced") == null ? null : resultat.getTimestamp("introduced").toLocalDateTime();
+			}
+			if (discontinued == null) {
+				discontinued = resultat.getTimestamp("discontinued") == null ? null : resultat.getTimestamp("discontinued").toLocalDateTime();
+			}
+			statement.executeUpdate("UPDATE computer SET name = '" + name 
+					+ "', introduced = '" + introduced + "', discontinued = '" + discontinued 
+					+ "', company_id ='" + companyId 
+					+ "' WHERE id=" + computerId + ";");
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("Invalid date");
 		} finally {
 			if (statement != null) {
 				try {
 					statement.close();
 				} catch (SQLException ignore) {
+					
 				}
 			}
 		}
