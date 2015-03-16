@@ -57,6 +57,7 @@ public class Page<T> {
 		if (currentPage > 1) {
 			return currentPage - 1;
 		}
+		return 1;
 	}
 	
 }
