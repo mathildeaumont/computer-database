@@ -1,16 +1,19 @@
-package ui;
+package com.excilys.ui;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Scanner;
 
-import persistence.ComputerJDBC;
-import persistence.JDBCConnection;
+import com.excilys.model.CompanyModel;
+import com.excilys.model.ComputerModel;
+import com.excilys.persistence.ComputerJDBC;
+import com.excilys.persistence.JDBCConnection;
 
 public class ComputerDatabase {
 	
-	public static void main(String[] args) throws c {
-		try (JDBCConnection JDBCConnection = persistence.JDBCConnection.getInstance()) {
+	public static void main(String[] args) throws Exception {
+		try (JDBCConnection JDBCConnection = com.excilys.persistence.JDBCConnection.getInstance()) {
 			ComputerJDBC computerJDBC = new ComputerJDBC(JDBCConnection);
 		
 			String in = "";
@@ -22,18 +25,25 @@ public class ComputerDatabase {
 				switch (in) {
 					case "computers": 
 						System.out.println("Computers list :");
-						computerJDBC.getAllComputers();
+						List<ComputerModel> computers = computerJDBC.getAllComputers();
+						for (ComputerModel computer : computers) {
+							System.out.println(computer);
+						}
 						break;
 					case "companies": 
 						System.out.println("Companies list :");
-						computerJDBC.getAllCompanies();
+						List<CompanyModel> companies = computerJDBC.getAllCompanies();
+						for (CompanyModel company : companies) {
+							System.out.println(company);
+						}
 						break;
 					case "details":
 						System.out.println("Enter a computer id :");
 						in = scanIn.nextLine();
 						try {
 							id = Long.parseLong(in);
-							computerJDBC.getComputerDetails(id);
+							ComputerModel c = computerJDBC.getComputerDetails(id);
+							System.out.println(c);
 						} catch (NumberFormatException nfe) {
 							System.out.println("A number is required");
 						}

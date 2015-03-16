@@ -1,4 +1,4 @@
-package persistence;
+package com.excilys.persistence;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -6,9 +6,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.CompanyModel;
-import model.ComputerModel;
-
+import com.excilys.model.CompanyModel;
+import com.excilys.model.ComputerModel;
 import com.mysql.jdbc.Statement;
 
 public class ComputerJDBC {
@@ -22,7 +21,7 @@ public class ComputerJDBC {
 		statement = null;
 	}
 	
-	public void getAllComputers() {
+	public List<ComputerModel> getAllComputers() {
 		List<ComputerModel> listComputers = new ArrayList<ComputerModel>();
 		ResultSet resultat = null;
 		try {
@@ -37,7 +36,6 @@ public class ComputerJDBC {
 				discontinued = resultat.getTimestamp("discontinued") == null ? null : resultat.getTimestamp("discontinued").toLocalDateTime();
 				int companyId = resultat.getInt("company_id");
 				ComputerModel model = new ComputerModel(idComputer, name, introduced, discontinued, companyId);
-				System.out.println(model);
 				listComputers.add(model);
 			}
 		} catch (SQLException e) {
@@ -56,9 +54,10 @@ public class ComputerJDBC {
 				}
 			}
 		}
+		return listComputers;
 	}
 
-	public void getAllCompanies() {
+	public List<CompanyModel> getAllCompanies() {
 		List<CompanyModel> listCompanies = new ArrayList<CompanyModel>();
 		ResultSet resultat = null;
 		try {
@@ -68,7 +67,6 @@ public class ComputerJDBC {
 				long idCompany = resultat.getLong("id");
 				String name = resultat.getString("name");
 				CompanyModel model = new CompanyModel(idCompany, name);
-				System.out.println(model);
 				listCompanies.add(model);
 			}
 		} catch (SQLException e) {
@@ -87,9 +85,10 @@ public class ComputerJDBC {
 				}
 			}
 		}
+		return listCompanies;
 	}
 
-	public void getComputerDetails(long idComputer) {
+	public ComputerModel getComputerDetails(long idComputer) {
 		ComputerModel model = null;
 		ResultSet resultat = null;
 		try {
@@ -104,7 +103,6 @@ public class ComputerJDBC {
 			discontinued = resultat.getTimestamp("discontinued") == null ? null : resultat.getTimestamp("discontinued").toLocalDateTime();
 			long companyId = resultat.getLong("company_id");
 			model = new ComputerModel(id, name, introduced, discontinued, companyId);
-			System.out.println(model);
 		} catch (SQLException e) {
 			System.out.println("This computer doesn\'t exist.");
 		} finally {
@@ -121,6 +119,7 @@ public class ComputerJDBC {
 				}
 			}
 		}
+		return model;
 	}
 
 	public void createComputer(String name) {
