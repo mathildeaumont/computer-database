@@ -7,15 +7,18 @@ import java.util.Scanner;
 
 import com.excilys.model.CompanyModel;
 import com.excilys.model.ComputerModel;
-import com.excilys.persistence.ComputerJDBC;
+import com.excilys.persistence.CompanyDao;
+import com.excilys.persistence.CompanyDaoImpl;
+import com.excilys.persistence.ComputerDao;
+import com.excilys.persistence.ComputerDaoImpl;
 import com.excilys.persistence.JDBCConnection;
 
 public class ComputerDatabase {
 	
 	public static void main(String[] args) throws Exception {
-		try (JDBCConnection JDBCConnection = com.excilys.persistence.JDBCConnection.getInstance()) {
-			ComputerJDBC computerJDBC = new ComputerJDBC(JDBCConnection);
-		
+		try (JDBCConnection JDBCConnection = new JDBCConnection()) {
+			ComputerDao computerDao = new ComputerDaoImpl();
+			CompanyDao companyDao = new CompanyDaoImpl();
 			String in = "";
 			Scanner scanIn = new Scanner(System.in);
 			while (!in.equals("exit")) {
@@ -25,14 +28,14 @@ public class ComputerDatabase {
 				switch (in) {
 					case "computers": 
 						System.out.println("Computers list :");
-						List<ComputerModel> computers = computerJDBC.getAllComputers();
+						List<ComputerModel> computers = computerDao.getAllComputers();
 						for (ComputerModel computer : computers) {
 							System.out.println(computer);
 						}
 						break;
 					case "companies": 
 						System.out.println("Companies list :");
-						List<CompanyModel> companies = computerJDBC.getAllCompanies();
+						List<CompanyModel> companies = companyDao.getAllCompanies();
 						for (CompanyModel company : companies) {
 							System.out.println(company);
 						}
@@ -42,7 +45,7 @@ public class ComputerDatabase {
 						in = scanIn.nextLine();
 						try {
 							id = Long.parseLong(in);
-							ComputerModel c = computerJDBC.getComputerDetails(id);
+							ComputerModel c = computerDao.getComputerDetails(id);
 							System.out.println(c);
 						} catch (NumberFormatException nfe) {
 							System.out.println("A number is required");
@@ -51,7 +54,7 @@ public class ComputerDatabase {
 					case "create":
 						System.out.println("Enter a computer name :");
 						in = scanIn.nextLine();
-						computerJDBC.createComputer(in);	
+						computerDao.createComputer(in);	
 						break;
 					case "update":
 						System.out.println("Enter a computer id :");
@@ -92,14 +95,14 @@ public class ComputerDatabase {
 							System.out.println("A number is required");
 							break;
 						}
-						computerJDBC.updateComputer(id, name, introduced, discontinued, companyId);
+						computerDao.updateComputer(id, name, introduced, discontinued, companyId);
 						break;
 					case "delete":
 						System.out.println("Enter a computer id :");
 						in = scanIn.nextLine();
 						try {
 							id = Long.parseLong(in);
-							computerJDBC.deleteComputer(id);
+							computerDao.deleteComputer(id);
 						} catch (NumberFormatException nfe) {
 							System.out.println("A number is required");
 							break;

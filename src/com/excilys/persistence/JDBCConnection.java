@@ -10,13 +10,12 @@ import java.util.Properties;
 
 import com.mysql.jdbc.Connection;
 
-public final class JDBCConnection implements AutoCloseable {
+public class JDBCConnection implements AutoCloseable {
 
     private Connection connection;
-    private static volatile JDBCConnection instance = null;
     private final Properties properties = new Properties();
     
-	private JDBCConnection() {
+	public JDBCConnection() {
 	    setConnection(null);
 	    try {
 	    	InputStream inputStream = new FileInputStream("ressources/config.properties");
@@ -35,17 +34,6 @@ public final class JDBCConnection implements AutoCloseable {
 			e.printStackTrace();
 		}
 	}
-	
-	public final static JDBCConnection getInstance() {
-        if (JDBCConnection.instance == null) {
-           synchronized(JDBCConnection.class) {
-             if (JDBCConnection.instance == null) {
-            	 JDBCConnection.instance = new JDBCConnection();
-             }
-           }
-        }
-        return JDBCConnection.instance;
-    }
 
 	public Connection getConnection() {
 		return connection;
