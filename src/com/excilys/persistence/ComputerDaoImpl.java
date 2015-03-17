@@ -1,5 +1,6 @@
 package com.excilys.persistence;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -7,16 +8,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.excilys.model.CompanyModel;
+import com.excilys.mapper.ComputerMapper;
 import com.excilys.model.ComputerModel;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
 
 public class ComputerDaoImpl implements ComputerDao {
 
-	/*private Statement statement;
-	private JDBCConnection JDBCConnection;*/
-	 
 	public ComputerDaoImpl() {
 	
 	}
@@ -25,29 +23,12 @@ public class ComputerDaoImpl implements ComputerDao {
 		List<ComputerModel> listComputers = new ArrayList<ComputerModel>();
 		ResultSet resultat = null;
 		try {
-			JDBCConnection JDBCConnection = DaoFactory.INSTANCE.getConnection();
-			Statement statement = (Statement) JDBCConnection.getConnection().createStatement();
-			resultat = statement.executeQuery("SELECT * FROM computer;");
+			Connection connection = DaoFactory.INSTANCE.getConnection();
+			Statement statement = (Statement) connection.createStatement();
+			resultat = statement.executeQuery("SELECT * FROM computer as compu left "
+					+ "outer join company as compa ON compu.company_id = compa.id ORDER by compu.id;");
 			while (resultat.next()) {
-				long idComputer = resultat.getLong("id");
-				String name = resultat.getString("name");
-				LocalDateTime introduced;
-				introduced = resultat.getTimestamp("introduced") == null ? null : resultat.getTimestamp("introduced").toLocalDateTime();
-				LocalDateTime discontinued;
-				discontinued = resultat.getTimestamp("discontinued") == null ? null : resultat.getTimestamp("discontinued").toLocalDateTime();
-				long companyId = resultat.getLong("company_id");
-				CompanyModel company;
-				if (companyId != 0) {
-					ResultSet resultat2 = null;
-					Statement statement2 = (Statement) JDBCConnection.getConnection().createStatement();
-					resultat2 = statement2.executeQuery("SELECT * FROM company WHERE id ='" + companyId + "'");
-					resultat2.next();			
-					company = new CompanyModel(resultat2.getLong("id"), resultat2.getString("name"));
-					resultat2.close();
-				} else {
-					company = new CompanyModel();
-				}
-				ComputerModel model = new ComputerModel(idComputer, name, introduced, discontinued, company);
+				ComputerModel model = ComputerMapper.toModel(resultat);
 				listComputers.add(model);
 			}
 			resultat.close();
@@ -62,44 +43,29 @@ public class ComputerDaoImpl implements ComputerDao {
 		ComputerModel model = null;
 		ResultSet resultat = null;
 		try {
-			JDBCConnection JDBCConnection = DaoFactory.INSTANCE.getConnection();
-			Statement statement = (Statement) JDBCConnection.getConnection().createStatement();
-			resultat = statement.executeQuery("SELECT * FROM computer WHERE id = " + idComputer + ";");
+			Connection connection = DaoFactory.INSTANCE.getConnection();
+			PreparedStatement preparedStatement = null;
+			preparedStatement = (PreparedStatement) connection.prepareStatement("SELECT * FROM computer as compu left "
+					+ "outer join company as compa ON compu.company_id = compa.id WHERE compu.id = ? ORDER by compu.id;");
+			int i = 1;
+			preparedStatement.setLong(i++, idComputer);
+			resultat = preparedStatement.executeQuery();
 			resultat.next();
-			long id = resultat.getLong("id");
-			String name = resultat.getString("name");
-			LocalDateTime introduced;
-			introduced = resultat.getTimestamp("introduced") == null ? null : resultat.getTimestamp("introduced").toLocalDateTime();
-			LocalDateTime discontinued;
-			discontinued = resultat.getTimestamp("discontinued") == null ? null : resultat.getTimestamp("discontinued").toLocalDateTime();
-			long companyId = resultat.getLong("company_id");
-			CompanyModel company;
-			if (companyId != 0) {
-				ResultSet resultat2 = null;
-				Statement statement2 = (Statement) JDBCConnection.getConnection().createStatement();
-				resultat2 = statement2.executeQuery("SELECT * FROM company WHERE id ='" + companyId + "'");
-				resultat2.next();
-				company = new CompanyModel(resultat2.getLong("id"), resultat2.getString("name"));
-				statement2.close();
-			} else {
-				company = new CompanyModel();
-			}
-			model = new ComputerModel(id, name, introduced, discontinued, company);
+			model = ComputerMapper.toModel(resultat);
 			resultat.close();
-			statement.close();
+			preparedStatement.close();
 		} catch (SQLException e) {
-			System.out.println("This computer doesn\'t exist.");
+			System.err.println("This computer doesn\'t exist.");
 		}
 		return model;
 	}
 
 	public void createComputer(String name) {
 		try {
-			JDBCConnection JDBCConnection = DaoFactory.INSTANCE.getConnection();
+			Connection connection = DaoFactory.INSTANCE.getConnection();
 			PreparedStatement preparedStatement = null;
 			int i = 1;
-			preparedStatement = (PreparedStatement) JDBCConnection.getConnection()
-					.prepareStatement("INSERT INTO computer (name, introduced, discontinued, company_id) "
+			preparedStatement = (PreparedStatement) connection.prepareStatement("INSERT INTO computer (name, introduced, discontinued, company_id) "
 					+ "VALUES (?, null, null, null)");
 			preparedStatement.setString(i++, name);
 			preparedStatement.execute();
@@ -112,9 +78,12 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	public void updateComputer(long computerId, String name, LocalDateTime introduced, LocalDateTime discontinued, long companyId) {
 		try {
-			JDBCConnection JDBCConnection = DaoFactory.INSTANCE.getConnection();
-			Statement statement = (Statement) JDBCConnection.getConnection().createStatement();
-			ResultSet resultat = statement.executeQuery("SELECT * FROM computer WHERE id = " + computerId + ";");
+			Connection connection = DaoFactory.INSTANCE.getConnection();
+			PreparedStatement preparedStatement = null;
+			preparedStatement = (PreparedStatement) connection.prepareStatement("SELECT * FROM computer WHERE id = ?;");
+			int i = 1;
+			preparedStatement.setLong(i++, computerId);
+			ResultSet resultat = preparedStatement.executeQuery();
 			resultat.next();
 			if (name.equals("")) {
 				name = resultat.getString("name");
@@ -125,29 +94,28 @@ public class ComputerDaoImpl implements ComputerDao {
 			if (discontinued == null) {
 				discontinued = resultat.getTimestamp("discontinued") == null ? null : resultat.getTimestamp("discontinued").toLocalDateTime();
 			}
-			PreparedStatement preparedStatement = null;
-			preparedStatement = (PreparedStatement) JDBCConnection.getConnection()
-					.prepareStatement("UPDATE computer set name=?, introduced=?, discontinued=?, company_id=? WHERE id=?;");
-			preparedStatement.setString(1, name);
-			preparedStatement.setTimestamp(2, Timestamp.valueOf(introduced));
-			preparedStatement.setTimestamp(3, Timestamp.valueOf(discontinued));
-			preparedStatement.setLong(4, companyId);
-			preparedStatement.setLong(5, computerId);
+			i = 1;
+			preparedStatement = (PreparedStatement) connection.prepareStatement("UPDATE computer set name=?, introduced=?, discontinued=?, company_id=? WHERE id=?;");
+			preparedStatement.setString(i++, name);
+			preparedStatement.setTimestamp(i++, Timestamp.valueOf(introduced));
+			preparedStatement.setTimestamp(i++, Timestamp.valueOf(discontinued));
+			preparedStatement.setLong(i++, companyId);
+			preparedStatement.setLong(i++, computerId);
 			preparedStatement.execute();
 			preparedStatement.close();
 		} catch (SQLException e) {
 			//e.printStackTrace();
-			System.out.println("Invalid date");
+			System.err.println("Invalid date");
 		}
 	}
 
 	public void deleteComputer(long computerId) {
 		try {
-			JDBCConnection JDBCConnection = DaoFactory.INSTANCE.getConnection();
+			Connection connection = DaoFactory.INSTANCE.getConnection();
 			PreparedStatement preparedStatement = null;
-			preparedStatement = (PreparedStatement) JDBCConnection.getConnection()
-					.prepareStatement("DELETE FROM computer WHERE id=?;");
-					preparedStatement.setLong(1, computerId);
+			int i = 1;
+			preparedStatement = (PreparedStatement) connection.prepareStatement("DELETE FROM computer WHERE id=?;");
+					preparedStatement.setLong(i++, computerId);
 					preparedStatement.execute();
 			preparedStatement.close();
 		} catch (SQLException e) {
