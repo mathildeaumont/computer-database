@@ -1,18 +1,14 @@
 package com.excilys.model;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class Page<T> {
 
 	private int nbResult;
-	private List<T> entities;
-	private int currentPage;
+	private int offset;
 	
-	public Page(int nbResult, List<T> entities) {
+	public Page(int nbResult, int offset) {
 		this.setNbResult(nbResult);
-		this.setEntities(entities);
-		this.setCurrentPage(1);
+		this.setOffset(offset);
 	}
 
 	public int getNbResult() {
@@ -23,41 +19,12 @@ public class Page<T> {
 		this.nbResult = nbResult;
 	}
 
-	public List<T> getEntities() {
-		return entities;
+	public int getOffset() {
+		return offset;
 	}
 
-	public void setEntities(List<T> entities) {
-		this.entities = entities;
-	}
-	
-	public List<T> getEntitiesByPage(int nbPage) {
-		List<T> entities = new ArrayList<T>();
-		int begin = (nbPage * nbResult) - nbResult;
-		int end = begin + nbResult;
-		for (int i = begin; i < end; i++) {
-			entities.add(this.entities.get(i));
-		}
-		return entities;
-	}
-
-	public int getCurrentPage() {
-		return currentPage;
-	}
-
-	public void setCurrentPage(int currentPage) {
-		this.currentPage = currentPage;
-	}
-	
-	public int nextPage() {
-		return currentPage + 1;
-	}
-	
-	public int previousPage() {
-		if (currentPage > 1) {
-			return currentPage - 1;
-		}
-		return 1;
+	public void setOffset(int offset) {
+		this.offset = offset;
 	}
 	
 }

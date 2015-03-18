@@ -7,8 +7,9 @@ import java.util.Scanner;
 
 import com.excilys.model.CompanyModel;
 import com.excilys.model.ComputerModel;
-import com.excilys.service.CompanyServices;
-import com.excilys.service.ComputerServices;
+import com.excilys.model.Page;
+import com.excilys.service.CompanyService;
+import com.excilys.service.ComputerService;
 
 public class ComputerDatabase {
 
@@ -18,18 +19,22 @@ public class ComputerDatabase {
 		while (!in.equals("exit")) {
 			in = scanIn.nextLine();
 			long id;
+			String name;
+			LocalDateTime introduced;
+			LocalDateTime discontinued;
+			long companyId;
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-			switch (in) {
+			switch (in.trim()) {
 			case "computers": 
 				System.out.println("Computers list :");
-				List<ComputerModel> computers = ComputerServices.getAll();
+				List<ComputerModel> computers = ComputerService.getAll();
 				for (ComputerModel computer : computers) {
 					System.out.println(computer);
 				}
 				break;
 			case "companies": 
 				System.out.println("Companies list :");
-				List<CompanyModel> companies = CompanyServices.getAll();
+				List<CompanyModel> companies = CompanyService.getAll();
 				for (CompanyModel company : companies) {
 					System.out.println(company);
 				}
@@ -38,67 +43,96 @@ public class ComputerDatabase {
 				System.out.println("Enter a computer id :");
 				in = scanIn.nextLine();
 				try {
-					id = Long.parseLong(in);
-					ComputerModel c = ComputerServices.getById(id);
+					id = Long.parseLong(in.trim());
+					ComputerModel c = ComputerService.getById(id);
 					System.out.println(c);
 				} catch (NumberFormatException nfe) {
-					System.out.println("A number is required");
+					System.err.println("A number is required");
 				}
 				break;
 			case "create":
 				System.out.println("Enter a computer name :");
 				in = scanIn.nextLine();
-				ComputerServices.create(in);	
+				name = in.trim();
+				System.out.println("Enter an introduced date :");
+				in = scanIn.nextLine();
+				introduced = null;
+				if (!in.equals("")) {
+					try {
+						introduced = LocalDateTime.parse(in.trim(), formatter);
+					} catch (Exception e) {
+						System.err.println("Bad date format");
+						break;
+					}
+				}
+				System.out.println("Enter a discontinued date :");
+				in = scanIn.nextLine();
+				discontinued = null;
+				if (!in.equals("")) {
+					try {
+						discontinued = LocalDateTime.parse(in.trim(), formatter);
+					} catch (Exception e) {
+						System.err.println("Bad date format");
+						break;
+					}
+				}
+				ComputerService.create(name, introduced, discontinued);
 				break;
 			case "update":
 				System.out.println("Enter a computer id :");
 				in = scanIn.nextLine();
 				try {
-					id = Long.parseLong(in);
+					id = Long.parseLong(in.trim());
 				} catch (NumberFormatException nfe) {
-					System.out.println("A number is required");
+					System.err.println("A number is required");
 					break;
 				}
 				System.out.println("Enter a name :");
 				in = scanIn.nextLine();
-				String name = in;
+				name = in.trim();
 				System.out.println("Enter an introduced date :");
 				in = scanIn.nextLine();
-				LocalDateTime introduced;
-				try {
-					introduced = LocalDateTime.parse(in, formatter);
-				} catch (Exception e) {
-					System.out.println("Bad date format");
-					break;
+				introduced = null;
+				if (!in.equals("")) {
+					try {
+						introduced = LocalDateTime.parse(in.trim(), formatter);
+					} catch (Exception e) {
+						System.err.println("Bad date format");
+						break;
+					}
 				}
 				System.out.println("Enter a discontinued date :");
 				in = scanIn.nextLine();
-				LocalDateTime discontinued;
-				try {
-					discontinued = LocalDateTime.parse(in, formatter);
-				} catch (Exception e) {
-					System.out.println("Bad date format");
-					break;
+				discontinued = null;
+				if (!in.equals("")) {
+					try {
+						discontinued = LocalDateTime.parse(in.trim(), formatter);
+					} catch (Exception e) {
+						System.err.println("Bad date format");
+						break;
+					}
 				}
 				System.out.println("Enter a company id :");
 				in = scanIn.nextLine();
-				long companyId;
-				try {
-					companyId = Long.parseLong(in);
-				} catch (NumberFormatException nfe) {
-					System.out.println("A number is required");
-					break;
+				companyId = 0;
+				if (!in.equals("")) {
+					try {
+						companyId = Long.parseLong(in.trim());
+					} catch (NumberFormatException nfe) {
+						System.err.println("A number is required");
+						break;
+					}
 				}
-				ComputerServices.update(id, name, introduced, discontinued, companyId);
+				ComputerService.update(id, name, introduced, discontinued, companyId);
 				break;
 			case "delete":
 				System.out.println("Enter a computer id :");
 				in = scanIn.nextLine();
 				try {
-					id = Long.parseLong(in);
-					ComputerServices.delete(id);
+					id = Long.parseLong(in.trim());
+					ComputerService.delete(id);
 				} catch (NumberFormatException nfe) {
-					System.out.println("A number is required");
+					System.err.println("A number is required");
 					break;
 				}
 				break;
@@ -107,6 +141,11 @@ public class ComputerDatabase {
 				break;
 			default: break;
 			}
+		}
+		Page<ComputerModel> page = new Page<ComputerModel>(10, 10);
+		List<ComputerModel> computers = ComputerService.getAllByPage(page);
+		for (ComputerModel computer : computers) {
+			System.out.println(computer);
 		}
 	}
 }
