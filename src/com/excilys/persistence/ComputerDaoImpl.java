@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.excilys.mapper.ComputerMapper;
 import com.excilys.model.ComputerModel;
+import com.excilys.model.ComputerModelImpl;
 import com.excilys.model.Page;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
@@ -20,6 +21,23 @@ public class ComputerDaoImpl implements ComputerDao {
 	
 	}
 	
+	public int getLength() {
+		int i = 0;
+		ResultSet resultat = null;
+		try {
+			Connection connection = DaoFactory.INSTANCE.getConnection();
+			Statement statement = (Statement) connection.createStatement();
+			resultat = statement.executeQuery("SELECT COUNT(*) as Total FROM computer");
+			resultat.next();
+			i = resultat.getInt("Total");
+			resultat.close();
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return i;
+	}
+	
 	public List<ComputerModel> getAllComputers() {
 		List<ComputerModel> listComputers = new ArrayList<ComputerModel>();
 		ResultSet resultat = null;
@@ -28,8 +46,9 @@ public class ComputerDaoImpl implements ComputerDao {
 			Statement statement = (Statement) connection.createStatement();
 			resultat = statement.executeQuery("SELECT * FROM computer as compu left "
 					+ "outer join company as compa ON compu.company_id = compa.id ORDER by compu.id;");
+			ComputerMapper mapper = new ComputerMapper();
 			while (resultat.next()) {
-				ComputerModel model = ComputerMapper.toModel(resultat);
+				ComputerModelImpl model = (ComputerModelImpl) mapper.toModel(resultat);
 				listComputers.add(model);
 			}
 			resultat.close();
@@ -52,8 +71,9 @@ public class ComputerDaoImpl implements ComputerDao {
 			preparedStatement.setLong(i++, page.getNbResult());
 			preparedStatement.setLong(i++, page.getOffset());
 			result = preparedStatement.executeQuery();
+			ComputerMapper mapper = new ComputerMapper();
 			while (result.next()) {
-				ComputerModel model = ComputerMapper.toModel(result);
+				ComputerModelImpl model = (ComputerModelImpl) mapper.toModel(result);
 				listComputers.add(model);
 			}
 			result.close();
@@ -76,7 +96,8 @@ public class ComputerDaoImpl implements ComputerDao {
 			preparedStatement.setLong(i++, idComputer);
 			resultat = preparedStatement.executeQuery();
 			resultat.next();
-			model = ComputerMapper.toModel(resultat);
+			ComputerMapper mapper = new ComputerMapper();
+			model = (ComputerModelImpl) mapper.toModel(resultat);
 			resultat.close();
 			preparedStatement.close();
 		} catch (SQLException e) {

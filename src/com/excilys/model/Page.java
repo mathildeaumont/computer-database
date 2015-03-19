@@ -5,10 +5,12 @@ public class Page<T> {
 
 	private int nbResult;
 	private int offset;
+	private int totalPages;
 	
-	public Page(int nbResult, int offset) {
+	public Page(int nbResult, int offset, int totalPages) {
 		this.setNbResult(nbResult);
 		this.setOffset(offset);
+		this.setTotalPages(totalPages);
 	}
 
 	public int getNbResult() {
@@ -25,6 +27,14 @@ public class Page<T> {
 
 	public void setOffset(int offset) {
 		this.offset = offset;
+	}
+
+	public int getTotalPages() {
+		return totalPages;
+	}
+
+	public void setTotalPages(int totalPages) {
+		this.totalPages = totalPages;
 	}
 	
 }

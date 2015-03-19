@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.excilys.mapper.CompanyMapper;
 import com.excilys.model.CompanyModel;
+import com.excilys.model.CompanyModelImpl;
 import com.mysql.jdbc.Statement;
 
 public class CompanyDaoImpl implements CompanyDao {
@@ -23,8 +24,9 @@ public class CompanyDaoImpl implements CompanyDao {
 			Connection connection = DaoFactory.INSTANCE.getConnection();
 			Statement statement = (Statement) connection.createStatement();
 			resultat = statement.executeQuery("SELECT * FROM company;");
+			CompanyMapper mapper = new CompanyMapper();
 			while (resultat.next()) {
-				CompanyModel model = CompanyMapper.toModel(resultat);
+				CompanyModelImpl model = (CompanyModelImpl) mapper.toModel(resultat);
 				listCompanies.add(model);
 			}
 			statement.close();

@@ -4,11 +4,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.excilys.model.CompanyModel;
+import com.excilys.model.CompanyModelImpl;
 
-public class CompanyMapper {
+public class CompanyMapper implements Mapper<CompanyModel> {
 
-	public static CompanyModel toModel(ResultSet result) {
-		CompanyModel company = new CompanyModel();
+	public CompanyModel toModel(ResultSet result) {
+		CompanyModel company = new CompanyModelImpl();
 		try {
 			company.setId(result.getLong("id"));
 			company.setName(result.getString("name"));	

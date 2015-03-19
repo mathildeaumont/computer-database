@@ -4,13 +4,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
-import com.excilys.model.CompanyModel;
+import com.excilys.model.CompanyModelImpl;
 import com.excilys.model.ComputerModel;
+import com.excilys.model.ComputerModelImpl;
 
-public class ComputerMapper {
+public class ComputerMapper implements Mapper<ComputerModel> {
 
-	public static ComputerModel toModel(ResultSet result) {
-		ComputerModel computer = new ComputerModel();
+	public ComputerModel toModel(ResultSet result) {
+		ComputerModel computer = new ComputerModelImpl();
 		try {
 			computer.setId(result.getLong("id"));
 			computer.setName(result.getString("name"));	
@@ -20,7 +21,7 @@ public class ComputerMapper {
 			discontinued = result.getTimestamp("discontinued") == null ? null : result.getTimestamp("discontinued").toLocalDateTime();
 			computer.setIntroducedDate(introduced);
 			computer.setDiscontinuedDate(discontinued);
-			CompanyModel company = new CompanyModel();
+			CompanyModelImpl company = new CompanyModelImpl();
 			long companyId = result.getLong("company_id");
 			if (companyId != 0) {
 				company.setId(companyId);

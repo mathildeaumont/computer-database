@@ -6,6 +6,8 @@ import com.excilys.model.ComputerModel;
 import com.excilys.model.Page;
 
 public interface ComputerDao {
+	
+	public int getLength();
 
 	public List<ComputerModel> getAllComputers();
 	
