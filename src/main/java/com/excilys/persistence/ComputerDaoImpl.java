@@ -1,8 +1,10 @@
 package com.excilys.persistence;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,14 +14,10 @@ import com.excilys.mapper.ComputerMapper;
 import com.excilys.model.ComputerModel;
 import com.excilys.model.ComputerModelImpl;
 import com.excilys.model.Page;
-import com.mysql.jdbc.PreparedStatement;
-import com.mysql.jdbc.Statement;
+
 
 public class ComputerDaoImpl implements ComputerDao {
 
-	public ComputerDaoImpl() {
-	
-	}
 	
 	public int getLength() {
 		int i = 0;

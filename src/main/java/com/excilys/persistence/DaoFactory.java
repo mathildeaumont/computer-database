@@ -4,11 +4,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
-
-import com.mysql.jdbc.Connection;
 
 
 public enum DaoFactory {
@@ -21,15 +20,26 @@ public enum DaoFactory {
     private final Properties properties = new Properties();
 	
 	private DaoFactory() {
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			System.out.println(e.getMessage());
+		String config = null;
+		if ("TEST".equals(System.getProperty("env"))) {
+			try {
+				Class.forName("org.h2.Driver");
+				config = "config-test.properties";
+			} catch (ClassNotFoundException e) {
+				System.out.println(e.getMessage());
+			}
+		} else {
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+				config = "config.properties";
+			} catch (ClassNotFoundException e) {
+				System.out.println(e.getMessage());
+			}
 		}
 		companyDao = new CompanyDaoImpl();
 		computerDao = new ComputerDaoImpl();
 		try {
-	    	InputStream inputStream = new FileInputStream("ressources/config.properties");
+	    	InputStream inputStream = new FileInputStream("ressources/" + config);
 	    	properties.load(inputStream);
 	    	String url = properties.getProperty("url");
 	    	String user = properties.getProperty("user");
