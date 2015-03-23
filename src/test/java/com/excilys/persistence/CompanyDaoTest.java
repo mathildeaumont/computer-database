@@ -8,7 +8,6 @@ import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +25,7 @@ public class CompanyDaoTest {
 	public static void setUpDB() {
 		System.setProperty("env", "TEST");
 		try {
-			DBUtil.executeSqlFile("ressources/script.sql", DBUtil.getConnection());
+			DBUtil.executeSqlFile("script.sql", DBUtil.getConnection());
 		} catch (IOException | SQLException e) {
 			System.err.println(e.getMessage());
 		}

@@ -16,8 +16,6 @@ import org.dbunit.JdbcDatabaseTester;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.ext.h2.H2DataTypeFactory;
-import org.dbunit.ext.mysql.MySqlDataTypeFactory;
-import org.dbunit.ext.mysql.MySqlMetadataHandler;
 import org.dbunit.operation.DatabaseOperation;
 
 public class DBUtil {
@@ -29,7 +27,7 @@ public class DBUtil {
 	public static String password;
 	static {
 		final Properties properties = new Properties();
-		try (final InputStream is = new FileInputStream("ressources/config-test.properties")) {
+		try (final InputStream is = DBUtil.class.getClassLoader().getResourceAsStream("config-test.properties")) {
 			properties.load(is);
 			jdbcDriver = properties.getProperty("driver");
 			jdbcUrl = properties.getProperty("url");
@@ -60,7 +58,7 @@ public class DBUtil {
 	 * @throws SQLException
 	 */
 	public static void executeSqlFile(String file, Connection connection) throws IOException, SQLException {
-		final InputStream is =  new FileInputStream(file);
+		final InputStream is =  DBUtil.class.getClassLoader().getResourceAsStream(file);
 		final BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
 		final StringBuilder sb = new StringBuilder();
 		String str = null;
@@ -75,7 +73,7 @@ public class DBUtil {
 
 	public static Connection getConnection() throws IOException, SQLException {
 		final Properties properties = new Properties();
-		try (final InputStream is = new FileInputStream("ressources/config-test.properties")) {
+		try (final InputStream is = DBUtil.class.getClassLoader().getResourceAsStream("config-test.properties")) {
 			properties.load(is);
 			final String url = properties.getProperty("url");
 			return DriverManager.getConnection(url, properties);

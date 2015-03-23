@@ -39,7 +39,7 @@ public enum DaoFactory {
 		companyDao = new CompanyDaoImpl();
 		computerDao = new ComputerDaoImpl();
 		try {
-	    	InputStream inputStream = new FileInputStream("ressources/" + config);
+	    	InputStream inputStream = DaoFactory.class.getClassLoader().getResourceAsStream(config);
 	    	properties.load(inputStream);
 	    	String url = properties.getProperty("url");
 	    	String user = properties.getProperty("user");

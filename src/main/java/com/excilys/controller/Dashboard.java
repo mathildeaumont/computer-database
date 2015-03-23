@@ -1,5 +1,4 @@
 package com.excilys.controller;
-import com.excilys.service.ComputerService;
 import com.excilys.service.ComputerServiceImpl;
 
 import javax.servlet.ServletException;
@@ -9,7 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-public class Index extends HttpServlet {
+@SuppressWarnings("serial")
+public class Dashboard extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
