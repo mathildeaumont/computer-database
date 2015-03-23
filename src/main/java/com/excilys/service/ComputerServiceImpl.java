@@ -9,27 +9,29 @@ import com.excilys.model.ComputerModel;
 import com.excilys.model.ComputerModelImpl;
 import com.excilys.model.Page;
 import com.excilys.persistence.ComputerDao;
-import com.excilys.persistence.ComputerDaoImpl;
+import com.excilys.persistence.DaoFactory;
 
 public class ComputerServiceImpl implements ComputerService {
+	
+	private ComputerDao computerDao;
+	
+	public ComputerServiceImpl() {
+		computerDao = DaoFactory.INSTANCE.getComputerDAO();
+	}
 
 	public int getLength() {
-		ComputerDao computerDao = new ComputerDaoImpl();
 		return computerDao.getLength();
 	}
 	
 	public List<ComputerModel> getAll() {
-		ComputerDao computerDao = new ComputerDaoImpl();
 		return computerDao.getAllComputers();
 	}
 	
 	public List<ComputerModel> getAllByPage(Page<ComputerModel> page) {
-		ComputerDao computerDao = new ComputerDaoImpl();
 		return computerDao.getAllComputersByPage(page);
 	}
 	
 	public ComputerModel getById(long id) {
-		ComputerDao computerDao = new ComputerDaoImpl();
 		return computerDao.getComputerDetails(id);
 	}
 	
@@ -38,7 +40,6 @@ public class ComputerServiceImpl implements ComputerService {
 		computer.setName(name);
 		computer.setDiscontinuedDate(discontinued);
 		computer.setIntroducedDate(introduced);
-		ComputerDao computerDao = new ComputerDaoImpl();
 		computerDao.createComputer(computer);
 	}
 	
@@ -46,12 +47,10 @@ public class ComputerServiceImpl implements ComputerService {
 		CompanyModel company = new CompanyModelImpl();
 		company.setId(companyId);
 		ComputerModel computer = new ComputerModelImpl(computerId, name, introduced, discontinued, (CompanyModelImpl) company);
-		ComputerDao computerDao = new ComputerDaoImpl();
 		computerDao.updateComputer(computer);
 	}
 	
 	public void delete(long computerId) {
-		ComputerDao computerDao = new ComputerDaoImpl();
 		computerDao.deleteComputer(computerId);
 	}
 	
