@@ -94,7 +94,7 @@ public class ComputerDatabase {
 						}
 					}
 				}
-				computerService.create(name, introduced, discontinued);
+				computerService.create(name, introduced, discontinued, 1);
 				break;
 			case "update":
 				System.out.println("Enter a computer id :");

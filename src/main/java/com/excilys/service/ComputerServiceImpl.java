@@ -58,11 +58,12 @@ public class ComputerServiceImpl implements ComputerService {
 	}
 	
 	public Page<ComputerModel> page(int nbPage, int nbResultByPage) {
+		int totalPages = getLength() / nbResultByPage;
 		if (getLength() % nbResultByPage != 0) {
-			nbPage++;
+			totalPages++;
 		}
 		int offset = nbPage * nbResultByPage - nbResultByPage;
-		Page<ComputerModel> page = new Page<ComputerModel>(nbResultByPage, offset, getLength());
+		Page<ComputerModel> page = new Page<ComputerModel>(nbPage, nbResultByPage, offset, totalPages);
 		return page;
 	}
 }

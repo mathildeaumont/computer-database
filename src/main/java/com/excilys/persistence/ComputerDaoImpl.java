@@ -66,7 +66,7 @@ public class ComputerDaoImpl implements ComputerDao {
 			preparedStatement = (PreparedStatement) connection.prepareStatement("SELECT * FROM computer as compu left "
 					+ "outer join company as compa ON compu.company_id = compa.id ORDER by compu.id LIMIT ? OFFSET ?;");
 			int i = 1;
-			preparedStatement.setLong(i++, page.getNbResult());
+			preparedStatement.setLong(i++, page.getNbResults());
 			preparedStatement.setLong(i++, page.getOffset());
 			result = preparedStatement.executeQuery();
 			ComputerMapper mapper = new ComputerMapper();
