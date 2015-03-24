@@ -19,4 +19,12 @@
 		<servlet-name>AddComputer</servlet-name>
 		<url-pattern>/add</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>EditComputer</servlet-name>
+		<servlet-class>com.excilys.controller.EditComputer</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>EditComputer</servlet-name>
+		<url-pattern>/edit</url-pattern>
+	</servlet-mapping>
 </web-app>
