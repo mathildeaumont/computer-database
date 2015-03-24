@@ -1,5 +1,6 @@
 <%@ page pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,14 +28,17 @@
                             <div class="form-group">
                                 <label for="computerName">Computer name</label>
                                 <input type="text" class="form-control" id="computerName" name="name" placeholder="Computer name">
+                                <div>${errorName}</div>
                             </div>
                             <div class="form-group">
                                 <label for="introduced">Introduced date</label>
                                 <input type="date" class="form-control" id="introduced" name="introduced" placeholder="Introduced date">
+                                <div>${errorIntroduced}</div>
                             </div>
                             <div class="form-group">
                                 <label for="discontinued">Discontinued date</label>
                                 <input type="date" class="form-control" id="discontinued" name="discontinued" placeholder="Discontinued date">
+                                <div>${errorDiscontinued}</div>
                             </div>
                             <div class="form-group">
                                 <label for="companyId">Company</label>
