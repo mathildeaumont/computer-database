@@ -34,7 +34,7 @@
                     </form>
                 </div>
                 <div class="pull-right">
-                    <a class="btn btn-success" id="addComputer" href="addComputer.html">Add Computer</a> 
+                    <a class="btn btn-success" id="addComputer" href="<c:url value="/add" />">Add Computer</a> 
                     <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
                 </div>
             </div>
@@ -77,32 +77,28 @@
                     </tr>
                 </thead>
                 <!-- Browse attribute computers -->
-                <tbody id="results">
-                    <c:forEach items="${computers}" var="computer">
-            <tbody>
-            <tr>
-                <td class="editMode">
-                    <input type="checkbox" name="cb" class="cb" value="0"/>
-                </td>
-                <td>
-                    <a href="<c:url value="/editComputer?id=${computer.id}" />">${computer.name}</a>
-                </td>
-                <td>${computer.introducedDate}</td>
-                <td>${computer.discontinuedDate}</td>
-                <td>
-                    <c:choose>
-                        <c:when test="${empty computer.company}">
-                        </c:when>
-                        <c:otherwise>
-                            ${computer.company.name}
-                        </c:otherwise>
-                    </c:choose>
-                </td>
-            </tr>
-            </tbody>
-            </c:forEach>
-                </tbody>
-            </table>
+				<tbody id="results">
+					<c:forEach items="${computers}" var="computer">
+						<tr>
+							<td class="editMode"><input type="checkbox" name="cb"
+								class="cb" value="0" /></td>
+							<td><a
+								href="<c:url value="/editComputer?id=${computer.id}" />">${computer.name}</a>
+							</td>
+							<td>${computer.introducedDate}</td>
+							<td>${computer.discontinuedDate}</td>
+							<td><c:choose>
+									<c:when test="${empty computer.company}">
+									</c:when>
+									<c:otherwise>
+                            			${computer.company.name}
+                        			</c:otherwise>
+								</c:choose>
+							</td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
         </div>
     </section>
 
@@ -131,7 +127,7 @@
             <button type="button" class="btn btn-default">50</button>
             <button type="button" class="btn btn-default">100</button>
         </div>
-
+		</div>
     </footer>
 <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>

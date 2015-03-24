@@ -35,11 +35,14 @@ public class ComputerServiceImpl implements ComputerService {
 		return computerDao.getComputerDetails(id);
 	}
 	
-	public void create(String name, LocalDateTime introduced, LocalDateTime discontinued) {
+	public void create(String name, LocalDateTime introduced, LocalDateTime discontinued, long companyId) {
+		CompanyModel company = new CompanyModelImpl();
+		company.setId(companyId);
 		ComputerModel computer = new ComputerModelImpl();
 		computer.setName(name);
 		computer.setDiscontinuedDate(discontinued);
 		computer.setIntroducedDate(introduced);
+		computer.setCompany((CompanyModelImpl) company);
 		computerDao.createComputer(computer);
 	}
 	

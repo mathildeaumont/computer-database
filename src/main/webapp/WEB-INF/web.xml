@@ -11,4 +11,12 @@
 		<servlet-name>Dashboard</servlet-name>
 		<url-pattern>/dashboard</url-pattern>
 	</servlet-mapping>
+		<servlet>
+		<servlet-name>AddComputer</servlet-name>
+		<servlet-class>com.excilys.controller.AddComputer</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AddComputer</servlet-name>
+		<url-pattern>/add</url-pattern>
+	</servlet-mapping>
 </web-app>

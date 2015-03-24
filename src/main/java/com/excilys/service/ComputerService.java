@@ -16,7 +16,7 @@ public interface ComputerService {
 	
 	public ComputerModel getById(long id);
 	
-	public void create(String name, LocalDateTime introduced, LocalDateTime discontinued);
+	public void create(String name, LocalDateTime introduced, LocalDateTime discontinued, long companyId);
 	
 	public void update(long computerId, String name, LocalDateTime introduced, LocalDateTime discontinued, long companyId);
 	

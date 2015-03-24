@@ -110,8 +110,8 @@ public class ComputerDaoImpl implements ComputerDao {
 			PreparedStatement preparedStatement = null;
 			int i = 1;
 			String name = computer.getName();
-			preparedStatement = (PreparedStatement) connection.prepareStatement("INSERT INTO computer (name, introduced, discontinued)"
-					+ "VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+			preparedStatement = (PreparedStatement) connection.prepareStatement("INSERT INTO computer (name, introduced, discontinued, company_id)"
+					+ "VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 			preparedStatement.setString(i++, name);
 			if (computer.getIntroducedDate() != null) {
 				preparedStatement.setTimestamp(i++, Timestamp.valueOf(computer.getIntroducedDate()));
@@ -123,6 +123,7 @@ public class ComputerDaoImpl implements ComputerDao {
 			} else {
 				preparedStatement.setTimestamp(i++, null);
 			}
+			preparedStatement.setLong(i++, computer.getCompany().getId());
 			preparedStatement.execute();
 			final ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
 			if (generatedKeys.next()) {

@@ -1,7 +1,6 @@
 package com.excilys.util;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -43,8 +42,6 @@ public class DBUtil {
 				jdbcDriver, jdbcUrl, user, password);
 		databaseTester.getConnection().getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,
                 new H2DataTypeFactory());
-		/*databaseTester.getConnection().getConfig().setProperty(DatabaseConfig.PROPERTY_METADATA_HANDLER,
-                new H2MetadataHandler());*/
 		databaseTester.setTearDownOperation(DatabaseOperation.DELETE_ALL);
 		databaseTester.setDataSet(dataSet);
 		databaseTester.onSetup();
