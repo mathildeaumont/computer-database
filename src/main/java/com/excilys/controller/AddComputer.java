@@ -29,14 +29,17 @@ public class AddComputer extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
+		int nbErrors = 0;
+		
 		String name = req.getParameter("name");
 		if (name != null) {
 			name = name.trim();
 			if (name.isEmpty()) {
 				req.setAttribute("errorName", "Name is required");
 				req.setAttribute("companies", new CompanyServiceImpl().getAll());
-				getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(req, resp);
-				return;
+				nbErrors++;
+			} else {
+				req.setAttribute("name", name);
 			}
 		}
 		
@@ -50,10 +53,11 @@ public class AddComputer extends HttpServlet {
 				if (!Pattern.matches(Regex.DATE_FORMAT.getRegex(), introduced.trim())) {
 					req.setAttribute("errorIntroduced", "Invalid format (yyyy-mm-dd hh:mm:ss)");
 					req.setAttribute("companies", new CompanyServiceImpl().getAll());
-					getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(req, resp);
-					return;
+					nbErrors++;
+				} else {
+					introducedDate = LocalDateTime.parse(introduced, formatter);
+					req.setAttribute("introduced", introduced);
 				}
-				introducedDate = LocalDateTime.parse(introduced, formatter);
 			}
 		}
 		
@@ -63,16 +67,22 @@ public class AddComputer extends HttpServlet {
 				if (!Pattern.matches(Regex.DATE_FORMAT.getRegex(), discontinued.trim())) {
 					req.setAttribute("errorDiscontinued", "Invalid format (yyyy-mm-dd hh:mm:ss)");
 					req.setAttribute("companies", new CompanyServiceImpl().getAll());
-					getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(req, resp);
-					return;
+					nbErrors++;
+				} else {
+					discontinuedDate = LocalDateTime.parse(discontinued, formatter);
+					req.setAttribute("discontinued", discontinued);
+
 				}
-				discontinuedDate = LocalDateTime.parse(discontinued, formatter);
 			}
 		}
-		
-		
 	
 		long companyId = Long.parseLong(req.getParameter("companyId"));
+		req.setAttribute("companyId", companyId);
+		
+		if (nbErrors != 0) {
+			getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(req, resp);
+			return;
+		}
 		
 		ComputerService service = new ComputerServiceImpl();
 		service.create(name, introducedDate, discontinuedDate, companyId);
