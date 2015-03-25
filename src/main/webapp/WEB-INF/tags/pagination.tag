@@ -6,13 +6,23 @@
 	description="nbResults"%>
 <div class="container text-center">
 	<ul class="pagination">
+		<c:if test="${current > 2}">
+			<li>
+				<a href="<c:url value="dashboard">
+							<c:param name="offset" value="1" />
+							<c:param name="nbResults" value="${nbResults}" />
+						</c:url>"
+				aria-label="Previous"> <span aria-hidden=true>&laquo;</span>
+				</a>
+			</li>
+		</c:if>
 		<c:if test="${current != 1}">
 			<li>
 				<a href="<c:url value="dashboard">
 							<c:param name="offset" value="${current-1}" />
 							<c:param name="nbResults" value="${nbResults}" />
 						</c:url>"
-				aria-label="Previous"> <span aria-hidden=true>&laquo;</span>
+				aria-label="Previous"> <span aria-hidden=true>&lt;</span>
 				</a>
 			</li>
 		</c:if>
@@ -55,6 +65,16 @@
 		<c:if test="${current != page.totalPages}">
 			<li><a href="<c:url value="dashboard">
 							<c:param name="offset" value="${current+1}" />
+							<c:param name="nbResults" value="${nbResults}" />
+						</c:url>"
+					aria-label="Next"> 
+					<span aria-hidden="true">&gt;</span>
+				</a>
+			</li>
+		</c:if>
+		<c:if test="${current < page.totalPages - 1}">
+			<li><a href="<c:url value="dashboard">
+							<c:param name="offset" value="${page.totalPages}" />
 							<c:param name="nbResults" value="${nbResults}" />
 						</c:url>"
 					aria-label="Next"> 
