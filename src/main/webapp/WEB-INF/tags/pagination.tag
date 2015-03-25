@@ -11,6 +11,7 @@
 				<a href="<c:url value="dashboard">
 							<c:param name="offset" value="1" />
 							<c:param name="nbResults" value="${nbResults}" />
+							<c:param name="order" value="${order}" />
 						</c:url>"
 				aria-label="Previous"> <span aria-hidden=true>&laquo;</span>
 				</a>
@@ -21,6 +22,7 @@
 				<a href="<c:url value="dashboard">
 							<c:param name="offset" value="${current-1}" />
 							<c:param name="nbResults" value="${nbResults}" />
+							<c:param name="order" value="${order}" />
 						</c:url>"
 				aria-label="Previous"> <span aria-hidden=true>&lt;</span>
 				</a>
@@ -30,6 +32,7 @@
 			<li><a href="<c:url value="dashboard">
 							<c:param name="offset" value="${current-2}" />
 							<c:param name="nbResults" value="${nbResults}" />
+							<c:param name="order" value="${order}" />
 						</c:url>"
 				>${current-2}
 				</a>
@@ -39,6 +42,7 @@
 			<li><a href="<c:url value="dashboard">
 							<c:param name="offset" value="${current-1}" />
 							<c:param name="nbResults" value="${nbResults}" />
+							<c:param name="order" value="${order}" />
 						</c:url>"
 					>${current-1}
 				</a>
@@ -49,6 +53,7 @@
 			<li><a href="<c:url value="dashboard">
 							<c:param name="offset" value="${current+1}" />
 							<c:param name="nbResults" value="${nbResults}" />
+							<c:param name="order" value="${order}" />
 						</c:url>">${current+1}
 				</a>
 			</li>
@@ -57,6 +62,7 @@
 			<li><a href="<c:url value="dashboard">
 							<c:param name="offset" value="${current+2}" />
 							<c:param name="nbResults" value="${nbResults}" />
+							<c:param name="order" value="${order}" />
 						</c:url>"
 					>${current+2}
 				</a>
@@ -66,6 +72,7 @@
 			<li><a href="<c:url value="dashboard">
 							<c:param name="offset" value="${current+1}" />
 							<c:param name="nbResults" value="${nbResults}" />
+							<c:param name="order" value="${order}" />
 						</c:url>"
 					aria-label="Next"> 
 					<span aria-hidden="true">&gt;</span>
@@ -76,6 +83,7 @@
 			<li><a href="<c:url value="dashboard">
 							<c:param name="offset" value="${page.totalPages}" />
 							<c:param name="nbResults" value="${nbResults}" />
+							<c:param name="order" value="${order}" />
 						</c:url>"
 					aria-label="Next"> 
 					<span aria-hidden="true">&raquo;</span>

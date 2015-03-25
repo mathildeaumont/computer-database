@@ -11,7 +11,7 @@ public interface ComputerDao {
 
 	public List<ComputerModel> getAllComputers();
 	
-	public List<ComputerModel> getAllComputersByPage(Page<ComputerModel> page);
+	public List<ComputerModel> getAllComputersByPage(Page<ComputerModel> page, String order, String direction);
 	
 	public ComputerModel getComputerDetails(long id);
 	

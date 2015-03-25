@@ -12,7 +12,7 @@ public interface ComputerService {
 	
 	public List<ComputerModel> getAll();
 	
-	public List<ComputerModel> getAllByPage(Page<ComputerModel> page);
+	public List<ComputerModel> getAllByPage(Page<ComputerModel> page, String order, String direction);
 	
 	public ComputerModel getById(long id);
 	

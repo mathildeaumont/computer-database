@@ -60,18 +60,118 @@
                             </span>
                         </th>
                         <th>
-                            Computer name
+							Computer name
+							<span class="right">
+								<c:choose>
+									<c:when test="${direction == 'asc'}">
+										<a href="<c:url value="dashboard">
+											<c:param name="offset" value="1" />
+											<c:param name="nbResults" value="${page.nbResults}" />
+											<c:param name="order" value="compu.name" />
+											<c:param name="direction" value="desc" />
+										</c:url>">
+											<img src="${pageContext.request.contextPath}/img/fleche_bas.png" />
+										</a>
+									</c:when>
+									<c:when test="${direction == 'desc'}">
+										<a href="<c:url value="dashboard">
+											<c:param name="offset" value="1" />
+											<c:param name="nbResults" value="${page.nbResults}" />
+											<c:param name="order" value="compu.name" />
+											<c:param name="direction" value="asc" />
+										</c:url>">
+											<img src="${pageContext.request.contextPath}/img/fleche_haut.png" />
+										</a>
+									</c:when>
+									<c:otherwise></c:otherwise>
+								</c:choose>
+							</span>
                         </th>
                         <th>
                             Introduced date
+                            <span class="right">
+								<c:choose>
+									<c:when test="${direction == 'asc'}">
+										<a href="<c:url value="dashboard">
+											<c:param name="offset" value="1" />
+											<c:param name="nbResults" value="${page.nbResults}" />
+											<c:param name="order" value="compu.introduced" />
+											<c:param name="direction" value="desc" />
+										</c:url>">
+											<img src="${pageContext.request.contextPath}/img/fleche_bas.png" />
+										</a>
+									</c:when>
+									<c:when test="${direction == 'desc'}">
+										<a href="<c:url value="dashboard">
+											<c:param name="offset" value="1" />
+											<c:param name="nbResults" value="${page.nbResults}" />
+											<c:param name="order" value="compu.introduced" />
+											<c:param name="direction" value="asc" />
+										</c:url>">
+											<img src="${pageContext.request.contextPath}/img/fleche_haut.png" />
+										</a>
+									</c:when>
+									<c:otherwise></c:otherwise>
+								</c:choose>
+							</span>
                         </th>
                         <!-- Table header for Discontinued Date -->
                         <th>
                             Discontinued date
+     						<span class="right">
+								<c:choose>
+									<c:when test="${direction == 'asc'}">
+										<a href="<c:url value="dashboard">
+											<c:param name="offset" value="1" />
+											<c:param name="nbResults" value="${page.nbResults}" />
+											<c:param name="order" value="compu.discontinued" />
+											<c:param name="direction" value="desc" />
+										</c:url>">
+											<img src="${pageContext.request.contextPath}/img/fleche_bas.png" />
+										</a>
+									</c:when>
+									<c:when test="${direction == 'desc'}">
+										<a href="<c:url value="dashboard">
+											<c:param name="offset" value="1" />
+											<c:param name="nbResults" value="${page.nbResults}" />
+											<c:param name="order" value="compu.discontinued" />
+											<c:param name="direction" value="asc" />
+										</c:url>">
+											<img src="${pageContext.request.contextPath}/img/fleche_haut.png" />
+										</a>
+									</c:when>
+									<c:otherwise></c:otherwise>
+								</c:choose>
+							</span>
                         </th>
                         <!-- Table header for Company -->
                         <th>
                             Company
+                            <span class="right">
+								<c:choose>
+									<c:when test="${direction == 'asc'}">
+										<a href="<c:url value="dashboard">
+											<c:param name="offset" value="1" />
+											<c:param name="nbResults" value="${page.nbResults}" />
+											<c:param name="order" value="compa.name" />
+											<c:param name="direction" value="desc" />
+										</c:url>">
+											<img src="${pageContext.request.contextPath}/img/fleche_bas.png" />
+										</a>
+									</c:when>
+									<c:when test="${order == 'compa.name' && direction == 'desc'}">
+										<a href="<c:url value="dashboard">
+											<c:param name="offset" value="1" />
+											<c:param name="nbResults" value="${page.nbResults}" />
+											<c:param name="order" value="compa.name" />
+											<c:param name="direction" value="asc" />
+										</c:url>">
+											<img src="${pageContext.request.contextPath}/img/fleche_haut.png" />
+										</a>
+									</c:when>
+									<c:otherwise></c:otherwise>
+								</c:choose>
+							</span>
                         </th>
 
                     </tr>
