@@ -47,7 +47,7 @@ public class AddComputer extends HttpServlet {
 		String introduced = req.getParameter("introduced");
 		if (introduced != null) {
 			if (!introduced.isEmpty()) {
-				if (!Pattern.matches(Regex.DATE_FORMAT.toString(), introduced.trim())) {
+				if (!Pattern.matches(Regex.DATE_FORMAT.getRegex(), introduced.trim())) {
 					req.setAttribute("errorIntroduced", "Invalid format (yyyy-mm-dd hh:mm:ss)");
 					req.setAttribute("companies", new CompanyServiceImpl().getAll());
 					getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(req, resp);
@@ -60,7 +60,7 @@ public class AddComputer extends HttpServlet {
 		String discontinued = req.getParameter("discontinued");
 		if (discontinued != null) {
 			if (!discontinued.isEmpty()) {
-				if (!Pattern.matches(Regex.DATE_FORMAT.toString(), discontinued.trim())) {
+				if (!Pattern.matches(Regex.DATE_FORMAT.getRegex(), discontinued.trim())) {
 					req.setAttribute("errorDiscontinued", "Invalid format (yyyy-mm-dd hh:mm:ss)");
 					req.setAttribute("companies", new CompanyServiceImpl().getAll());
 					getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(req, resp);

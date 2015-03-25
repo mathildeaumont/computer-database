@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.excilys.model.ComputerModel;
 import com.excilys.service.CompanyServiceImpl;
 import com.excilys.service.ComputerService;
 import com.excilys.service.ComputerServiceImpl;
@@ -21,8 +22,10 @@ public class EditComputer extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		req.getAttribute("computerId");
+		long id = Long.parseLong(req.getParameter("id"));
 		req.setAttribute("companies", new CompanyServiceImpl().getAll());
+		ComputerModel computer = new ComputerServiceImpl().getById(id);
+		req.setAttribute("computer", computer);
 		getServletContext().getRequestDispatcher("/WEB-INF/views/editComputer.jsp").forward(req, resp);
 	}
 	
@@ -30,8 +33,8 @@ public class EditComputer extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
-		long computerId = (long) req.getAttribute("computerId");
-		
+		long computerId = Long.parseLong(req.getParameter("computerId"));
+
 		String name = req.getParameter("name");
 		if (name != null) {
 			name = name.trim();
@@ -50,10 +53,13 @@ public class EditComputer extends HttpServlet {
 		String introduced = req.getParameter("introduced");
 		if (introduced != null) {
 			if (!introduced.isEmpty()) {
-				if (!Pattern.matches(Regex.DATE_FORMAT.toString(), introduced.trim())) {
+				if (!Pattern.matches(Regex.DATE_FORMAT.getRegex(), introduced.trim())) {
 					req.setAttribute("errorIntroduced", "Invalid format (yyyy-mm-dd hh:mm:ss)");
 					req.setAttribute("companies", new CompanyServiceImpl().getAll());
-					getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(req, resp);
+					req.setAttribute("id", computerId);
+					ComputerModel computer = new ComputerServiceImpl().getById(computerId);
+					req.setAttribute("computer", computer);
+					getServletContext().getRequestDispatcher("/WEB-INF/views/editComputer.jsp?id="+computerId).forward(req, resp);
 					return;
 				}
 				introducedDate = LocalDateTime.parse(introduced, formatter);
@@ -63,17 +69,18 @@ public class EditComputer extends HttpServlet {
 		String discontinued = req.getParameter("discontinued");
 		if (discontinued != null) {
 			if (!discontinued.isEmpty()) {
-				if (!Pattern.matches(Regex.DATE_FORMAT.toString(), discontinued.trim())) {
+				if (!Pattern.matches(Regex.DATE_FORMAT.getRegex(), discontinued.trim())) {
 					req.setAttribute("errorDiscontinued", "Invalid format (yyyy-mm-dd hh:mm:ss)");
 					req.setAttribute("companies", new CompanyServiceImpl().getAll());
-					getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(req, resp);
+					req.setAttribute("id", computerId);
+					ComputerModel computer = new ComputerServiceImpl().getById(computerId);
+					req.setAttribute("computer", computer);
+					getServletContext().getRequestDispatcher("/WEB-INF/views/editComputer.jsp?id="+computerId).forward(req, resp);
 					return;
 				}
 				discontinuedDate = LocalDateTime.parse(discontinued, formatter);
 			}
 		}
-		
-		
 	
 		long companyId = Long.parseLong(req.getParameter("companyId"));
 		
