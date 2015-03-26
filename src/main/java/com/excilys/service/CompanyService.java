@@ -6,4 +6,6 @@ import com.excilys.model.CompanyModel;
 
 public interface CompanyService {
 	public List<CompanyModel> getAll();
+	
+	public void delete(long companyId);
 }

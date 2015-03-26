@@ -6,18 +6,20 @@ public class ComputerDto {
 	private String name;
 	private String introduced;
 	private String discontinued;
-	private String company;
+	private String companyId;
+	private String companyName;
 	
 	public ComputerDto() {
 		
 	}
 	
-	public ComputerDto(long id, String name, String introduced, String discontinued, String company) {
+	public ComputerDto(long id, String name, String introduced, String discontinued, String companyId, String companyName) {
 		this.id = id;
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
-		this.company = company;
+		this.setCompanyId(companyId);
+		this.setCompanyName(companyName);
 	}
 
 	public String getName() {
@@ -42,15 +44,7 @@ public class ComputerDto {
 
 	public void setDiscontinued(String discontinued) {
 		this.discontinued = discontinued;
-	}
-
-	public String getCompany() {
-		return company;
-	}
-
-	public void setCompany(String company) {
-		this.company = company;
-	}
+	}	
 
 	public long getId() {
 		return id;
@@ -60,11 +54,31 @@ public class ComputerDto {
 		this.id = id;
 	}
 
+
+	public String getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(String companyId) {
+		this.companyId = companyId;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((company == null) ? 0 : company.hashCode());
+		result = prime * result
+				+ ((companyId == null) ? 0 : companyId.hashCode());
+		result = prime * result
+				+ ((companyName == null) ? 0 : companyName.hashCode());
 		result = prime * result
 				+ ((discontinued == null) ? 0 : discontinued.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
@@ -83,10 +97,15 @@ public class ComputerDto {
 		if (getClass() != obj.getClass())
 			return false;
 		ComputerDto other = (ComputerDto) obj;
-		if (company == null) {
-			if (other.company != null)
+		if (companyId == null) {
+			if (other.companyId != null)
 				return false;
-		} else if (!company.equals(other.company))
+		} else if (!companyId.equals(other.companyId))
+			return false;
+		if (companyName == null) {
+			if (other.companyName != null)
+				return false;
+		} else if (!companyName.equals(other.companyName))
 			return false;
 		if (discontinued == null) {
 			if (other.discontinued != null)

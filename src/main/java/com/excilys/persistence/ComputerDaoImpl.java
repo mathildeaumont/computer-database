@@ -195,7 +195,7 @@ public class ComputerDaoImpl implements ComputerDao {
 			}
 			i = 1;
 			PreparedStatement preparedStatement2 = null;
-			preparedStatement2 = (PreparedStatement) connection.prepareStatement("UPDATE computer set name=?, introduced=?, discontinued=?, company_id=? WHERE id=?;");
+			preparedStatement2 = (PreparedStatement) connection.prepareStatement("UPDATE computer set name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?;");
 			preparedStatement2.setString(i++, name);
 			preparedStatement2.setTimestamp(i++, Timestamp.valueOf(introduced));
 			preparedStatement2.setTimestamp(i++, Timestamp.valueOf(discontinued));
@@ -215,7 +215,7 @@ public class ComputerDaoImpl implements ComputerDao {
 			connection = DaoFactory.INSTANCE.getConnection();
 			PreparedStatement preparedStatement = null;
 			int i = 1;
-			preparedStatement = (PreparedStatement) connection.prepareStatement("DELETE FROM computer WHERE id=?;");
+			preparedStatement = (PreparedStatement) connection.prepareStatement("DELETE FROM computer WHERE id = ?;");
 					preparedStatement.setLong(i++, computerId);
 					preparedStatement.execute();
 			preparedStatement.close();
@@ -224,5 +224,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		}
 		DaoFactory.INSTANCE.closeConnection(connection);
 	}
+	
+
 	
 }

@@ -8,4 +8,5 @@ public interface CompanyDao {
 
 	public List<CompanyModel> getAllCompanies();
 	
+	public void deleteCompany(long companyId);
 }

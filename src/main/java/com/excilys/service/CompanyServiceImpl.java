@@ -18,4 +18,7 @@ public class CompanyServiceImpl implements CompanyService {
 		return companyDao.getAllCompanies();
 	}
 	
+	public void delete(long companyId) {
+		companyDao.deleteCompany(companyId);
+	}
 }

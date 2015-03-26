@@ -41,7 +41,7 @@ public class ComputerDtoMapper {
 		dto.setName(name);
 		dto.setIntroduced(introduced.format(formatter));
 		dto.setDiscontinued(discontinued.format(formatter));
-		dto.setCompany(company.toString());
+		dto.setCompanyName(company.getName());
 		
 		return dto;
 	}

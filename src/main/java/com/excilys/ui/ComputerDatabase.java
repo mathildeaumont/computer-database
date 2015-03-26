@@ -94,7 +94,7 @@ public class ComputerDatabase {
 						}
 					}
 				}
-				computerService.create(name, introduced, discontinued, 1);
+				computerService.create(name, introduced, discontinued, 44);
 				break;
 			case "update":
 				System.out.println("Enter a computer id :");
@@ -180,7 +180,7 @@ public class ComputerDatabase {
 					break;
 				}
 				Page<ComputerModel> page = computerService.page(nbPage, nbResultByPage, "");
-				computers = computerService.getAllByPage(page, "id", "asc", "");
+				computers = computerService.getAllByPage(page, "compu.id", "asc", "");
 				listToString(computers);
 				int nbPageTotal = computerService.getLength() / nbResultByPage;
 				System.out.println("page " + nbPage + "/" + nbPageTotal);
@@ -191,7 +191,7 @@ public class ComputerDatabase {
 						if (nbPage < nbPageTotal) {
 							nbPage++;
 							page = computerService.page(nbPage, nbResultByPage, "");
-							computers = computerService.getAllByPage(page, "id", "asc", "");
+							computers = computerService.getAllByPage(page, "compu.id", "asc", "");
 							listToString(computers);
 							System.out.println("page " + nbPage + "/" + nbPageTotal);
 						}
@@ -200,7 +200,7 @@ public class ComputerDatabase {
 						if (nbPage > 1) {
 							nbPage--;
 							page = computerService.page(nbPage, nbResultByPage, "");
-							computers = computerService.getAllByPage(page, "id", "asc", "");
+							computers = computerService.getAllByPage(page, "compu.id", "asc", "");
 							listToString(computers);
 							System.out.println("page " + nbPage + "/" + nbPageTotal);
 						}
@@ -208,6 +208,17 @@ public class ComputerDatabase {
 					default :
 						break;
 					}
+				}
+				break;
+			case "deleteCompany" :
+				System.out.println("Enter a company id :");
+				in = scanIn.nextLine();
+				if (Pattern.matches("^\\d+$", in.trim())) {
+					id = Long.parseLong(in.trim());
+					companyService.delete(id);
+				} else {
+					System.err.println("A number is required");
+					break;
 				}
 				break;
 			case "exit":
