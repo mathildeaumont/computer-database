@@ -10,6 +10,8 @@ public interface ComputerService {
 	
 	public int getLength();
 	
+	public int getLength(String search);
+	
 	public List<ComputerModel> getAll();
 	
 	public List<ComputerModel> getAllByPage(Page<ComputerModel> page, String order, String direction, String search);
@@ -22,5 +24,5 @@ public interface ComputerService {
 	
 	public void delete(long computerId);
 	
-	public Page<ComputerModel> page(int nbPage, int nbResultByPage);
+	public Page<ComputerModel> page(int nbPage, int nbResultByPage, String search);
 }

@@ -9,6 +9,8 @@ public interface ComputerDao {
 	
 	public int getLength();
 
+	public int getLength(String search);
+	
 	public List<ComputerModel> getAllComputers();
 	
 	public List<ComputerModel> getAllComputersByPage(Page<ComputerModel> page, String order, String direction, String search);

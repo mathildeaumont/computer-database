@@ -179,7 +179,7 @@ public class ComputerDatabase {
 					System.err.println("A number is required");
 					break;
 				}
-				Page<ComputerModel> page = computerService.page(nbPage, nbResultByPage);
+				Page<ComputerModel> page = computerService.page(nbPage, nbResultByPage, "");
 				computers = computerService.getAllByPage(page, "id", "asc", "");
 				listToString(computers);
 				int nbPageTotal = computerService.getLength() / nbResultByPage;
@@ -190,7 +190,7 @@ public class ComputerDatabase {
 					case "next" :
 						if (nbPage < nbPageTotal) {
 							nbPage++;
-							page = computerService.page(nbPage, nbResultByPage);
+							page = computerService.page(nbPage, nbResultByPage, "");
 							computers = computerService.getAllByPage(page, "id", "asc", "");
 							listToString(computers);
 							System.out.println("page " + nbPage + "/" + nbPageTotal);
@@ -199,7 +199,7 @@ public class ComputerDatabase {
 					case "previous" :
 						if (nbPage > 1) {
 							nbPage--;
-							page = computerService.page(nbPage, nbResultByPage);
+							page = computerService.page(nbPage, nbResultByPage, "");
 							computers = computerService.getAllByPage(page, "id", "asc", "");
 							listToString(computers);
 							System.out.println("page " + nbPage + "/" + nbPageTotal);

@@ -23,6 +23,10 @@ public class ComputerServiceImpl implements ComputerService {
 		return computerDao.getLength();
 	}
 	
+	public int getLength(String search) {
+		return computerDao.getLength(search);
+	}
+	
 	public List<ComputerModel> getAll() {
 		return computerDao.getAllComputers();
 	}
@@ -57,13 +61,22 @@ public class ComputerServiceImpl implements ComputerService {
 		computerDao.deleteComputer(computerId);
 	}
 	
-	public Page<ComputerModel> page(int nbPage, int nbResultByPage) {
-		int totalPages = getLength() / nbResultByPage;
-		if (getLength() % nbResultByPage != 0) {
+	public Page<ComputerModel> page(int nbPage, int nbResultByPage, String search) {
+		
+		int size = getLength();
+		if (!search.isEmpty()) {
+			size = computerDao.getLength(search);
+		}
+		
+		int totalPages = size / nbResultByPage;
+		if (size % nbResultByPage != 0) {
 			totalPages++;
 		}
+		if (size == 0) {
+			totalPages = 1;
+		}
 		int offset = nbPage * nbResultByPage - nbResultByPage;
-		Page<ComputerModel> page = new Page<ComputerModel>(nbPage, nbResultByPage, offset, totalPages);
+		Page<ComputerModel> page = new Page<ComputerModel>(nbPage, nbResultByPage, offset, totalPages, size);
 		return page;
 	}
 }

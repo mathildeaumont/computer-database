@@ -81,6 +81,25 @@ public class ComputerDaoImpl implements ComputerDao {
 		}
 		return listComputers;
 	}
+	
+	public int getLength(String search) {
+		int i = 0;
+		ResultSet resultat = null;
+		try {
+			Connection connection = DaoFactory.INSTANCE.getConnection();
+			PreparedStatement preparedStatement = null;
+			preparedStatement = (PreparedStatement) connection.prepareStatement("SELECT COUNT(*) as Total FROM computer as compu left "
+					+ "outer join company as compa ON compu.company_id = compa.id WHERE compu.name LIKE '%" + search + "%' OR compa.name LIKE '%" + search + "%' ;");
+			resultat = preparedStatement.executeQuery();
+			resultat.next();
+			i = resultat.getInt("Total");
+			resultat.close();
+			preparedStatement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return i;
+	}
 
 	public ComputerModel getComputerDetails(long idComputer) {
 		ComputerModel model = null;

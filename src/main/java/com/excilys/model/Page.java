@@ -7,12 +7,14 @@ public class Page<T> {
 	private int nbResults;
 	private int offset;
 	private int totalPages;
+	private int nbResultTotal;
 	
-	public Page(int currentPage, int nbResults, int offset, int totalPages) {
+	public Page(int currentPage, int nbResults, int offset, int totalPages, int nbResultTotal) {
 		this.setNbResults(nbResults);
 		this.setOffset(offset);
 		this.setTotalPages(totalPages);
 		this.currentPage = currentPage;
+		this.setNbResultTotal(nbResultTotal);
 	}
 
 	public int getNbResults() {
@@ -45,6 +47,14 @@ public class Page<T> {
 
 	public void setCurrentPage(int currentPage) {
 		this.currentPage = currentPage;
+	}
+
+	public int getNbResultTotal() {
+		return nbResultTotal;
+	}
+
+	public void setNbResultTotal(int nbResultTotal) {
+		this.nbResultTotal = nbResultTotal;
 	}
 	
 }

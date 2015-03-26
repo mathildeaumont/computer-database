@@ -63,6 +63,7 @@
 										<c:param name="offset" value="1" />
 										<c:param name="nbResults" value="${page.nbResults}" />
 										<c:param name="order" value="compu.name" />
+										<c:param name="search" value="${search}" />
 										<c:choose>
 											<c:when test="${direction == 'asc'}">
 												<c:param name="direction" value="desc" />
@@ -90,6 +91,7 @@
 										<c:param name="offset" value="1" />
 										<c:param name="nbResults" value="${page.nbResults}" />
 										<c:param name="order" value="compu.introduced" />
+										<c:param name="search" value="${search}" />
 										<c:choose>
 											<c:when test="${direction == 'asc'}">
 												<c:param name="direction" value="desc" />
@@ -118,6 +120,7 @@
 										<c:param name="offset" value="1" />
 										<c:param name="nbResults" value="${page.nbResults}" />
 										<c:param name="order" value="compu.discontinued" />
+										<c:param name="search" value="${search}" />
 										<c:choose>
 											<c:when test="${direction == 'asc'}">
 												<c:param name="direction" value="desc" />
@@ -145,6 +148,7 @@
 										<c:param name="offset" value="1" />
 										<c:param name="nbResults" value="${page.nbResults}" />
 										<c:param name="order" value="compa.name" />
+										<c:param name="search" value="${search}" />
 										<c:choose>
 											<c:when test="${direction == 'asc'}">
 												<c:param name="direction" value="desc" />

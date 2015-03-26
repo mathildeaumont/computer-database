@@ -28,12 +28,7 @@ public class Dashboard extends HttpServlet {
 		}
 		
 		ComputerService service = new ComputerServiceImpl();
-		int computersNb = service.getLength();
-		request.setAttribute("computersNb", computersNb);
-		
-		Page<ComputerModel> currentPage = service.page(page, nbResults);
-		request.setAttribute("page", currentPage);
-		
+
 		String order = request.getParameter("order");
 		if (order == null || order.isEmpty()) {
 			order = "compu.id";
@@ -49,15 +44,16 @@ public class Dashboard extends HttpServlet {
 			search = "";
 		}
 		
+		Page<ComputerModel> currentPage = service.page(page, nbResults, search);
 		List<ComputerModel> computers = service.getAllByPage(currentPage, order, direction, search);
 		
-		if (!search.isEmpty()) {
-			request.setAttribute("computersNb", computers.size());
-		}
+		request.setAttribute("computersNb", currentPage.getNbResultTotal());
+		request.setAttribute("page", currentPage);
 		request.setAttribute("order", order);
 		request.setAttribute("computers", computers);
 		request.setAttribute("direction", direction);
 		request.setAttribute("search", search);
+		
 		getServletContext().getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(request, response);
 	}
 }
