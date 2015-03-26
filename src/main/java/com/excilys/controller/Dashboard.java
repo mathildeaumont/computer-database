@@ -1,4 +1,5 @@
 package com.excilys.controller;
+import com.excilys.mapper.ComputerDtoMapper;
 import com.excilys.model.ComputerModel;
 import com.excilys.model.Page;
 import com.excilys.service.ComputerService;
@@ -18,6 +19,8 @@ public class Dashboard extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		
+		ComputerDtoMapper computerDtoMapper = new ComputerDtoMapper();
+
 		int page = 1;
 		if (request.getParameter("offset") != null) {
 			page = Integer.valueOf(request.getParameter("offset"));
@@ -47,12 +50,16 @@ public class Dashboard extends HttpServlet {
 		Page<ComputerModel> currentPage = service.page(page, nbResults, search);
 		List<ComputerModel> computers = service.getAllByPage(currentPage, order, direction, search);
 		
+		request.setAttribute("computers", computerDtoMapper.modelsToDtos(computers));
 		request.setAttribute("computersNb", currentPage.getNbResultTotal());
 		request.setAttribute("page", currentPage);
 		request.setAttribute("order", order);
-		request.setAttribute("computers", computers);
+		//request.setAttribute("computers", computers);
 		request.setAttribute("direction", direction);
 		request.setAttribute("search", search);
+		
+	
+		
 		
 		getServletContext().getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(request, response);
 	}

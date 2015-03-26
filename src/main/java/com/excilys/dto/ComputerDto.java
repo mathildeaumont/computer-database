@@ -4,22 +4,20 @@ public class ComputerDto {
 
 	private long id;
 	private String name;
-	private String introduced;
-	private String discontinued;
-	private String companyId;
-	private String companyName;
+	private String introducedDate;
+	private String discontinuedDate;
+	private String company;
 	
 	public ComputerDto() {
 		
 	}
 	
-	public ComputerDto(long id, String name, String introduced, String discontinued, String companyId, String companyName) {
+	public ComputerDto(long id, String name, String introduced, String discontinued, String company) {
 		this.id = id;
 		this.name = name;
-		this.introduced = introduced;
-		this.discontinued = discontinued;
-		this.setCompanyId(companyId);
-		this.setCompanyName(companyName);
+		this.introducedDate = introduced;
+		this.discontinuedDate = discontinued;
+		this.setCompany(company);
 	}
 
 	public String getName() {
@@ -30,20 +28,20 @@ public class ComputerDto {
 		this.name = name;
 	}
 
-	public String getIntroduced() {
-		return introduced;
+	public String getIntroducedDate() {
+		return introducedDate;
 	}
 
-	public void setIntroduced(String introduced) {
-		this.introduced = introduced;
+	public void setIntroducedDate(String introduced) {
+		this.introducedDate = introduced;
 	}
 
-	public String getDiscontinued() {
-		return discontinued;
+	public String getDiscontinuedDate() {
+		return discontinuedDate;
 	}
 
-	public void setDiscontinued(String discontinued) {
-		this.discontinued = discontinued;
+	public void setDiscontinuedDate(String discontinued) {
+		this.discontinuedDate = discontinued;
 	}	
 
 	public long getId() {
@@ -55,20 +53,12 @@ public class ComputerDto {
 	}
 
 
-	public String getCompanyId() {
-		return companyId;
+	public String getCompany() {
+		return company;
 	}
 
-	public void setCompanyId(String companyId) {
-		this.companyId = companyId;
-	}
-
-	public String getCompanyName() {
-		return companyName;
-	}
-
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
+	public void setCompany(String company) {
+		this.company = company;
 	}
 
 	@Override
@@ -76,14 +66,12 @@ public class ComputerDto {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((companyId == null) ? 0 : companyId.hashCode());
+				+ ((company == null) ? 0 : company.hashCode());
 		result = prime * result
-				+ ((companyName == null) ? 0 : companyName.hashCode());
-		result = prime * result
-				+ ((discontinued == null) ? 0 : discontinued.hashCode());
+				+ ((discontinuedDate == null) ? 0 : discontinuedDate.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result
-				+ ((introduced == null) ? 0 : introduced.hashCode());
+				+ ((introducedDate == null) ? 0 : introducedDate.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
@@ -97,27 +85,22 @@ public class ComputerDto {
 		if (getClass() != obj.getClass())
 			return false;
 		ComputerDto other = (ComputerDto) obj;
-		if (companyId == null) {
-			if (other.companyId != null)
+		if (company == null) {
+			if (other.company != null)
 				return false;
-		} else if (!companyId.equals(other.companyId))
+		} else if (!company.equals(other.company))
 			return false;
-		if (companyName == null) {
-			if (other.companyName != null)
+		if (discontinuedDate == null) {
+			if (other.discontinuedDate != null)
 				return false;
-		} else if (!companyName.equals(other.companyName))
-			return false;
-		if (discontinued == null) {
-			if (other.discontinued != null)
-				return false;
-		} else if (!discontinued.equals(other.discontinued))
+		} else if (!discontinuedDate.equals(other.discontinuedDate))
 			return false;
 		if (id != other.id)
 			return false;
-		if (introduced == null) {
-			if (other.introduced != null)
+		if (introducedDate == null) {
+			if (other.introducedDate != null)
 				return false;
-		} else if (!introduced.equals(other.introduced))
+		} else if (!introducedDate.equals(other.introducedDate))
 			return false;
 		if (name == null) {
 			if (other.name != null)

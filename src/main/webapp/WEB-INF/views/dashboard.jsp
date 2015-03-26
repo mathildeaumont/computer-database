@@ -189,7 +189,7 @@
 									<c:when test="${empty computer.company}">
 									</c:when>
 									<c:otherwise>
-                            			${computer.company.name}
+                            			${computer.company}
                         			</c:otherwise>
 								</c:choose>
 							</td>
