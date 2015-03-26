@@ -43,11 +43,17 @@ public class Dashboard extends HttpServlet {
 		if (direction == null || direction.isEmpty()) {
 			direction = "asc";
 		}
+		
+		String search = request.getParameter("search");
+		if (search == null || search.isEmpty()) {
+			search= "";
+		}
 
 		List<ComputerModel> computers = service.getAllByPage(currentPage, order, direction);
 		request.setAttribute("order", order);
 		request.setAttribute("computers", computers);
 		request.setAttribute("direction", direction);
+		request.setAttribute("search", search);
 		getServletContext().getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(request, response);
 	}
 }
