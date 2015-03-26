@@ -46,10 +46,14 @@ public class Dashboard extends HttpServlet {
 		
 		String search = request.getParameter("search");
 		if (search == null || search.isEmpty()) {
-			search= "";
+			search = "";
 		}
-
-		List<ComputerModel> computers = service.getAllByPage(currentPage, order, direction);
+		
+		List<ComputerModel> computers = service.getAllByPage(currentPage, order, direction, search);
+		
+		if (!search.isEmpty()) {
+			request.setAttribute("computersNb", computers.size());
+		}
 		request.setAttribute("order", order);
 		request.setAttribute("computers", computers);
 		request.setAttribute("direction", direction);

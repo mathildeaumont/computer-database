@@ -27,8 +27,8 @@ public class ComputerServiceImpl implements ComputerService {
 		return computerDao.getAllComputers();
 	}
 	
-	public List<ComputerModel> getAllByPage(Page<ComputerModel> page, String order, String direction) {
-		return computerDao.getAllComputersByPage(page, order, direction);
+	public List<ComputerModel> getAllByPage(Page<ComputerModel> page, String order, String direction, String search) {
+		return computerDao.getAllComputersByPage(page, order, direction, search);
 	}
 	
 	public ComputerModel getById(long id) {

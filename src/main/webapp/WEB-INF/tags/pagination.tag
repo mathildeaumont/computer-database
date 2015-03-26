@@ -13,6 +13,7 @@
 							<c:param name="nbResults" value="${nbResults}" />
 							<c:param name="order" value="${order}" />
 							<c:param name="direction" value="${direction}" />
+							<c:param name="search" value="${search}" />
 						</c:url>"
 				aria-label="Previous"> <span aria-hidden=true>&laquo;</span>
 				</a>
@@ -25,6 +26,7 @@
 							<c:param name="nbResults" value="${nbResults}" />
 							<c:param name="order" value="${order}" />
 							<c:param name="direction" value="${direction}" />
+							<c:param name="search" value="${search}" />
 						</c:url>"
 				aria-label="Previous"> <span aria-hidden=true>&lt;</span>
 				</a>
@@ -36,6 +38,7 @@
 							<c:param name="nbResults" value="${nbResults}" />
 							<c:param name="order" value="${order}" />
 							<c:param name="direction" value="${direction}" />
+							<c:param name="search" value="${search}" />
 						</c:url>"
 				>${current-2}
 				</a>
@@ -47,6 +50,7 @@
 							<c:param name="nbResults" value="${nbResults}" />
 							<c:param name="order" value="${order}" />
 							<c:param name="direction" value="${direction}" />
+							<c:param name="search" value="${search}" />
 						</c:url>"
 					>${current-1}
 				</a>
@@ -59,6 +63,7 @@
 							<c:param name="nbResults" value="${nbResults}" />
 							<c:param name="order" value="${order}" />
 							<c:param name="direction" value="${direction}" />
+							<c:param name="search" value="${search}" />
 						</c:url>">${current+1}
 				</a>
 			</li>
@@ -69,6 +74,7 @@
 							<c:param name="nbResults" value="${nbResults}" />
 							<c:param name="order" value="${order}" />
 							<c:param name="direction" value="${direction}" />
+							<c:param name="search" value="${search}" />
 						</c:url>"
 					>${current+2}
 				</a>
@@ -80,6 +86,7 @@
 							<c:param name="nbResults" value="${nbResults}" />
 							<c:param name="order" value="${order}" />
 							<c:param name="direction" value="${direction}" />
+							<c:param name="search" value="${search}" />
 						</c:url>"
 					aria-label="Next"> 
 					<span aria-hidden="true">&gt;</span>
@@ -92,6 +99,7 @@
 							<c:param name="nbResults" value="${nbResults}" />
 							<c:param name="order" value="${order}" />
 							<c:param name="direction" value="${direction}" />
+							<c:param name="search" value="${search}" />
 						</c:url>"
 					aria-label="Next"> 
 					<span aria-hidden="true">&raquo;</span>

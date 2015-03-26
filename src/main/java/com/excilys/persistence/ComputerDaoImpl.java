@@ -57,14 +57,14 @@ public class ComputerDaoImpl implements ComputerDao {
 		return listComputers;
 	}
 	
-	public List<ComputerModel> getAllComputersByPage(Page<ComputerModel> page, String order, String direction) {
+	public List<ComputerModel> getAllComputersByPage(Page<ComputerModel> page, String order, String direction, String search) {
 		List<ComputerModel> listComputers = new ArrayList<ComputerModel>();
 		ResultSet result = null;
 		try {
 			Connection connection = DaoFactory.INSTANCE.getConnection();
 			PreparedStatement preparedStatement = null;
 			preparedStatement = (PreparedStatement) connection.prepareStatement("SELECT * FROM computer as compu left "
-					+ "outer join company as compa ON compu.company_id = compa.id ORDER BY " + order + " " + direction + " LIMIT ? OFFSET ?;");
+					+ "outer join company as compa ON compu.company_id = compa.id WHERE compu.name LIKE '%" + search + "%' OR compa.name LIKE '%" + search + "%' ORDER BY " + order + " " + direction + " LIMIT ? OFFSET ?;");
 			int i = 1;
 			preparedStatement.setLong(i++, page.getNbResults());
 			preparedStatement.setLong(i++, page.getOffset());

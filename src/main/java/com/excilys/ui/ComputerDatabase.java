@@ -180,7 +180,7 @@ public class ComputerDatabase {
 					break;
 				}
 				Page<ComputerModel> page = computerService.page(nbPage, nbResultByPage);
-				computers = computerService.getAllByPage(page, "id", "asc");
+				computers = computerService.getAllByPage(page, "id", "asc", "");
 				listToString(computers);
 				int nbPageTotal = computerService.getLength() / nbResultByPage;
 				System.out.println("page " + nbPage + "/" + nbPageTotal);
@@ -191,7 +191,7 @@ public class ComputerDatabase {
 						if (nbPage < nbPageTotal) {
 							nbPage++;
 							page = computerService.page(nbPage, nbResultByPage);
-							computers = computerService.getAllByPage(page, "id", "asc");
+							computers = computerService.getAllByPage(page, "id", "asc", "");
 							listToString(computers);
 							System.out.println("page " + nbPage + "/" + nbPageTotal);
 						}
@@ -200,7 +200,7 @@ public class ComputerDatabase {
 						if (nbPage > 1) {
 							nbPage--;
 							page = computerService.page(nbPage, nbResultByPage);
-							computers = computerService.getAllByPage(page, "id", "asc");
+							computers = computerService.getAllByPage(page, "id", "asc", "");
 							listToString(computers);
 							System.out.println("page " + nbPage + "/" + nbPageTotal);
 						}
