@@ -159,7 +159,7 @@
 											<img src="${pageContext.request.contextPath}/img/fleche_bas.png" />
 										</a>
 									</c:when>
-									<c:when test="${order == 'compa.name' && direction == 'desc'}">
+									<c:when test="${direction == 'desc'}">
 										<a href="<c:url value="dashboard">
 											<c:param name="offset" value="1" />
 											<c:param name="nbResults" value="${page.nbResults}" />

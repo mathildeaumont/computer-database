@@ -12,6 +12,7 @@
 							<c:param name="offset" value="1" />
 							<c:param name="nbResults" value="${nbResults}" />
 							<c:param name="order" value="${order}" />
+							<c:param name="direction" value="${direction}" />
 						</c:url>"
 				aria-label="Previous"> <span aria-hidden=true>&laquo;</span>
 				</a>
@@ -23,6 +24,7 @@
 							<c:param name="offset" value="${current-1}" />
 							<c:param name="nbResults" value="${nbResults}" />
 							<c:param name="order" value="${order}" />
+							<c:param name="direction" value="${direction}" />
 						</c:url>"
 				aria-label="Previous"> <span aria-hidden=true>&lt;</span>
 				</a>
@@ -33,6 +35,7 @@
 							<c:param name="offset" value="${current-2}" />
 							<c:param name="nbResults" value="${nbResults}" />
 							<c:param name="order" value="${order}" />
+							<c:param name="direction" value="${direction}" />
 						</c:url>"
 				>${current-2}
 				</a>
@@ -43,6 +46,7 @@
 							<c:param name="offset" value="${current-1}" />
 							<c:param name="nbResults" value="${nbResults}" />
 							<c:param name="order" value="${order}" />
+							<c:param name="direction" value="${direction}" />
 						</c:url>"
 					>${current-1}
 				</a>
@@ -54,6 +58,7 @@
 							<c:param name="offset" value="${current+1}" />
 							<c:param name="nbResults" value="${nbResults}" />
 							<c:param name="order" value="${order}" />
+							<c:param name="direction" value="${direction}" />
 						</c:url>">${current+1}
 				</a>
 			</li>
@@ -63,6 +68,7 @@
 							<c:param name="offset" value="${current+2}" />
 							<c:param name="nbResults" value="${nbResults}" />
 							<c:param name="order" value="${order}" />
+							<c:param name="direction" value="${direction}" />
 						</c:url>"
 					>${current+2}
 				</a>
@@ -73,6 +79,7 @@
 							<c:param name="offset" value="${current+1}" />
 							<c:param name="nbResults" value="${nbResults}" />
 							<c:param name="order" value="${order}" />
+							<c:param name="direction" value="${direction}" />
 						</c:url>"
 					aria-label="Next"> 
 					<span aria-hidden="true">&gt;</span>
@@ -84,6 +91,7 @@
 							<c:param name="offset" value="${page.totalPages}" />
 							<c:param name="nbResults" value="${nbResults}" />
 							<c:param name="order" value="${order}" />
+							<c:param name="direction" value="${direction}" />
 						</c:url>"
 					aria-label="Next"> 
 					<span aria-hidden="true">&raquo;</span>
