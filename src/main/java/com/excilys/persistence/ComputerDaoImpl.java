@@ -22,8 +22,9 @@ public class ComputerDaoImpl implements ComputerDao {
 	public int getLength() {
 		int i = 0;
 		ResultSet resultat = null;
+		Connection connection = null;
 		try {
-			Connection connection = DaoFactory.INSTANCE.getConnection();
+			connection = DaoFactory.INSTANCE.getConnection();
 			Statement statement = (Statement) connection.createStatement();
 			resultat = statement.executeQuery("SELECT COUNT(*) as Total FROM computer");
 			resultat.next();
@@ -33,14 +34,16 @@ public class ComputerDaoImpl implements ComputerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		DaoFactory.INSTANCE.closeConnection(connection);
 		return i;
 	}
 	
 	public List<ComputerModel> getAllComputers() {
 		List<ComputerModel> listComputers = new ArrayList<ComputerModel>();
 		ResultSet resultat = null;
+		Connection connection = null;
 		try {
-			Connection connection = DaoFactory.INSTANCE.getConnection();
+			connection = DaoFactory.INSTANCE.getConnection();
 			Statement statement = (Statement) connection.createStatement();
 			resultat = statement.executeQuery("SELECT * FROM computer as compu left "
 					+ "outer join company as compa ON compu.company_id = compa.id ORDER by compu.id;");
@@ -54,14 +57,16 @@ public class ComputerDaoImpl implements ComputerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		DaoFactory.INSTANCE.closeConnection(connection);
 		return listComputers;
 	}
 	
 	public List<ComputerModel> getAllComputersByPage(Page<ComputerModel> page, String order, String direction, String search) {
 		List<ComputerModel> listComputers = new ArrayList<ComputerModel>();
 		ResultSet result = null;
+		Connection connection = null;
 		try {
-			Connection connection = DaoFactory.INSTANCE.getConnection();
+			connection = DaoFactory.INSTANCE.getConnection();
 			PreparedStatement preparedStatement = null;
 			preparedStatement = (PreparedStatement) connection.prepareStatement("SELECT * FROM computer as compu left "
 					+ "outer join company as compa ON compu.company_id = compa.id WHERE compu.name LIKE '%" + search + "%' OR compa.name LIKE '%" + search + "%' ORDER BY " + order + " " + direction + " LIMIT ? OFFSET ?;");
@@ -79,14 +84,16 @@ public class ComputerDaoImpl implements ComputerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		DaoFactory.INSTANCE.closeConnection(connection);
 		return listComputers;
 	}
 	
 	public int getLength(String search) {
 		int i = 0;
 		ResultSet resultat = null;
+		Connection connection = null;
 		try {
-			Connection connection = DaoFactory.INSTANCE.getConnection();
+			connection = DaoFactory.INSTANCE.getConnection();
 			PreparedStatement preparedStatement = null;
 			preparedStatement = (PreparedStatement) connection.prepareStatement("SELECT COUNT(*) as Total FROM computer as compu left "
 					+ "outer join company as compa ON compu.company_id = compa.id WHERE compu.name LIKE '%" + search + "%' OR compa.name LIKE '%" + search + "%' ;");
@@ -98,14 +105,16 @@ public class ComputerDaoImpl implements ComputerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		DaoFactory.INSTANCE.closeConnection(connection);
 		return i;
 	}
 
 	public ComputerModel getComputerDetails(long idComputer) {
 		ComputerModel model = null;
 		ResultSet resultat = null;
+		Connection connection = null;
 		try {
-			Connection connection = DaoFactory.INSTANCE.getConnection();
+			connection = DaoFactory.INSTANCE.getConnection();
 			PreparedStatement preparedStatement = null;
 			preparedStatement = (PreparedStatement) connection.prepareStatement("SELECT * FROM computer as compu left "
 					+ "outer join company as compa ON compu.company_id = compa.id WHERE compu.id = ? ORDER by compu.id;");
@@ -120,12 +129,14 @@ public class ComputerDaoImpl implements ComputerDao {
 		} catch (SQLException e) {
 			System.err.println("This computer doesn\'t exist.");
 		}
+		DaoFactory.INSTANCE.closeConnection(connection);
 		return model;
 	}
 
 	public void createComputer(ComputerModel computer) {
+		Connection connection = null;
 		try {
-			Connection connection = DaoFactory.INSTANCE.getConnection();
+			connection = DaoFactory.INSTANCE.getConnection();
 			PreparedStatement preparedStatement = null;
 			int i = 1;
 			String name = computer.getName();
@@ -152,12 +163,13 @@ public class ComputerDaoImpl implements ComputerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
+		DaoFactory.INSTANCE.closeConnection(connection);
 	}
 
 	public void updateComputer(ComputerModel computer) {
+		Connection connection = null;
 		try {
-			Connection connection = DaoFactory.INSTANCE.getConnection();
+			connection = DaoFactory.INSTANCE.getConnection();
 			PreparedStatement preparedStatement = null;
 			preparedStatement = (PreparedStatement) connection.prepareStatement("SELECT * FROM computer WHERE id = ?;");
 			int i = 1;
@@ -194,11 +206,13 @@ public class ComputerDaoImpl implements ComputerDao {
 		} catch (SQLException e) {
 			System.err.println("Invalid request");
 		}
+		DaoFactory.INSTANCE.closeConnection(connection);
 	}
 
 	public void deleteComputer(long computerId) {
+		Connection connection = null;
 		try {
-			Connection connection = DaoFactory.INSTANCE.getConnection();
+			connection = DaoFactory.INSTANCE.getConnection();
 			PreparedStatement preparedStatement = null;
 			int i = 1;
 			preparedStatement = (PreparedStatement) connection.prepareStatement("DELETE FROM computer WHERE id=?;");
@@ -208,6 +222,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		DaoFactory.INSTANCE.closeConnection(connection);
 	}
 	
 }

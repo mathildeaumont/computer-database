@@ -8,6 +8,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import com.jolbox.bonecp.BoneCP;
+import com.jolbox.bonecp.BoneCPConfig;
+
 
 public enum DaoFactory {
 
@@ -17,6 +20,8 @@ public enum DaoFactory {
 	private ComputerDao computerDao;
     private Connection connection;
     private final Properties properties = new Properties();
+    private BoneCP connectionPool;
+
 	
 	private DaoFactory() {
 		String config = null;
@@ -40,23 +45,48 @@ public enum DaoFactory {
 		try {
 	    	InputStream inputStream = DaoFactory.class.getClassLoader().getResourceAsStream(config);
 	    	properties.load(inputStream);
+	    	BoneCPConfig boneCPConfig = new BoneCPConfig();
+
+       
 	    	String url = properties.getProperty("url");
 	    	String user = properties.getProperty("user");
 	    	String pwd = properties.getProperty("pwd");
-			connection = (Connection) DriverManager.getConnection(url, user, pwd);
-		} catch (SQLException e) {
-			e.printStackTrace();
+	    	
+	    	boneCPConfig.setJdbcUrl(url);
+	    	boneCPConfig.setUsername(user);
+	    	boneCPConfig.setPassword(pwd);
+            /* Paramétrage de la taille du pool */
+	    	boneCPConfig.setMinConnectionsPerPartition(5);
+	    	boneCPConfig.setMaxConnectionsPerPartition(10);
+	    	boneCPConfig.setPartitionCount(2);
+	    	connectionPool = new BoneCP(boneCPConfig);
+			/*connection = (Connection) DriverManager.getConnection(url, user, pwd);*/
+		/*} catch (SQLException e) {
+			e.printStackTrace();*/
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	
+	public void closeConnection(Connection connection) {
+		try {
+			connection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
-	public Connection getConnection() {
-		return connection;
+	public Connection getConnection() throws SQLException {
+		return connectionPool.getConnection();
 	}
 
 	public CompanyDao getCompanyDAO() {
