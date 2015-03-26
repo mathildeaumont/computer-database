@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -18,7 +17,6 @@ public enum DaoFactory {
 
 	private CompanyDao companyDao;
 	private ComputerDao computerDao;
-    private Connection connection;
     private final Properties properties = new Properties();
     private BoneCP connectionPool;
 
@@ -46,8 +44,6 @@ public enum DaoFactory {
 	    	InputStream inputStream = DaoFactory.class.getClassLoader().getResourceAsStream(config);
 	    	properties.load(inputStream);
 	    	BoneCPConfig boneCPConfig = new BoneCPConfig();
-
-       
 	    	String url = properties.getProperty("url");
 	    	String user = properties.getProperty("user");
 	    	String pwd = properties.getProperty("pwd");
@@ -55,14 +51,11 @@ public enum DaoFactory {
 	    	boneCPConfig.setJdbcUrl(url);
 	    	boneCPConfig.setUsername(user);
 	    	boneCPConfig.setPassword(pwd);
-            /* Paramétrage de la taille du pool */
 	    	boneCPConfig.setMinConnectionsPerPartition(5);
 	    	boneCPConfig.setMaxConnectionsPerPartition(10);
 	    	boneCPConfig.setPartitionCount(2);
 	    	connectionPool = new BoneCP(boneCPConfig);
-			/*connection = (Connection) DriverManager.getConnection(url, user, pwd);*/
-		/*} catch (SQLException e) {
-			e.printStackTrace();*/
+	    	
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -78,6 +71,7 @@ public enum DaoFactory {
 	
 	public void closeConnection(Connection connection) {
 		try {
+			connection.setAutoCommit(true);
 			connection.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
