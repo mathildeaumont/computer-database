@@ -68,6 +68,5 @@ public class InterfaceTest {
 		//THEN
 		Assertions.assertThat(errorMessage).isEqualTo("Invalid format (yyyy-mm-dd hh:mm:ss)");
 	}
-	
 
 }
