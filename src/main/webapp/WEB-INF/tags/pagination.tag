@@ -15,7 +15,7 @@
 							<c:param name="direction" value="${direction}" />
 							<c:param name="search" value="${search}" />
 						</c:url>"
-				aria-label="Previous"> <span aria-hidden=true>&laquo;</span>
+				aria-label="First page"> <span aria-hidden=true>&laquo;</span>
 				</a>
 			</li>
 		</c:if>
@@ -101,8 +101,8 @@
 							<c:param name="direction" value="${direction}" />
 							<c:param name="search" value="${search}" />
 						</c:url>"
-					aria-label="Next"> 
-					<span aria-hidden="true">&raquo;</span>
+					aria-label="Last page"> 
+					<span aria-hidden="true" id="lastPage">&raquo;</span>
 				</a>
 			</li>
 		</c:if>
