@@ -73,7 +73,9 @@ public class ComputerModelImpl implements ComputerModel {
 		sb.append(" \t");
 		sb.append(discontinuedDate);
 		sb.append(" \t");
-		sb.append(company.getName());
+ 		if (company != null) {
+ 			sb.append(company.getName());
+ 		}
 		return sb.toString();
 	}
 

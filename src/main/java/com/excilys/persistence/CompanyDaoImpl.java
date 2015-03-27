@@ -18,8 +18,9 @@ public class CompanyDaoImpl implements CompanyDao {
 	public List<CompanyModel> getAllCompanies() {
 		List<CompanyModel> listCompanies = new ArrayList<CompanyModel>();
 		ResultSet resultat = null;
+		Connection connection = null;
 		try {
-			Connection connection = DaoFactory.INSTANCE.getConnection();
+			connection = DaoFactory.INSTANCE.getConnection();
 			Statement statement = (Statement) connection.createStatement();
 			resultat = statement.executeQuery("SELECT * FROM company;");
 			CompanyMapper mapper = new CompanyMapper();
@@ -30,6 +31,8 @@ public class CompanyDaoImpl implements CompanyDao {
 			statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DaoFactory.INSTANCE.closeConnection(connection);
 		}
 		return listCompanies;
 	}
@@ -60,7 +63,8 @@ public class CompanyDaoImpl implements CompanyDao {
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
-		} 
-		DaoFactory.INSTANCE.closeConnection(connection);
+		} finally {
+			DaoFactory.INSTANCE.closeConnection(connection);
+		}
 	}
 }

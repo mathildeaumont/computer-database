@@ -33,8 +33,9 @@ public class ComputerDaoImpl implements ComputerDao {
 			statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DaoFactory.INSTANCE.closeConnection(connection);
 		}
-		DaoFactory.INSTANCE.closeConnection(connection);
 		return i;
 	}
 	
@@ -56,8 +57,9 @@ public class ComputerDaoImpl implements ComputerDao {
 			statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DaoFactory.INSTANCE.closeConnection(connection);
 		}
-		DaoFactory.INSTANCE.closeConnection(connection);
 		return listComputers;
 	}
 	
@@ -83,8 +85,9 @@ public class ComputerDaoImpl implements ComputerDao {
 			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DaoFactory.INSTANCE.closeConnection(connection);
 		}
-		DaoFactory.INSTANCE.closeConnection(connection);
 		return listComputers;
 	}
 	
@@ -104,8 +107,9 @@ public class ComputerDaoImpl implements ComputerDao {
 			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DaoFactory.INSTANCE.closeConnection(connection);
 		}
-		DaoFactory.INSTANCE.closeConnection(connection);
 		return i;
 	}
 
@@ -121,15 +125,17 @@ public class ComputerDaoImpl implements ComputerDao {
 			int i = 1;
 			preparedStatement.setLong(i++, idComputer);
 			resultat = preparedStatement.executeQuery();
-			resultat.next();
-			ComputerMapper mapper = new ComputerMapper();
-			model = (ComputerModelImpl) mapper.toModel(resultat);
+			if (resultat.first()) {
+				ComputerMapper mapper = new ComputerMapper();
+				model = (ComputerModelImpl) mapper.toModel(resultat);
+			}
 			resultat.close();
 			preparedStatement.close();
 		} catch (SQLException e) {
 			System.err.println("This computer doesn\'t exist.");
+		} finally {
+			DaoFactory.INSTANCE.closeConnection(connection);
 		}
-		DaoFactory.INSTANCE.closeConnection(connection);
 		return model;
 	}
 
@@ -153,7 +159,11 @@ public class ComputerDaoImpl implements ComputerDao {
 			} else {
 				preparedStatement.setTimestamp(i++, null);
 			}
-			preparedStatement.setLong(i++, computer.getCompany().getId());
+			if (computer.getCompany() != null) {
+				preparedStatement.setLong(i++, computer.getCompany().getId());
+			} else {
+				preparedStatement.setString(i++, null);
+			}
 			preparedStatement.execute();
 			final ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
 			if (generatedKeys.next()) {
@@ -162,8 +172,9 @@ public class ComputerDaoImpl implements ComputerDao {
 			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DaoFactory.INSTANCE.closeConnection(connection);
 		}
-		DaoFactory.INSTANCE.closeConnection(connection);
 	}
 
 	public void updateComputer(ComputerModel computer) {
@@ -205,8 +216,9 @@ public class ComputerDaoImpl implements ComputerDao {
 			preparedStatement2.close();
 		} catch (SQLException e) {
 			System.err.println("Invalid request");
+		} finally {
+			DaoFactory.INSTANCE.closeConnection(connection);
 		}
-		DaoFactory.INSTANCE.closeConnection(connection);
 	}
 
 	public void deleteComputer(long computerId) {
@@ -221,8 +233,9 @@ public class ComputerDaoImpl implements ComputerDao {
 			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DaoFactory.INSTANCE.closeConnection(connection);
 		}
-		DaoFactory.INSTANCE.closeConnection(connection);
 	}
 	
 

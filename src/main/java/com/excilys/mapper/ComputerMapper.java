@@ -25,7 +25,7 @@ public class ComputerMapper implements Mapper<ComputerModel> {
 			long companyId = result.getLong("company_id");
 			if (companyId != 0) {
 				company.setId(companyId);
-				company.setName(result.getString("compa.name"));
+				company.setName(result.getString("company.name"));
 			}
 			computer.setCompany(company);
 		} catch (SQLException e) {
