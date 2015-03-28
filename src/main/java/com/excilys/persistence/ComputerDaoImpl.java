@@ -71,7 +71,7 @@ public class ComputerDaoImpl implements ComputerDao {
 			connection = DaoFactory.INSTANCE.getConnection();
 			PreparedStatement preparedStatement = null;
 			preparedStatement = (PreparedStatement) connection.prepareStatement("SELECT * FROM computer as compu left "
-					+ "outer join company as compa ON compu.company_id = compa.id WHERE compu.name LIKE '%" + search + "%' OR compa.name LIKE '%" + search + "%' ORDER BY " + order + " " + direction + " LIMIT ? OFFSET ?;");
+					+ "outer join company as company ON compu.company_id = company.id WHERE compu.name LIKE '%" + search + "%' OR company.name LIKE '%" + search + "%' ORDER BY " + order + " " + direction + " LIMIT ? OFFSET ?;");
 			int i = 1;
 			preparedStatement.setLong(i++, page.getNbResults());
 			preparedStatement.setLong(i++, page.getOffset());
@@ -208,9 +208,21 @@ public class ComputerDaoImpl implements ComputerDao {
 			PreparedStatement preparedStatement2 = null;
 			preparedStatement2 = (PreparedStatement) connection.prepareStatement("UPDATE computer set name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?;");
 			preparedStatement2.setString(i++, name);
-			preparedStatement2.setTimestamp(i++, Timestamp.valueOf(introduced));
-			preparedStatement2.setTimestamp(i++, Timestamp.valueOf(discontinued));
-			preparedStatement2.setLong(i++, companyId);
+			if (introduced != null) {
+				preparedStatement2.setTimestamp(i++, Timestamp.valueOf(introduced));
+			} else {
+				preparedStatement2.setTimestamp(i++, null);
+			}
+			if (discontinued != null) {
+				preparedStatement2.setTimestamp(i++, Timestamp.valueOf(discontinued));
+			} else {
+				preparedStatement2.setTimestamp(i++, null);
+			}
+			if (computer.getCompany() != null) {
+				preparedStatement2.setLong(i++, companyId);
+			} else {
+				preparedStatement2.setString(i++, null);
+			}
 			preparedStatement2.setLong(i++, computerId);
 			preparedStatement2.execute();
 			preparedStatement2.close();

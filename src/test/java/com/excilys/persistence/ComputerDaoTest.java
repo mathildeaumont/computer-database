@@ -143,7 +143,7 @@ public class ComputerDaoTest {
 		Assertions.assertThat(computers.size()).isEqualTo(nbComputers);
 	}
 	
-	/*@Test
+	@Test
 	public void updateComputerWithSuccess() throws Exception {
 		// GIVEN
 		DBUtil.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
@@ -157,5 +157,5 @@ public class ComputerDaoTest {
 		computer = DaoFactory.INSTANCE.getComputerDAO().getComputerDetails(computerId);
 		// THEN
 		Assertions.assertThat(computer.getName()).isEqualTo(name);
-	}*/
+	}
 }
