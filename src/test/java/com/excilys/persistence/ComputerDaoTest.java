@@ -158,4 +158,33 @@ public class ComputerDaoTest {
 		// THEN
 		Assertions.assertThat(computer.getName()).isEqualTo(name);
 	}
+	
+	@Test
+    public void deleteWithSuccess() throws Exception {
+        // GIVEN
+        DBUtil.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
+        		"src/test/java/com/excilys/persistence/data/deleteComputer.xml")));
+		final int computerId = 1;
+        DaoFactory.INSTANCE.getComputerDAO().deleteComputer(computerId);
+        // WHEN
+        final List<ComputerModel> computers = DaoFactory.INSTANCE.getComputerDAO().getAllComputers();
+        // THEN
+        Assertions.assertThat(computers).isNotNull();
+        Assertions.assertThat(computers).isEmpty();
+    }
+	
+	@Test
+    public void deleteWhenComputerDoesntExist() throws Exception {
+        // GIVEN
+        DBUtil.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
+        		"src/test/java/com/excilys/persistence/data/deleteComputer.xml")));
+		final int computerId = 2;
+		final int computersNb = 1;
+        DaoFactory.INSTANCE.getComputerDAO().deleteComputer(computerId);
+        // WHEN
+        final List<ComputerModel> computers = DaoFactory.INSTANCE.getComputerDAO().getAllComputers();
+        // THEN
+        Assertions.assertThat(computers).isNotNull();
+        Assertions.assertThat(computers.size()).isEqualTo(computersNb);
+    }
 }
