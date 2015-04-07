@@ -15,6 +15,7 @@ public class ComputerDtoMapper {
 	public ComputerModel dtoToModel(ComputerDto dto) {
 		ComputerModel model = new ComputerModelImpl();
 		
+		long id = dto.getId();
 		String name = dto.getName();
 		String introduced = dto.getIntroducedDate();
 		String discontinued = dto.getDiscontinuedDate();
@@ -23,6 +24,7 @@ public class ComputerDtoMapper {
 		LocalDateTime introducedDate = LocalDateTime.parse(introduced, formatter);
 		LocalDateTime discontinuedDate = LocalDateTime.parse(discontinued, formatter);
 		
+		model.setId(id);
 		model.setName(name);
 		model.setIntroducedDate(introducedDate);
 		model.setDiscontinuedDate(discontinuedDate);
@@ -33,6 +35,7 @@ public class ComputerDtoMapper {
 	public ComputerDto modelToDto(ComputerModel model) {
 		ComputerDto dto = new ComputerDto();
 		
+		long id = model.getId();
 		String name = model.getName();
 		LocalDateTime introduced = model.getIntroducedDate();
 		LocalDateTime discontinued = model.getDiscontinuedDate();
@@ -40,6 +43,7 @@ public class ComputerDtoMapper {
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		
+		dto.setId(id);
 		dto.setName(name);
 		dto.setIntroducedDate(introduced.format(formatter));
 		dto.setDiscontinuedDate(discontinued.format(formatter));
@@ -54,6 +58,7 @@ public class ComputerDtoMapper {
 		for (ComputerModel model : models) {
 			ComputerDto dto = new ComputerDto();
 			
+			long id = model.getId();
 			String name = model.getName();
 			LocalDateTime introduced = model.getIntroducedDate();
 			LocalDateTime discontinued = model.getDiscontinuedDate();
@@ -61,6 +66,7 @@ public class ComputerDtoMapper {
 			
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		
+			dto.setId(id);
 			dto.setName(name);
 			if (introduced != null) {
 				dto.setIntroducedDate(introduced.format(formatter));

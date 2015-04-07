@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.model.ComputerModel;
 import com.excilys.service.CompanyServiceImpl;
 import com.excilys.service.ComputerService;
@@ -19,6 +22,8 @@ import com.excilys.util.Regex;
 @SuppressWarnings("serial")
 public class EditComputer extends HttpServlet {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(EditComputer.class);
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -41,6 +46,7 @@ public class EditComputer extends HttpServlet {
 			if (name.isEmpty()) {
 				req.setAttribute("errorName", "Name is required");
 				req.setAttribute("companies", new CompanyServiceImpl().getAll());
+				LOGGER.error("Failure : Name is required");
 				getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(req, resp);
 				return;
 			}
@@ -59,6 +65,7 @@ public class EditComputer extends HttpServlet {
 					req.setAttribute("id", computerId);
 					ComputerModel computer = new ComputerServiceImpl().getById(computerId);
 					req.setAttribute("computer", computer);
+					LOGGER.error("Failure : Bad format introduced date");
 					getServletContext().getRequestDispatcher("/WEB-INF/views/editComputer.jsp?id="+computerId).forward(req, resp);
 					return;
 				}
@@ -75,6 +82,7 @@ public class EditComputer extends HttpServlet {
 					req.setAttribute("id", computerId);
 					ComputerModel computer = new ComputerServiceImpl().getById(computerId);
 					req.setAttribute("computer", computer);
+					LOGGER.error("Failure : Bad format discontinued date");
 					getServletContext().getRequestDispatcher("/WEB-INF/views/editComputer.jsp?id="+computerId).forward(req, resp);
 					return;
 				}
@@ -86,6 +94,7 @@ public class EditComputer extends HttpServlet {
 		
 		ComputerService service = new ComputerServiceImpl();
 		service.update(computerId, name, introducedDate, discontinuedDate, companyId);
+		LOGGER.info("Successfully updated computer");
 		resp.sendRedirect("dashboard");
 	}
 
