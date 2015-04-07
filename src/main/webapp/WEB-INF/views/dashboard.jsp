@@ -3,21 +3,9 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="mylib"%>
 <!DOCTYPE html>
 <html>
-<head>
-<title>Computer Database</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta charset="utf-8">
-<!-- Bootstrap -->
-<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="${pageContext.request.contextPath}/css/font-awesome.css" rel="stylesheet" media="screen">
-<link href="${pageContext.request.contextPath}/css/main.css" rel="stylesheet" media="screen">
-</head>
+<c:import url="head.jsp" />
 <body>
-    <header class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="${pageContext.request.contextPath}/dashboard"> Application - Computer Database </a>
-        </div>
-    </header>
+    <c:import url="header.jsp" />
 
     <section id="main">
         <div class="container">
@@ -59,117 +47,105 @@
                             </span>
                         </th>
                         <th> 
-	                        <a href="<c:url value="dashboard">
-										<c:param name="offset" value="1" />
-										<c:param name="nbResults" value="${page.nbResults}" />
-										<c:param name="order" value="compu.name" />
-										<c:param name="search" value="${search}" />
-										<c:choose>
-											<c:when test="${direction == 'asc'}">
-												<c:param name="direction" value="desc" />
-											</c:when>
-											<c:otherwise>
-												<c:param name="direction" value="asc" />
-											</c:otherwise>
-										</c:choose>
-									</c:url>">
-									Computer name
-									<span class="right">
-										<c:choose>
-											<c:when test="${order == 'compu.name' && direction == 'asc'}">
-												<img src="${pageContext.request.contextPath}/img/fleche_bas.png" />
-											</c:when>
-											<c:when test="${order == 'compu.name' && direction == 'desc'}">
-												<img src="${pageContext.request.contextPath}/img/fleche_haut.png" />
-											</c:when>
-										</c:choose>
-									</span>
-							</a>
+							<c:choose>
+								<c:when test="${direction == 'asc'}">
+									<mylib:link url="dashboard" direction="desc" offset="1" order="compu.name" search="${search}" nbResults="${page.nbResults}">
+										Computer name
+									</mylib:link>
+								</c:when>
+								<c:otherwise>
+									<mylib:link url="dashboard" direction="asc" offset="1" order="compu.name" search="${search}" nbResults="${page.nbResults}">
+										Computer name
+									</mylib:link>
+								</c:otherwise>
+							</c:choose>
+			
+							<span class="right">
+								<c:choose>
+									<c:when test="${order == 'compu.name' && direction == 'asc'}">
+										<img src="${pageContext.request.contextPath}/img/fleche_bas.png" />
+									</c:when>
+									<c:when test="${order == 'compu.name' && direction == 'desc'}">
+										<img src="${pageContext.request.contextPath}/img/fleche_haut.png" />
+									</c:when>
+								</c:choose>
+							</span>
                         </th>
                         <th>
-                            <a href="<c:url value="dashboard">
-										<c:param name="offset" value="1" />
-										<c:param name="nbResults" value="${page.nbResults}" />
-										<c:param name="order" value="compu.introduced" />
-										<c:param name="search" value="${search}" />
-										<c:choose>
-											<c:when test="${direction == 'asc'}">
-												<c:param name="direction" value="desc" />
-											</c:when>
-											<c:otherwise>
-												<c:param name="direction" value="asc" />
-											</c:otherwise>
-										</c:choose>
-									</c:url>">
-									Introduced date
-									<span class="right">
-										<c:choose>
-											<c:when test="${order == 'compu.introduced' && direction == 'asc'}">
-												<img src="${pageContext.request.contextPath}/img/fleche_bas.png" />
-											</c:when>
-											<c:when test="${order == 'compu.introduced' && direction == 'desc'}">
-												<img src="${pageContext.request.contextPath}/img/fleche_haut.png" />
-											</c:when>
-										</c:choose>
-									</span>
-							</a>
+							<c:choose>
+								<c:when test="${direction == 'asc'}">
+									<mylib:link url="dashboard" direction="desc" offset="1" order="compu.introduced" search="${search}" nbResults="${page.nbResults}">
+										Introduced date
+									</mylib:link>
+								</c:when>
+								<c:otherwise>
+									<mylib:link url="dashboard" direction="asc" offset="1" order="compu.introduced" search="${search}" nbResults="${page.nbResults}">
+										Introduced date
+									</mylib:link>
+								</c:otherwise>
+							</c:choose>
+							
+							<span class="right">
+								<c:choose>
+									<c:when test="${order == 'compu.introduced' && direction == 'asc'}">
+										<img src="${pageContext.request.contextPath}/img/fleche_bas.png" />
+									</c:when>
+									<c:when test="${order == 'compu.introduced' && direction == 'desc'}">
+										<img src="${pageContext.request.contextPath}/img/fleche_haut.png" />
+									</c:when>
+								</c:choose>
+							</span>
                         </th>
                         <!-- Table header for Discontinued Date -->
                         <th>
-                            <a href="<c:url value="dashboard">
-										<c:param name="offset" value="1" />
-										<c:param name="nbResults" value="${page.nbResults}" />
-										<c:param name="order" value="compu.discontinued" />
-										<c:param name="search" value="${search}" />
-										<c:choose>
-											<c:when test="${direction == 'asc'}">
-												<c:param name="direction" value="desc" />
-											</c:when>
-											<c:otherwise>
-												<c:param name="direction" value="asc" />
-											</c:otherwise>
-										</c:choose>
-									</c:url>">
-									Discontinued date
-									<span class="right">
-										<c:choose>
-											<c:when test="${order == 'compu.discontinued' && direction == 'asc'}">
-												<img src="${pageContext.request.contextPath}/img/fleche_bas.png" />
-											</c:when>
-											<c:when test="${order == 'compu.discontinued' && direction == 'desc'}">
-												<img src="${pageContext.request.contextPath}/img/fleche_haut.png" />
-											</c:when>
-										</c:choose>
-									</span>
-							</a>
+							<c:choose>
+								<c:when test="${direction == 'asc'}">
+									<mylib:link url="dashboard" direction="desc" offset="1" order="compu.discontinued" search="${search}" nbResults="${page.nbResults}">
+										Discontinued date
+									</mylib:link>
+								</c:when>
+								<c:otherwise>
+									<mylib:link url="dashboard" direction="asc" offset="1" order="compu.discontinued" search="${search}" nbResults="${page.nbResults}">
+										Discontinued date
+									</mylib:link>
+								</c:otherwise>
+							</c:choose>
+							
+							<span class="right">
+								<c:choose>
+									<c:when test="${order == 'compu.discontinued' && direction == 'asc'}">
+										<img src="${pageContext.request.contextPath}/img/fleche_bas.png" />
+									</c:when>
+									<c:when test="${order == 'compu.discontinued' && direction == 'desc'}">
+										<img src="${pageContext.request.contextPath}/img/fleche_haut.png" />
+									</c:when>
+								</c:choose>
+							</span>
                         <!-- Table header for Company -->
                         <th>
-                            <a href="<c:url value="dashboard">
-										<c:param name="offset" value="1" />
-										<c:param name="nbResults" value="${page.nbResults}" />
-										<c:param name="order" value="compa.name" />
-										<c:param name="search" value="${search}" />
-										<c:choose>
-											<c:when test="${direction == 'asc'}">
-												<c:param name="direction" value="desc" />
-											</c:when>
-											<c:otherwise>
-												<c:param name="direction" value="asc" />
-											</c:otherwise>
-										</c:choose>
-									</c:url>">
-									Company
-									<span class="right">
-										<c:choose>
-											<c:when test="${order == 'compa.name' && direction == 'asc'}">
-												<img src="${pageContext.request.contextPath}/img/fleche_bas.png" />
-											</c:when>
-											<c:when test="${order == 'compa.name' && direction == 'desc'}">
-												<img src="${pageContext.request.contextPath}/img/fleche_haut.png" />
-											</c:when>
-										</c:choose>
-									</span>
-							</a>
+							<c:choose>
+								<c:when test="${direction == 'asc'}">
+									<mylib:link url="dashboard" direction="desc" offset="1" order="company.name" search="${search}" nbResults="${page.nbResults}">
+										Company
+									</mylib:link>
+								</c:when>
+								<c:otherwise>
+									<mylib:link url="dashboard" direction="asc" offset="1" order="company.name" search="${search}" nbResults="${page.nbResults}">
+										Company
+									</mylib:link>
+								</c:otherwise>
+							</c:choose>
+							
+							<span class="right">
+								<c:choose>
+									<c:when test="${order == 'compa.name' && direction == 'asc'}">
+										<img src="${pageContext.request.contextPath}/img/fleche_bas.png" />
+									</c:when>
+									<c:when test="${order == 'compa.name' && direction == 'desc'}">
+										<img src="${pageContext.request.contextPath}/img/fleche_haut.png" />
+									</c:when>
+								</c:choose>
+							</span>
                         </th>
 
                     </tr>

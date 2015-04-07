@@ -31,3 +31,23 @@ input[type='checkbox'] {
 .right {
 	float: right;
 }
+
+input.error {
+	border: 1px solid #FF0000 !important; 
+}
+
+label.error, div.error {
+	font-weight: normal;
+	color: #FF0000 !important;
+}
+
+input.valid {
+	border: 1px solid green !important; 
+}
+
+label.valid, div.valid {
+	font-weight: normal;
+	color: green !important;
+}
+
+
