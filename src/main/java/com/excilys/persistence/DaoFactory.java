@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import com.excilys.exception.PersistenceException;
 import com.jolbox.bonecp.BoneCP;
 import com.jolbox.bonecp.BoneCPConfig;
 
@@ -15,12 +16,21 @@ public enum DaoFactory {
 
 	INSTANCE;
 
+	private static final ThreadLocal<Connection> CONNECTION = new ThreadLocal<Connection>() {
+		@Override
+		protected Connection initialValue() {
+			try {
+				return DaoFactory.INSTANCE.getConnectionPool().getConnection();
+			} catch (SQLException e) {
+				throw new PersistenceException(e);
+			}
+		}
+	};
 	private CompanyDao companyDao;
 	private ComputerDao computerDao;
-    private final Properties properties = new Properties();
-    private BoneCP connectionPool;
+	private final Properties properties = new Properties();
+	private BoneCP connectionPool = null;
 
-	
 	private DaoFactory() {
 		String config = null;
 		if ("TEST".equals(System.getProperty("env"))) {
@@ -41,21 +51,19 @@ public enum DaoFactory {
 		companyDao = new CompanyDaoImpl();
 		computerDao = new ComputerDaoImpl();
 		try {
-	    	InputStream inputStream = DaoFactory.class.getClassLoader().getResourceAsStream(config);
-	    	properties.load(inputStream);
-	    	BoneCPConfig boneCPConfig = new BoneCPConfig();
-	    	String url = properties.getProperty("url");
-	    	String user = properties.getProperty("user");
-	    	String pwd = properties.getProperty("pwd");
-	    	
-	    	boneCPConfig.setJdbcUrl(url);
-	    	boneCPConfig.setUsername(user);
-	    	boneCPConfig.setPassword(pwd);
-	    	boneCPConfig.setMinConnectionsPerPartition(5);
-	    	boneCPConfig.setMaxConnectionsPerPartition(10);
-	    	boneCPConfig.setPartitionCount(2);
-	    	connectionPool = new BoneCP(boneCPConfig);
-	    	
+			InputStream inputStream = DaoFactory.class.getClassLoader().getResourceAsStream(config);
+			properties.load(inputStream);
+			BoneCPConfig boneCPConfig = new BoneCPConfig();
+			String url = properties.getProperty("url");
+			String user = properties.getProperty("user");
+			String pwd = properties.getProperty("pwd");
+			boneCPConfig.setJdbcUrl(url);
+			boneCPConfig.setUsername(user);
+			boneCPConfig.setPassword(pwd);
+			boneCPConfig.setMinConnectionsPerPartition(5);
+			boneCPConfig.setMaxConnectionsPerPartition(10);
+			boneCPConfig.setPartitionCount(2);
+			connectionPool = new BoneCP(boneCPConfig);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -66,21 +74,70 @@ public enum DaoFactory {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
-	
-	public void closeConnection(Connection connection) {
-		try {
-			connection.setAutoCommit(true);
-			connection.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+	public void closeConnection() {
+		final Connection connection = CONNECTION.get();
+		if (connection != null) {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				throw new PersistenceException(e);
+			}
+			CONNECTION.remove();
 		}
 	}
 
-	public Connection getConnection() throws SQLException {
-		return connectionPool.getConnection();
+	public Connection getConnection() {
+		return CONNECTION.get();
+	}
+
+	public BoneCP getConnectionPool() {
+		return connectionPool;
+	}
+
+	public void startTransaction() {
+		final Connection connection = CONNECTION.get();
+		if (connection != null) {
+			try {
+				connection.setAutoCommit(false);
+			} catch (SQLException e) {
+				throw new PersistenceException(e);
+			}
+		}
+	}
+
+	public void endTransaction() {
+		final Connection connection = CONNECTION.get();
+		if (connection != null) {
+			try {
+				connection.setAutoCommit(true);
+			} catch (SQLException e) {
+				throw new PersistenceException(e);
+			}
+		}
+	}
+
+	public void commit() {
+		final Connection connection = CONNECTION.get();
+		if (connection != null) {
+			try {
+				connection.commit();
+			} catch (SQLException e) {
+				throw new PersistenceException(e);
+			}
+		}
+	}
+
+	public void rollback() {
+		final Connection connection = CONNECTION.get();
+		if (connection != null) {
+			try {
+				connection.rollback();
+			} catch (SQLException e) {
+				throw new PersistenceException(e);
+			}
+		}
 	}
 
 	public CompanyDao getCompanyDAO() {

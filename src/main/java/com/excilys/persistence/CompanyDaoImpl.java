@@ -32,39 +32,25 @@ public class CompanyDaoImpl implements CompanyDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			DaoFactory.INSTANCE.closeConnection(connection);
+			DaoFactory.INSTANCE.closeConnection();
 		}
 		return listCompanies;
 	}
 
-	public void deleteCompany(long companyId) {
+	public void deleteCompany(long companyId) throws SQLException {
 		Connection connection = null;
-		try {
-			connection = DaoFactory.INSTANCE.getConnection();
-			connection.setAutoCommit(false);
-			PreparedStatement preparedStatement = null;
-			preparedStatement = (PreparedStatement) connection.prepareStatement("DELETE FROM computer WHERE company_id = ?;");
-			int i = 1;
-			preparedStatement.setLong(i++, companyId);
-			preparedStatement.execute();
-			preparedStatement.close();
-
-			i = 1;
-			PreparedStatement preparedStatement2 = null;
-			preparedStatement2 = (PreparedStatement) connection.prepareStatement("DELETE FROM company WHERE id = ?;");
-			preparedStatement2.setLong(i++, companyId);
-			preparedStatement2.execute();
-			preparedStatement2.close();	
-			connection.commit();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
-		} finally {
-			DaoFactory.INSTANCE.closeConnection(connection);
-		}
+		connection = DaoFactory.INSTANCE.getConnection();
+		PreparedStatement preparedStatement = null;
+		preparedStatement = (PreparedStatement) connection.prepareStatement("DELETE FROM computer WHERE company_id = ?;");
+		int i = 1;
+		preparedStatement.setLong(i++, companyId);
+		preparedStatement.execute();
+		preparedStatement.close();
+		i = 1;
+		PreparedStatement preparedStatement2 = null;
+		preparedStatement2 = (PreparedStatement) connection.prepareStatement("DELETE FROM company WHERE id = ?;");
+		preparedStatement2.setLong(i++, companyId);
+		preparedStatement2.execute();
+		preparedStatement2.close();	
 	}
 }

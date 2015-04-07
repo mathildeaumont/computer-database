@@ -17,7 +17,6 @@ import com.excilys.model.Page;
 
 
 public class ComputerDaoImpl implements ComputerDao {
-
 	
 	public int getLength() {
 		int i = 0;
@@ -34,7 +33,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			DaoFactory.INSTANCE.closeConnection(connection);
+			DaoFactory.INSTANCE.closeConnection();
 		}
 		return i;
 	}
@@ -58,7 +57,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			DaoFactory.INSTANCE.closeConnection(connection);
+			DaoFactory.INSTANCE.closeConnection();
 		}
 		return listComputers;
 	}
@@ -86,7 +85,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			DaoFactory.INSTANCE.closeConnection(connection);
+			DaoFactory.INSTANCE.closeConnection();
 		}
 		return listComputers;
 	}
@@ -108,7 +107,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			DaoFactory.INSTANCE.closeConnection(connection);
+			DaoFactory.INSTANCE.closeConnection();
 		}
 		return i;
 	}
@@ -134,7 +133,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		} catch (SQLException e) {
 			System.err.println("This computer doesn\'t exist.");
 		} finally {
-			DaoFactory.INSTANCE.closeConnection(connection);
+			DaoFactory.INSTANCE.closeConnection();
 		}
 		return model;
 	}
@@ -173,7 +172,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			DaoFactory.INSTANCE.closeConnection(connection);
+			DaoFactory.INSTANCE.closeConnection();
 		}
 	}
 
@@ -229,7 +228,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		} catch (SQLException e) {
 			System.err.println("Invalid request");
 		} finally {
-			DaoFactory.INSTANCE.closeConnection(connection);
+			DaoFactory.INSTANCE.closeConnection();
 		}
 	}
 
@@ -246,7 +245,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			DaoFactory.INSTANCE.closeConnection(connection);
+			DaoFactory.INSTANCE.closeConnection();
 		}
 	}
 	
