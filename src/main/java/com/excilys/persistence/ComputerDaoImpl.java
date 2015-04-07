@@ -34,6 +34,7 @@ public class ComputerDaoImpl implements ComputerDao {
 			e.printStackTrace();
 		} finally {
 			DaoFactory.INSTANCE.closeConnection();
+			
 		}
 		return i;
 	}
@@ -120,7 +121,7 @@ public class ComputerDaoImpl implements ComputerDao {
 			connection = DaoFactory.INSTANCE.getConnection();
 			PreparedStatement preparedStatement = null;
 			preparedStatement = (PreparedStatement) connection.prepareStatement("SELECT * FROM computer as compu left "
-					+ "outer join company as compa ON compu.company_id = compa.id WHERE compu.id = ? ORDER by compu.id;");
+					+ "outer join company as company ON compu.company_id = company.id WHERE compu.id = ? ORDER by compu.id;");
 			int i = 1;
 			preparedStatement.setLong(i++, idComputer);
 			resultat = preparedStatement.executeQuery();

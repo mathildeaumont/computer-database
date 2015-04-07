@@ -7,6 +7,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.excilys.controller.EditComputer;
 import com.excilys.exception.PersistenceException;
 import com.jolbox.bonecp.BoneCP;
 import com.jolbox.bonecp.BoneCPConfig;
@@ -15,6 +19,8 @@ import com.jolbox.bonecp.BoneCPConfig;
 public enum DaoFactory {
 
 	INSTANCE;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(DaoFactory.class);
 
 	private static final ThreadLocal<Connection> CONNECTION = new ThreadLocal<Connection>() {
 		@Override
@@ -82,13 +88,16 @@ public enum DaoFactory {
 			try {
 				connection.close();
 			} catch (SQLException e) {
+				LOGGER.error("Failure : Connection closed");
 				throw new PersistenceException(e);
 			}
 			CONNECTION.remove();
+			LOGGER.info("Successfully connection closed");
 		}
 	}
 
 	public Connection getConnection() {
+		LOGGER.info("Successfully getting connection");
 		return CONNECTION.get();
 	}
 
@@ -124,8 +133,10 @@ public enum DaoFactory {
 			try {
 				connection.commit();
 			} catch (SQLException e) {
+				LOGGER.error("Failure : commit");
 				throw new PersistenceException(e);
 			}
+			LOGGER.info("Successfully commit");
 		}
 	}
 
@@ -135,8 +146,10 @@ public enum DaoFactory {
 			try {
 				connection.rollback();
 			} catch (SQLException e) {
+				LOGGER.error("Failure : rollback");
 				throw new PersistenceException(e);
 			}
+			LOGGER.info("Successfully rollback");
 		}
 	}
 
