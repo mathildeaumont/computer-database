@@ -6,18 +6,18 @@ public class ComputerDto {
 	private String name;
 	private String introducedDate;
 	private String discontinuedDate;
-	private String company;
+	private CompanyDto company;
 	
 	public ComputerDto() {
-		
+		company = new CompanyDto();
 	}
 	
-	public ComputerDto(long id, String name, String introduced, String discontinued, String company) {
+	public ComputerDto(long id, String name, String introduced, String discontinued, CompanyDto company) {
 		this.id = id;
 		this.name = name;
 		this.introducedDate = introduced;
 		this.discontinuedDate = discontinued;
-		this.setCompany(company);
+		this.company = company;
 	}
 
 	public String getName() {
@@ -53,11 +53,11 @@ public class ComputerDto {
 	}
 
 
-	public String getCompany() {
+	public CompanyDto getCompany() {
 		return company;
 	}
 
-	public void setCompany(String company) {
+	public void setCompany(CompanyDto company) {
 		this.company = company;
 	}
 

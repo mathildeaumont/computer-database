@@ -45,9 +45,15 @@ public class ComputerDtoMapper {
 		
 		dto.setId(id);
 		dto.setName(name);
-		dto.setIntroducedDate(introduced.format(formatter));
-		dto.setDiscontinuedDate(discontinued.format(formatter));
-		dto.setCompany(company.getName());
+		if (introduced != null) {
+			dto.setIntroducedDate(introduced.format(formatter));
+		}
+		if (discontinued != null) {
+			dto.setDiscontinuedDate(discontinued.format(formatter));
+		}
+		CompanyMapperDto mapper = new CompanyMapperDto();
+		dto.setCompany(mapper.modelToDto(company));
+		//dto.setCompany(company.getName());
 		
 		return dto;
 	}
@@ -74,7 +80,9 @@ public class ComputerDtoMapper {
 			if (discontinued != null) {
 				dto.setDiscontinuedDate(discontinued.format(formatter));
 			}
-			dto.setCompany(company.getName());
+			CompanyMapperDto mapper = new CompanyMapperDto();
+			dto.setCompany(mapper.modelToDto(company));
+			//dto.setCompany(company.getName());
 			
 			dtos.add(dto);
 		}
