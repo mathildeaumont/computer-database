@@ -3,16 +3,24 @@ package com.excilys.service;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.excilys.model.CompanyModel;
 import com.excilys.persistence.CompanyDao;
 import com.excilys.persistence.DaoFactory;
 
+@Service
 public class CompanyServiceImpl implements CompanyService {
 
-	private CompanyDao companyDao;
+	@Autowired
+	CompanyDao companyDao;
 
+	@Autowired
+	DaoFactory daoFactory;
+	
 	public CompanyServiceImpl() {
-		companyDao = DaoFactory.INSTANCE.getCompanyDAO();
+		//companyDao = daoFactory.getCompanyDAO();
 	}
 
 	public List<CompanyModel> getAll() {
@@ -20,14 +28,14 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	public void delete(long companyId) {
-		DaoFactory.INSTANCE.startTransaction();
+		daoFactory.startTransaction();
 		try {
 			companyDao.deleteCompany(companyId);
-			DaoFactory.INSTANCE.commit();
+			daoFactory.commit();
 		} catch (SQLException e) {
-			DaoFactory.INSTANCE.rollback();
+			daoFactory.rollback();
 		}
-		DaoFactory.INSTANCE.endTransaction();
-		DaoFactory.INSTANCE.closeConnection();
+		daoFactory.endTransaction();
+		daoFactory.closeConnection();
 	}
 }

@@ -6,29 +6,48 @@ import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.mapper.CompanyMapperDto;
+import com.excilys.service.CompanyService;
 import com.excilys.service.CompanyServiceImpl;
 import com.excilys.service.ComputerService;
 import com.excilys.service.ComputerServiceImpl;
 import com.excilys.util.Regex;
 
 @SuppressWarnings("serial")
+@Controller
+@WebServlet("/add")
 public class AddComputer extends HttpServlet {
 
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(AddComputer.class);
 
+	@Autowired
+	ComputerService service;
+	
+	@Autowired
+	CompanyService companyService;
+	
+	@Override
+	public void init() throws ServletException {
+		super.init();
+		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+	}
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		req.setAttribute("companies", new CompanyServiceImpl().getAll());
+		req.setAttribute("companies", companyService.getAll());
 		getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(req, resp);
 	}
 
@@ -44,7 +63,7 @@ public class AddComputer extends HttpServlet {
 			name = name.trim();
 			if (name.isEmpty()) {
 				req.setAttribute("errorName", "Name is required");
-				req.setAttribute("companies", companyMapperDto.modelsToDtos(new CompanyServiceImpl().getAll()));
+				req.setAttribute("companies", companyMapperDto.modelsToDtos(companyService.getAll()));
 				nbErrors++;
 			} else {
 				req.setAttribute("name", name);
@@ -62,7 +81,7 @@ public class AddComputer extends HttpServlet {
 			if (!introduced.isEmpty()) {
 				if (!Pattern.matches(Regex.DATE_FORMAT.getRegex(), introduced.trim())) {
 					req.setAttribute("errorIntroduced", "Invalid format (yyyy-mm-dd hh:mm:ss)");
-					req.setAttribute("companies", companyMapperDto.modelsToDtos(new CompanyServiceImpl().getAll()));
+					req.setAttribute("companies", companyMapperDto.modelsToDtos(companyService.getAll()));
 					nbErrors++;
 				} else {
 					introducedDate = LocalDateTime.parse(introduced, formatter);
@@ -78,7 +97,7 @@ public class AddComputer extends HttpServlet {
 			if (!discontinued.isEmpty()) {
 				if (!Pattern.matches(Regex.DATE_FORMAT.getRegex(), discontinued.trim())) {
 					req.setAttribute("errorDiscontinued", "Invalid format (yyyy-mm-dd hh:mm:ss)");
-					req.setAttribute("companies", companyMapperDto.modelsToDtos(new CompanyServiceImpl().getAll()));
+					req.setAttribute("companies", companyMapperDto.modelsToDtos(companyService.getAll()));
 					nbErrors++;
 				} else {
 					discontinuedDate = LocalDateTime.parse(discontinued, formatter);
@@ -98,7 +117,7 @@ public class AddComputer extends HttpServlet {
 			return;
 		}
 
-		ComputerService service = new ComputerServiceImpl();
+		//ComputerService service = new ComputerServiceImpl();
 		service.create(name, introducedDate, discontinuedDate, companyId);
 
 		LOGGER.info("Successfully created computer");

@@ -13,6 +13,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.excilys.model.CompanyModelImpl;
 import com.excilys.model.ComputerModel;
 import com.excilys.model.ComputerModelImpl;
@@ -21,6 +23,9 @@ import com.excilys.util.DBUtil;
 @RunWith(MockitoJUnitRunner.class)
 public class ComputerDaoTest {
 
+	@Autowired
+	DaoFactory daoFactory;
+	
 	@BeforeClass
 	public static void setUpDB() {
 		System.setProperty("env", "TEST");
@@ -48,7 +53,7 @@ public class ComputerDaoTest {
 				2012, 5, 1, 0, 0, 0), null, company);
 		final ComputerModel computer2 = new ComputerModelImpl(2, "Computer2", null, null, company);
 		// WHEN
-		List<ComputerModel> computers = DaoFactory.INSTANCE.getComputerDAO().getAllComputers();
+		List<ComputerModel> computers = daoFactory.getComputerDAO().getAllComputers();
 		// THEN
 		Assertions.assertThat(computers).isNotNull();
 		Assertions.assertThat(computers).isNotEmpty();
@@ -63,7 +68,7 @@ public class ComputerDaoTest {
 		DBUtil.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
 				"src/test/java/com/excilys/persistence/data/getComputersEmpty.xml")));
 		// WHEN
-		List<ComputerModel> computers = DaoFactory.INSTANCE.getComputerDAO().getAllComputers();
+		List<ComputerModel> computers = daoFactory.getComputerDAO().getAllComputers();
 		// THEN
 		Assertions.assertThat(computers).isNotNull();
 		Assertions.assertThat(computers).isEmpty();
@@ -76,7 +81,7 @@ public class ComputerDaoTest {
 				"src/test/java/com/excilys/persistence/data/getComputers.xml")));
 		final int size = 2;
 		// WHEN
-		final int totalSize = DaoFactory.INSTANCE.getComputerDAO().getLength();
+		final int totalSize = daoFactory.getComputerDAO().getLength();
 		// THEN
 		Assertions.assertThat(totalSize).isEqualTo(size);
 	}
@@ -87,7 +92,7 @@ public class ComputerDaoTest {
 		DBUtil.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
 				"src/test/java/com/excilys/persistence/data/getComputersEmpty.xml")));
 		// WHEN
-		final int totalSize = DaoFactory.INSTANCE.getComputerDAO().getLength();
+		final int totalSize = daoFactory.getComputerDAO().getLength();
 		// THEN
 		Assertions.assertThat(totalSize).isZero();
 	}
@@ -103,7 +108,7 @@ public class ComputerDaoTest {
 		final int computerId = 1;
 		final ComputerModel computer = new ComputerModelImpl(computerId, name, introduced, null, company);
 		// WHEN
-		ComputerModel comp = DaoFactory.INSTANCE.getComputerDAO().getComputerDetails(computerId);
+		ComputerModel comp = daoFactory.getComputerDAO().getComputerDetails(computerId);
 		// THEN
 		Assertions.assertThat(comp).isEqualTo(computer);
 		Assertions.assertThat(comp.getId()).isEqualTo(1);
@@ -120,7 +125,7 @@ public class ComputerDaoTest {
 				"src/test/java/com/excilys/persistence/data/getComputers.xml")));
 		final int computerId = 3;
 		// WHEN
-		ComputerModel comp = DaoFactory.INSTANCE.getComputerDAO().getComputerDetails(computerId);
+		ComputerModel comp = daoFactory.getComputerDAO().getComputerDetails(computerId);
 		// THEN
 		Assertions.assertThat(comp).isNull();
 	}
@@ -137,8 +142,8 @@ public class ComputerDaoTest {
 		computer.setIntroducedDate(introduced);
 		final int nbComputers = 1;
 		// WHEN
-		DaoFactory.INSTANCE.getComputerDAO().createComputer(computer);
-		List<ComputerModel> computers = DaoFactory.INSTANCE.getComputerDAO().getAllComputers();
+		daoFactory.getComputerDAO().createComputer(computer);
+		List<ComputerModel> computers = daoFactory.getComputerDAO().getAllComputers();
 		// THEN
 		Assertions.assertThat(computers.size()).isEqualTo(nbComputers);
 	}
@@ -149,12 +154,12 @@ public class ComputerDaoTest {
 		DBUtil.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
 				"src/test/java/com/excilys/persistence/data/updateComputer.xml")));
 		final int computerId = 1;
-		ComputerModel computer = DaoFactory.INSTANCE.getComputerDAO().getComputerDetails(computerId);
+		ComputerModel computer = daoFactory.getComputerDAO().getComputerDetails(computerId);
 		final String name = "Test";
 		// WHEN
 		computer.setName(name);
-		DaoFactory.INSTANCE.getComputerDAO().updateComputer(computer);
-		computer = DaoFactory.INSTANCE.getComputerDAO().getComputerDetails(computerId);
+		daoFactory.getComputerDAO().updateComputer(computer);
+		computer = daoFactory.getComputerDAO().getComputerDetails(computerId);
 		// THEN
 		Assertions.assertThat(computer.getName()).isEqualTo(name);
 	}
@@ -165,9 +170,9 @@ public class ComputerDaoTest {
         DBUtil.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
         		"src/test/java/com/excilys/persistence/data/deleteComputer.xml")));
 		final int computerId = 1;
-        DaoFactory.INSTANCE.getComputerDAO().deleteComputer(computerId);
+		daoFactory.getComputerDAO().deleteComputer(computerId);
         // WHEN
-        final List<ComputerModel> computers = DaoFactory.INSTANCE.getComputerDAO().getAllComputers();
+        final List<ComputerModel> computers = daoFactory.getComputerDAO().getAllComputers();
         // THEN
         Assertions.assertThat(computers).isNotNull();
         Assertions.assertThat(computers).isEmpty();
@@ -180,9 +185,9 @@ public class ComputerDaoTest {
         		"src/test/java/com/excilys/persistence/data/deleteComputer.xml")));
 		final int computerId = 2;
 		final int computersNb = 1;
-        DaoFactory.INSTANCE.getComputerDAO().deleteComputer(computerId);
+		daoFactory.getComputerDAO().deleteComputer(computerId);
         // WHEN
-        final List<ComputerModel> computers = DaoFactory.INSTANCE.getComputerDAO().getAllComputers();
+        final List<ComputerModel> computers = daoFactory.getComputerDAO().getAllComputers();
         // THEN
         Assertions.assertThat(computers).isNotNull();
         Assertions.assertThat(computers.size()).isEqualTo(computersNb);

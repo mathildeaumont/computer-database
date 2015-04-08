@@ -12,6 +12,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.excilys.model.CompanyModel;
 import com.excilys.model.CompanyModelImpl;
@@ -21,6 +22,9 @@ import com.excilys.util.DBUtil;
 @RunWith(MockitoJUnitRunner.class)
 public class CompanyDaoTest {
 
+	@Autowired
+	DaoFactory daoFactory;
+	
 	@BeforeClass
 	public static void setUpDB() {
 		System.setProperty("env", "TEST");
@@ -45,7 +49,7 @@ public class CompanyDaoTest {
 		final CompanyModel company1 = new CompanyModelImpl(1, "Test");
 		final CompanyModel company2 = new CompanyModelImpl(2, "Test2");
 		// WHEN
-		List<CompanyModel> companies = DaoFactory.INSTANCE.getCompanyDAO().getAllCompanies();
+		List<CompanyModel> companies = daoFactory.getCompanyDAO().getAllCompanies();
 		// THEN
 		Assertions.assertThat(companies).isNotNull();
 		Assertions.assertThat(companies).isNotEmpty();
@@ -60,7 +64,7 @@ public class CompanyDaoTest {
 		DBUtil.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
 				"src/test/java/com/excilys/persistence/data/getCompaniesEmpty.xml")));
 		// WHEN
-		List<CompanyModel> companies = DaoFactory.INSTANCE.getCompanyDAO().getAllCompanies();
+		List<CompanyModel> companies = daoFactory.getCompanyDAO().getAllCompanies();
 		// THEN
 		Assertions.assertThat(companies).isNotNull();
 		Assertions.assertThat(companies).isEmpty();

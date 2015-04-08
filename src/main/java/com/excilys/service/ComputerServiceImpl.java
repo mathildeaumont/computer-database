@@ -3,6 +3,10 @@ package com.excilys.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.excilys.model.CompanyModel;
 import com.excilys.model.CompanyModelImpl;
 import com.excilys.model.ComputerModel;
@@ -11,12 +15,18 @@ import com.excilys.model.Page;
 import com.excilys.persistence.ComputerDao;
 import com.excilys.persistence.DaoFactory;
 
+@Service
 public class ComputerServiceImpl implements ComputerService {
 	
-	private ComputerDao computerDao;
+	@Autowired
+	DaoFactory daoFactory;
+	
+	@Autowired
+	ComputerDao computerDao;
 	
 	public ComputerServiceImpl() {
-		computerDao = DaoFactory.INSTANCE.getComputerDAO();
+		//computerDao = daoFactory.getComputerDAO();
+		System.out.println("computerserviceimpl");
 	}
 
 	public int getLength() {

@@ -4,25 +4,30 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import javax.sql.DataSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import com.excilys.controller.EditComputer;
 import com.excilys.exception.PersistenceException;
 import com.jolbox.bonecp.BoneCP;
 import com.jolbox.bonecp.BoneCPConfig;
 
+@Component
+public class DaoFactory {
 
-public enum DaoFactory {
+	//INSTANCE;
 
-	INSTANCE;
-	
 	private static final Logger LOGGER = LoggerFactory.getLogger(DaoFactory.class);
 
-	private static final ThreadLocal<Connection> CONNECTION = new ThreadLocal<Connection>() {
+	private static final ThreadLocal<Connection> CONNECTION = new ThreadLocal<Connection>();/* {
 		@Override
 		protected Connection initialValue() {
 			try {
@@ -31,13 +36,21 @@ public enum DaoFactory {
 				throw new PersistenceException(e);
 			}
 		}
-	};
-	private CompanyDao companyDao;
-	private ComputerDao computerDao;
-	private final Properties properties = new Properties();
-	private BoneCP connectionPool = null;
+	};*/
 
-	private DaoFactory() {
+	@Autowired
+	private DataSource dataSource;
+
+	@Autowired
+	CompanyDao companyDao;
+
+	@Autowired
+	ComputerDao computerDao;
+	
+	private final Properties properties = new Properties();
+	//private BoneCP connectionPool = null;
+
+	public DaoFactory() {
 		String config = null;
 		if ("TEST".equals(System.getProperty("env"))) {
 			try {
@@ -48,15 +61,23 @@ public enum DaoFactory {
 			}
 		} else {
 			try {
-				Class.forName("com.mysql.jdbc.Driver");
-				config = "config.properties";
-			} catch (ClassNotFoundException e) {
-				System.out.println(e.getMessage());
+				Driver monDriver = new com.mysql.jdbc.Driver();
+				DriverManager.registerDriver(monDriver);
+			} catch (SQLException e2) {
+				//LOGGER.error(e2.getMessage());
+				System.err.println(e2.getMessage());
+			}
+			try {
+				Class.forName("com.mysql.jdbc.Driver").newInstance();
+				//config = "config.properties";
+			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 		companyDao = new CompanyDaoImpl();
 		computerDao = new ComputerDaoImpl();
-		try {
+		/*try {
 			InputStream inputStream = DaoFactory.class.getClassLoader().getResourceAsStream(config);
 			properties.load(inputStream);
 			BoneCPConfig boneCPConfig = new BoneCPConfig();
@@ -79,7 +100,7 @@ public enum DaoFactory {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 	}
 
 	public void closeConnection() {
@@ -97,13 +118,24 @@ public enum DaoFactory {
 	}
 
 	public Connection getConnection() {
-		LOGGER.info("Successfully getting connection");
-		return CONNECTION.get();
+		/*LOGGER.info("Successfully getting connection");
+		return CONNECTION.get();*/
+		try {
+			if (CONNECTION.get() == null
+					|| CONNECTION.get().isClosed()) {
+				CONNECTION.set(dataSource.getConnection());
+				return CONNECTION.get();
+			} else
+				return CONNECTION.get();
+		} catch (SQLException e) {
+			LOGGER.error(e.getMessage());
+			throw new RuntimeException(e.getMessage());
+		}
 	}
 
-	public BoneCP getConnectionPool() {
+	/*public BoneCP getConnectionPool() {
 		return connectionPool;
-	}
+	}*/
 
 	public void startTransaction() {
 		final Connection connection = CONNECTION.get();
@@ -159,5 +191,13 @@ public enum DaoFactory {
 
 	public ComputerDao getComputerDAO() {
 		return computerDao;
+	}
+
+	public DataSource getDataSource() {
+		return dataSource;
+	}
+
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
 	}
 }

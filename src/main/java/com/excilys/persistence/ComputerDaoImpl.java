@@ -10,20 +10,26 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import com.excilys.mapper.ComputerMapper;
 import com.excilys.model.ComputerModel;
 import com.excilys.model.ComputerModelImpl;
 import com.excilys.model.Page;
 
-
+@Repository
 public class ComputerDaoImpl implements ComputerDao {
+	
+	@Autowired
+	DaoFactory daoFactory;
 	
 	public int getLength() {
 		int i = 0;
 		ResultSet resultat = null;
 		Connection connection = null;
 		try {
-			connection = DaoFactory.INSTANCE.getConnection();
+			connection = daoFactory.getConnection();
 			Statement statement = (Statement) connection.createStatement();
 			resultat = statement.executeQuery("SELECT COUNT(*) as Total FROM computer");
 			resultat.next();
@@ -33,8 +39,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			DaoFactory.INSTANCE.closeConnection();
-			
+			daoFactory.closeConnection();
 		}
 		return i;
 	}
@@ -44,7 +49,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		ResultSet resultat = null;
 		Connection connection = null;
 		try {
-			connection = DaoFactory.INSTANCE.getConnection();
+			connection = daoFactory.getConnection();
 			Statement statement = (Statement) connection.createStatement();
 			resultat = statement.executeQuery("SELECT * FROM computer as compu left "
 					+ "outer join company as compa ON compu.company_id = compa.id ORDER by compu.id;");
@@ -58,7 +63,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			DaoFactory.INSTANCE.closeConnection();
+			daoFactory.closeConnection();
 		}
 		return listComputers;
 	}
@@ -68,7 +73,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		ResultSet result = null;
 		Connection connection = null;
 		try {
-			connection = DaoFactory.INSTANCE.getConnection();
+			connection = daoFactory.getConnection();
 			PreparedStatement preparedStatement = null;
 			preparedStatement = (PreparedStatement) connection.prepareStatement("SELECT * FROM computer as compu left "
 					+ "outer join company as company ON compu.company_id = company.id WHERE compu.name LIKE '%" + search + "%' OR company.name LIKE '%" + search + "%' ORDER BY " + order + " " + direction + " LIMIT ? OFFSET ?;");
@@ -86,7 +91,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			DaoFactory.INSTANCE.closeConnection();
+			daoFactory.closeConnection();
 		}
 		return listComputers;
 	}
@@ -96,7 +101,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		ResultSet resultat = null;
 		Connection connection = null;
 		try {
-			connection = DaoFactory.INSTANCE.getConnection();
+			connection = daoFactory.getConnection();
 			PreparedStatement preparedStatement = null;
 			preparedStatement = (PreparedStatement) connection.prepareStatement("SELECT COUNT(*) as Total FROM computer as compu left "
 					+ "outer join company as compa ON compu.company_id = compa.id WHERE compu.name LIKE '%" + search + "%' OR compa.name LIKE '%" + search + "%' ;");
@@ -108,7 +113,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			DaoFactory.INSTANCE.closeConnection();
+			daoFactory.closeConnection();
 		}
 		return i;
 	}
@@ -118,7 +123,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		ResultSet resultat = null;
 		Connection connection = null;
 		try {
-			connection = DaoFactory.INSTANCE.getConnection();
+			connection = daoFactory.getConnection();
 			PreparedStatement preparedStatement = null;
 			preparedStatement = (PreparedStatement) connection.prepareStatement("SELECT * FROM computer as compu left "
 					+ "outer join company as company ON compu.company_id = company.id WHERE compu.id = ? ORDER by compu.id;");
@@ -134,7 +139,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		} catch (SQLException e) {
 			System.err.println("This computer doesn\'t exist.");
 		} finally {
-			DaoFactory.INSTANCE.closeConnection();
+			daoFactory.closeConnection();
 		}
 		return model;
 	}
@@ -142,7 +147,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	public void createComputer(ComputerModel computer) {
 		Connection connection = null;
 		try {
-			connection = DaoFactory.INSTANCE.getConnection();
+			connection = daoFactory.getConnection();
 			PreparedStatement preparedStatement = null;
 			int i = 1;
 			String name = computer.getName();
@@ -173,14 +178,14 @@ public class ComputerDaoImpl implements ComputerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			DaoFactory.INSTANCE.closeConnection();
+			daoFactory.closeConnection();
 		}
 	}
 
 	public void updateComputer(ComputerModel computer) {
 		Connection connection = null;
 		try {
-			connection = DaoFactory.INSTANCE.getConnection();
+			connection = daoFactory.getConnection();
 			PreparedStatement preparedStatement = null;
 			preparedStatement = (PreparedStatement) connection.prepareStatement("SELECT * FROM computer WHERE id = ?;");
 			int i = 1;
@@ -229,14 +234,14 @@ public class ComputerDaoImpl implements ComputerDao {
 		} catch (SQLException e) {
 			System.err.println("Invalid request");
 		} finally {
-			DaoFactory.INSTANCE.closeConnection();
+			daoFactory.closeConnection();
 		}
 	}
 
 	public void deleteComputer(long computerId) {
 		Connection connection = null;
 		try {
-			connection = DaoFactory.INSTANCE.getConnection();
+			connection = daoFactory.getConnection();
 			PreparedStatement preparedStatement = null;
 			int i = 1;
 			preparedStatement = (PreparedStatement) connection.prepareStatement("DELETE FROM computer WHERE id = ?;");
@@ -246,7 +251,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			DaoFactory.INSTANCE.closeConnection();
+			daoFactory.closeConnection();
 		}
 	}
 	
