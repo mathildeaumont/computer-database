@@ -2,7 +2,6 @@ package com.excilys.controller;
 import com.excilys.mapper.ComputerDtoMapper;
 import com.excilys.model.ComputerModel;
 import com.excilys.model.Page;
-import com.excilys.service.ComputerService;
 import com.excilys.service.ComputerServiceImpl;
 
 import javax.servlet.ServletException;
@@ -69,12 +68,8 @@ public class Dashboard extends HttpServlet {
 		request.setAttribute("computersNb", currentPage.getNbResultTotal());
 		request.setAttribute("page", currentPage);
 		request.setAttribute("order", order);
-		//request.setAttribute("computers", computers);
 		request.setAttribute("direction", direction);
 		request.setAttribute("search", search);
-
-
-
 
 		getServletContext().getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(request, response);
 	}

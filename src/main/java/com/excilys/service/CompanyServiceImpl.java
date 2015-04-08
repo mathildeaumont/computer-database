@@ -20,7 +20,7 @@ public class CompanyServiceImpl implements CompanyService {
 	DaoFactory daoFactory;
 	
 	public CompanyServiceImpl() {
-		//companyDao = daoFactory.getCompanyDAO();
+
 	}
 
 	public List<CompanyModel> getAll() {

@@ -15,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.service.ComputerService;
-import com.excilys.service.ComputerServiceImpl;
 
 @SuppressWarnings("serial")
 @Controller

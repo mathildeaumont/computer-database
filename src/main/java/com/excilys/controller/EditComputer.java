@@ -17,13 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import com.excilys.dto.ComputerDto;
 import com.excilys.mapper.ComputerDtoMapper;
 import com.excilys.model.ComputerModel;
 import com.excilys.service.CompanyService;
 import com.excilys.service.CompanyServiceImpl;
 import com.excilys.service.ComputerService;
-import com.excilys.service.ComputerServiceImpl;
 import com.excilys.util.Regex;
 
 @SuppressWarnings("serial")
@@ -113,7 +111,6 @@ public class EditComputer extends HttpServlet {
 	
 		long companyId = Long.parseLong(req.getParameter("companyId"));
 		
-		//ComputerService service = new ComputerServiceImpl();
 		service.update(computerId, name, introducedDate, discontinuedDate, companyId);
 		LOGGER.info("Successfully updated computer");
 		resp.sendRedirect("dashboard");

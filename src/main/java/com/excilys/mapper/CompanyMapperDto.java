@@ -25,7 +25,6 @@ public class CompanyMapperDto {
 	
 	public List<CompanyDto> modelsToDtos(List<CompanyModel> models) {
 		List<CompanyDto> dtos = new ArrayList<CompanyDto>();
-		
 		for (CompanyModel model : models) {
 			CompanyDto dto = modelToDto(model);
 			dtos.add(dto);

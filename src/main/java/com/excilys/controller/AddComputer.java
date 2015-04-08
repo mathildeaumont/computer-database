@@ -19,9 +19,7 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.mapper.CompanyMapperDto;
 import com.excilys.service.CompanyService;
-import com.excilys.service.CompanyServiceImpl;
 import com.excilys.service.ComputerService;
-import com.excilys.service.ComputerServiceImpl;
 import com.excilys.util.Regex;
 
 @SuppressWarnings("serial")
@@ -117,7 +115,6 @@ public class AddComputer extends HttpServlet {
 			return;
 		}
 
-		//ComputerService service = new ComputerServiceImpl();
 		service.create(name, introducedDate, discontinuedDate, companyId);
 
 		LOGGER.info("Successfully created computer");

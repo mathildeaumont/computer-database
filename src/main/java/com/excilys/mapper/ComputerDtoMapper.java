@@ -53,8 +53,7 @@ public class ComputerDtoMapper {
 		}
 		CompanyMapperDto mapper = new CompanyMapperDto();
 		dto.setCompany(mapper.modelToDto(company));
-		//dto.setCompany(company.getName());
-		
+
 		return dto;
 	}
 	
@@ -82,8 +81,7 @@ public class ComputerDtoMapper {
 			}
 			CompanyMapperDto mapper = new CompanyMapperDto();
 			dto.setCompany(mapper.modelToDto(company));
-			//dto.setCompany(company.getName());
-			
+
 			dtos.add(dto);
 		}
 		return dtos;
