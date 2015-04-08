@@ -26,7 +26,6 @@ public class ComputerServiceImpl implements ComputerService {
 	
 	public ComputerServiceImpl() {
 		//computerDao = daoFactory.getComputerDAO();
-		System.out.println("computerserviceimpl");
 	}
 
 	public int getLength() {

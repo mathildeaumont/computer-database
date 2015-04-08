@@ -47,8 +47,6 @@ public class Dashboard extends HttpServlet {
 			nbResults = Integer.valueOf(request.getParameter("nbResults"));
 		}
 
-		//ComputerService service = new ComputerServiceImpl();
-
 		String order = request.getParameter("order");
 		if (order == null || order.isEmpty()) {
 			order = "compu.id";
@@ -64,7 +62,6 @@ public class Dashboard extends HttpServlet {
 			search = "";
 		}
 
-		System.out.println(service);
 		Page<ComputerModel> currentPage = service.page(page, nbResults, search);
 		List<ComputerModel> computers = service.getAllByPage(currentPage, order, direction, search);
 

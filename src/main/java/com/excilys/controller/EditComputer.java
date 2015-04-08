@@ -47,7 +47,7 @@ public class EditComputer extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		long id = Long.parseLong(req.getParameter("id"));
-		req.setAttribute("companies", service.getAll());
+		req.setAttribute("companies", companyService.getAll());
 		ComputerModel computer = service.getById(id);
 		req.setAttribute("computer", computer);
 		getServletContext().getRequestDispatcher("/WEB-INF/views/editComputer.jsp").forward(req, resp);
