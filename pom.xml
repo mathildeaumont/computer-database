@@ -74,6 +74,13 @@
 			<artifactId>dbunit</artifactId>
 			<version>${dbunit.version}</version>
 			<scope>test</scope>
+			
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
