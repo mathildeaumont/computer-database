@@ -35,11 +35,9 @@ public class DaoFactory {
 
 
 	public DaoFactory() {
-		String config = null;
 		if ("TEST".equals(System.getProperty("env"))) {
 			try {
 				Class.forName("org.h2.Driver");
-				config = "config-test.properties";
 			} catch (ClassNotFoundException e) {
 				System.out.println(e.getMessage());
 			}
