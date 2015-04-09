@@ -26,8 +26,7 @@ public class CompanyDaoImpl implements CompanyDao {
 		return jdbcTemplate.query("SELECT * FROM company;", companyMapper);
 	}
 
-	@Transactional
 	public void deleteCompany(long companyId) {
-		jdbcTemplate.update("DELETE FROM computer WHERE company_id = ?;", companyId);
+		jdbcTemplate.update("DELETE FROM company WHERE company_id = ?;", companyId);
 	}
 }

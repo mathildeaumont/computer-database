@@ -90,6 +90,9 @@ public class ComputerDaoImpl implements ComputerDao {
 		jdbcTemplate.update("DELETE FROM computer WHERE id = ?;", computerId);
 	}
 	
+	public void deleteComputerByCompanyId(long companyId) {
+		String query = "DELETE FROM computer WHERE company = ?;";
+		jdbcTemplate.update(query, companyId);
+	}
 
-	
 }

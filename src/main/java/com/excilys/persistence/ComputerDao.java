@@ -22,4 +22,6 @@ public interface ComputerDao {
 	public void updateComputer(ComputerModel computer);
 	
 	public void deleteComputer(long id);
+	
+	public void deleteComputerByCompanyId(long companyId);
 }
