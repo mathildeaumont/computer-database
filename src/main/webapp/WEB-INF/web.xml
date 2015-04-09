@@ -13,36 +13,4 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
-	<!--<servlet>
-		<servlet-name>Dashboard</servlet-name>
-		<servlet-class>com.excilys.controller.Dashboard</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Dashboard</servlet-name>
-		<url-pattern>/dashboard</url-pattern>
-	</servlet-mapping>
-	<servlet>
-		<servlet-name>AddComputer</servlet-name>
-		<servlet-class>com.excilys.controller.AddComputer</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>AddComputer</servlet-name>
-		<url-pattern>/add</url-pattern>
-	</servlet-mapping>
-	<servlet>
-		<servlet-name>EditComputer</servlet-name>
-		<servlet-class>com.excilys.controller.EditComputer</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>EditComputer</servlet-name>
-		<url-pattern>/edit</url-pattern>
-	</servlet-mapping>
-	<servlet>
-		<servlet-name>DeleteComputer</servlet-name>
-		<servlet-class>com.excilys.controller.DeleteComputer</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>DeleteComputer</servlet-name>
-		<url-pattern>/delete</url-pattern>
-	</servlet-mapping>-->
 </web-app>
