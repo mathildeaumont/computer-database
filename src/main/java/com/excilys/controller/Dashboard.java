@@ -2,7 +2,7 @@ package com.excilys.controller;
 import com.excilys.mapper.ComputerDtoMapper;
 import com.excilys.model.ComputerModel;
 import com.excilys.model.Page;
-import com.excilys.service.ComputerServiceImpl;
+import com.excilys.service.ComputerService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,7 +23,7 @@ import java.util.List;
 public class Dashboard extends HttpServlet {
 
 	@Autowired 
-	ComputerServiceImpl service;
+	ComputerService service;
 
 	@Override
 	public void init() throws ServletException {
