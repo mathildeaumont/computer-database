@@ -26,7 +26,7 @@ public class InterfaceTest {
 		webDriver.get("http://localhost:8080/computer-database/dashboard");
 	}
 	
-	/*@Test
+	@Test
 	public void addComputerShouldShowAnErrorMessageWhenTheNameIsNotPresent() {
 		//GIVEN
 		//WHEN
@@ -67,6 +67,6 @@ public class InterfaceTest {
 		String errorMessage = webDriver.findElement(By.id("errorDiscontinued")).getText();
 		//THEN
 		Assertions.assertThat(errorMessage).isEqualTo("Invalid format (yyyy-mm-dd hh:mm:ss)");
-	}*/
+	}
 
 }
