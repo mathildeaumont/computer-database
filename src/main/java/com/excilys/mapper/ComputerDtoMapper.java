@@ -5,6 +5,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.dto.ComputerDto;
 import com.excilys.model.CompanyModelImpl;
 import com.excilys.model.ComputerModel;
@@ -12,7 +15,13 @@ import com.excilys.model.ComputerModelImpl;
 
 public class ComputerDtoMapper {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDtoMapper.class);
+	
 	public ComputerModel dtoToModel(ComputerDto dto) {
+		if (dto == null) {
+			LOGGER.error("Mapper failed : dto null");
+			throw new IllegalArgumentException();
+		}
 		ComputerModel model = new ComputerModelImpl();
 		
 		long id = dto.getId();
@@ -29,10 +38,15 @@ public class ComputerDtoMapper {
 		model.setIntroducedDate(introducedDate);
 		model.setDiscontinuedDate(discontinuedDate);
 
+		LOGGER.info("Mapper succeed");
 		return model;
 	}
 	
 	public ComputerDto modelToDto(ComputerModel model) {
+		if (model == null) {
+			LOGGER.error("Mapper failed : model null");
+			throw new IllegalArgumentException();
+		}
 		ComputerDto dto = new ComputerDto();
 		
 		long id = model.getId();
@@ -54,6 +68,7 @@ public class ComputerDtoMapper {
 		CompanyMapperDto mapper = new CompanyMapperDto();
 		dto.setCompany(mapper.modelToDto(company));
 
+		LOGGER.info("Mapper succeed");
 		return dto;
 	}
 	
