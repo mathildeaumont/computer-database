@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.mapper.CompanyMapper;
 import com.excilys.model.CompanyModel;
@@ -43,20 +44,31 @@ public class CompanyDaoImpl implements CompanyDao {
 		return listCompanies;
 	}
 
-	public void deleteCompany(long companyId) throws SQLException {
+	@Transactional
+	public void deleteCompany(long companyId) {
 		Connection connection = null;
 		connection = daoFactory.getConnection();
 		PreparedStatement preparedStatement = null;
-		preparedStatement = (PreparedStatement) connection.prepareStatement("DELETE FROM computer WHERE company_id = ?;");
 		int i = 1;
-		preparedStatement.setLong(i++, companyId);
-		preparedStatement.execute();
-		preparedStatement.close();
+		try {
+			preparedStatement = (PreparedStatement) connection.prepareStatement("DELETE FROM computer WHERE company_id = ?;");
+			preparedStatement.setLong(i++, companyId);
+			preparedStatement.execute();
+			preparedStatement.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		i = 1;
 		PreparedStatement preparedStatement2 = null;
-		preparedStatement2 = (PreparedStatement) connection.prepareStatement("DELETE FROM company WHERE id = ?;");
-		preparedStatement2.setLong(i++, companyId);
-		preparedStatement2.execute();
-		preparedStatement2.close();	
+		try {
+			preparedStatement2 = (PreparedStatement) connection.prepareStatement("DELETE FROM company WHERE id = ?;");
+			preparedStatement2.setLong(i++, companyId);
+			preparedStatement2.execute();
+			preparedStatement2.close();	
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

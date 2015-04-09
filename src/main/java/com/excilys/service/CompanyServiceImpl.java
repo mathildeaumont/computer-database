@@ -1,6 +1,5 @@
 package com.excilys.service;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +27,6 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	public void delete(long companyId) {
-		daoFactory.startTransaction();
-		try {
-			companyDao.deleteCompany(companyId);
-			daoFactory.commit();
-		} catch (SQLException e) {
-			daoFactory.rollback();
-		}
-		daoFactory.endTransaction();
-		daoFactory.closeConnection();
+		companyDao.deleteCompany(companyId);
 	}
 }
