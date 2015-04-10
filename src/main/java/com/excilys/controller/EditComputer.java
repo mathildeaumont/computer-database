@@ -49,7 +49,7 @@ public class EditComputer extends HttpServlet {
 		long id = Long.parseLong(req.getParameter("id"));
 		req.setAttribute("companies", companyService.getAll());
 		ComputerModel computer = service.getById(id);
-		req.setAttribute("computer", new ComputerDtoMapper().modelToDto(computer));
+		req.setAttribute("computer", ComputerDtoMapper.modelToDto(computer));
 		getServletContext().getRequestDispatcher("/WEB-INF/views/editComputer.jsp").forward(req, resp);
 	}
 	

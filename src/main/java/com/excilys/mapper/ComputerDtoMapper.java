@@ -17,7 +17,7 @@ public class ComputerDtoMapper {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDtoMapper.class);
 	
-	public ComputerModel dtoToModel(ComputerDto dto) {
+	public static ComputerModel dtoToModel(ComputerDto dto) {
 		if (dto == null) {
 			LOGGER.error("Mapper failed : dto null");
 			throw new IllegalArgumentException();
@@ -42,7 +42,7 @@ public class ComputerDtoMapper {
 		return model;
 	}
 	
-	public ComputerDto modelToDto(ComputerModel model) {
+	public static ComputerDto modelToDto(ComputerModel model) {
 		if (model == null) {
 			LOGGER.error("Mapper failed : model null");
 			throw new IllegalArgumentException();
@@ -65,14 +65,13 @@ public class ComputerDtoMapper {
 		if (discontinued != null) {
 			dto.setDiscontinuedDate(discontinued.format(formatter));
 		}
-		CompanyMapperDto mapper = new CompanyMapperDto();
-		dto.setCompany(mapper.modelToDto(company));
+		dto.setCompany(CompanyMapperDto.modelToDto(company));
 
 		LOGGER.info("Mapper succeed");
 		return dto;
 	}
 	
-	public List<ComputerDto> modelsToDtos(List<ComputerModel> models) {
+	public static List<ComputerDto> modelsToDtos(List<ComputerModel> models) {
 		List<ComputerDto> dtos = new ArrayList<ComputerDto>();
 		
 		for (ComputerModel model : models) {
@@ -94,8 +93,7 @@ public class ComputerDtoMapper {
 			if (discontinued != null) {
 				dto.setDiscontinuedDate(discontinued.format(formatter));
 			}
-			CompanyMapperDto mapper = new CompanyMapperDto();
-			dto.setCompany(mapper.modelToDto(company));
+			dto.setCompany(CompanyMapperDto.modelToDto(company));
 
 			dtos.add(dto);
 		}

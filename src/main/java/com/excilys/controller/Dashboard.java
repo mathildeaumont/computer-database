@@ -35,8 +35,6 @@ public class Dashboard extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		ComputerDtoMapper computerDtoMapper = new ComputerDtoMapper();
-
 		int page = 1;
 		if (request.getParameter("offset") != null) {
 			page = Integer.valueOf(request.getParameter("offset"));
@@ -64,7 +62,7 @@ public class Dashboard extends HttpServlet {
 		Page<ComputerModel> currentPage = service.page(page, nbResults, search);
 		List<ComputerModel> computers = service.getAllByPage(currentPage, order, direction, search);
 
-		request.setAttribute("computers", computerDtoMapper.modelsToDtos(computers));
+		request.setAttribute("computers", ComputerDtoMapper.modelsToDtos(computers));
 		request.setAttribute("computersNb", currentPage.getNbResultTotal());
 		request.setAttribute("page", currentPage);
 		request.setAttribute("order", order);

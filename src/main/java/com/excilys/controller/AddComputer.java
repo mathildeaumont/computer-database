@@ -54,14 +54,13 @@ public class AddComputer extends HttpServlet {
 			throws ServletException, IOException {
 
 		int nbErrors = 0;
-		CompanyMapperDto companyMapperDto = new CompanyMapperDto();
 
 		String name = req.getParameter("name");
 		if (name != null) {
 			name = name.trim();
 			if (name.isEmpty()) {
 				req.setAttribute("errorName", "Name is required");
-				req.setAttribute("companies", companyMapperDto.modelsToDtos(companyService.getAll()));
+				req.setAttribute("companies", CompanyMapperDto.modelsToDtos(companyService.getAll()));
 				nbErrors++;
 			} else {
 				req.setAttribute("name", name);
@@ -79,7 +78,7 @@ public class AddComputer extends HttpServlet {
 			if (!introduced.isEmpty()) {
 				if (!Pattern.matches(Regex.DATE_FORMAT.getRegex(), introduced.trim())) {
 					req.setAttribute("errorIntroduced", "Invalid format (yyyy-mm-dd hh:mm:ss)");
-					req.setAttribute("companies", companyMapperDto.modelsToDtos(companyService.getAll()));
+					req.setAttribute("companies", CompanyMapperDto.modelsToDtos(companyService.getAll()));
 					nbErrors++;
 				} else {
 					introducedDate = LocalDateTime.parse(introduced, formatter);
@@ -95,7 +94,7 @@ public class AddComputer extends HttpServlet {
 			if (!discontinued.isEmpty()) {
 				if (!Pattern.matches(Regex.DATE_FORMAT.getRegex(), discontinued.trim())) {
 					req.setAttribute("errorDiscontinued", "Invalid format (yyyy-mm-dd hh:mm:ss)");
-					req.setAttribute("companies", companyMapperDto.modelsToDtos(companyService.getAll()));
+					req.setAttribute("companies", CompanyMapperDto.modelsToDtos(companyService.getAll()));
 					nbErrors++;
 				} else {
 					discontinuedDate = LocalDateTime.parse(discontinued, formatter);

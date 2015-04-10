@@ -14,7 +14,7 @@ public class CompanyMapperDto {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(CompanyMapperDto.class);
 
-	public CompanyModel dtoToModel(CompanyDto dto) {
+	public static CompanyModel dtoToModel(CompanyDto dto) {
 		if (dto == null) {
 			LOGGER.error("Mapper failed : dto null");
 			throw new IllegalArgumentException();
@@ -26,7 +26,7 @@ public class CompanyMapperDto {
 		return model;
 	}
 	
-	public CompanyDto modelToDto(CompanyModel model) {
+	public static CompanyDto modelToDto(CompanyModel model) {
 		if (model == null) {
 			LOGGER.error("Mapper failed : model null");
 			throw new IllegalArgumentException();
@@ -38,7 +38,7 @@ public class CompanyMapperDto {
 		return dto;
 	}
 	
-	public List<CompanyDto> modelsToDtos(List<CompanyModel> models) {
+	public static List<CompanyDto> modelsToDtos(List<CompanyModel> models) {
 		List<CompanyDto> dtos = new ArrayList<CompanyDto>();
 		for (CompanyModel model : models) {
 			CompanyDto dto = modelToDto(model);
