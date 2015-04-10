@@ -3,6 +3,7 @@ package com.excilys.controller;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
@@ -14,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
@@ -46,6 +49,10 @@ public class AddComputer extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		req.setAttribute("companies", companyService.getAll());
+		ApplicationContext context = new ClassPathXmlApplicationContext("i18n/messageContext.xml");
+		String englishTitle = context.getMessage("add.computer",null, Locale.ENGLISH);
+		String frenchTitle = context.getMessage("add.computer",null, Locale.FRENCH);
+
 		getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(req, resp);
 	}
 
