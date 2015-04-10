@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
 
 import com.excilys.model.CompanyModel;
 import com.excilys.model.CompanyModelImpl;
@@ -20,6 +21,7 @@ import com.excilys.util.DBUtil;
 
 
 @RunWith(MockitoJUnitRunner.class)
+@ContextConfiguration(locations = "file:src/main/webapp/WEB-INF/application-context-test.xml")
 public class CompanyDaoTest {
 
 	@Autowired
