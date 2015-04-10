@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import com.excilys.mapper.ComputerDtoMapper;
+import com.excilys.mapper.ComputerMapperDto;
 import com.excilys.model.ComputerModel;
 import com.excilys.service.CompanyService;
 import com.excilys.service.CompanyServiceImpl;
@@ -49,7 +49,7 @@ public class EditComputer extends HttpServlet {
 		long id = Long.parseLong(req.getParameter("id"));
 		req.setAttribute("companies", companyService.getAll());
 		ComputerModel computer = service.getById(id);
-		req.setAttribute("computer", ComputerDtoMapper.modelToDto(computer));
+		req.setAttribute("computer", ComputerMapperDto.modelToDto(computer));
 		getServletContext().getRequestDispatcher("/WEB-INF/views/editComputer.jsp").forward(req, resp);
 	}
 	

@@ -1,5 +1,5 @@
 package com.excilys.controller;
-import com.excilys.mapper.ComputerDtoMapper;
+import com.excilys.mapper.ComputerMapperDto;
 import com.excilys.model.ComputerModel;
 import com.excilys.model.Page;
 import com.excilys.service.ComputerService;
@@ -62,7 +62,7 @@ public class Dashboard extends HttpServlet {
 		Page<ComputerModel> currentPage = service.page(page, nbResults, search);
 		List<ComputerModel> computers = service.getAllByPage(currentPage, order, direction, search);
 
-		request.setAttribute("computers", ComputerDtoMapper.modelsToDtos(computers));
+		request.setAttribute("computers", ComputerMapperDto.modelsToDtos(computers));
 		request.setAttribute("computersNb", currentPage.getNbResultTotal());
 		request.setAttribute("page", currentPage);
 		request.setAttribute("order", order);

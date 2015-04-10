@@ -13,9 +13,9 @@ import com.excilys.model.CompanyModelImpl;
 import com.excilys.model.ComputerModel;
 import com.excilys.model.ComputerModelImpl;
 
-public class ComputerDtoMapper {
+public class ComputerMapperDto {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDtoMapper.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerMapperDto.class);
 	
 	public static ComputerModel dtoToModel(ComputerDto dto) {
 		if (dto == null) {
