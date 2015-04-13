@@ -179,9 +179,9 @@
     <footer class="navbar-fixed-bottom">
 		<mylib:pagination current="${page.currentPage}" nbResults="${page.nbResults}" />
     </footer>
-<script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/dashboard.js"></script>
-
+	
+	<script src="<c:url value="/resources/js/jquery.min.js" />"></script>
+	<script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
+	<script src="<c:url value="/resources/js/dashboard.js" />"></script>
 </body>
 </html>

@@ -4,71 +4,64 @@ import com.excilys.model.ComputerModel;
 import com.excilys.model.Page;
 import com.excilys.service.ComputerService;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
-@SuppressWarnings("serial")
 @Controller
-@WebServlet("/dashboard")
-public class Dashboard extends HttpServlet {
+@RequestMapping("/dashboard")
+public class Dashboard {
 
 	@Autowired 
 	ComputerService service;
 
-	@Override
-	public void init() throws ServletException {
-		super.init();
-		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
-	}
-
-	@Override
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	@RequestMapping(method = RequestMethod.GET)
+	public String doGet(@RequestParam("offset") Optional<Integer> offset, 
+						@RequestParam("nbResults") Optional<Integer> nbResults,
+						@RequestParam("order") Optional<String> order,
+						@RequestParam("direction") Optional<String> direction,
+						@RequestParam("search") Optional<String> search, Model model) {
 
 		int page = 1;
-		if (request.getParameter("offset") != null) {
-			page = Integer.valueOf(request.getParameter("offset"));
+		if (offset.isPresent()) {
+			page = offset.get();
 		}
-		int nbResults = 10;
-		if (request.getParameter("nbResults") != null) {
-			nbResults = Integer.valueOf(request.getParameter("nbResults"));
-		}
-
-		String order = request.getParameter("order");
-		if (order == null || order.isEmpty()) {
-			order = "compu.id";
+		int nbResultsParam = 10;
+		if (nbResults.isPresent()) {
+			nbResultsParam = nbResults.get();
 		}
 
-		String direction = request.getParameter("direction");
-		if (direction == null || direction.isEmpty()) {
-			direction = "asc";
+		String orderParam = "compu.id";
+		if (order.isPresent()) {
+			orderParam = order.get();
 		}
 
-		String search = request.getParameter("search");
-		if (search == null || search.isEmpty()) {
-			search = "";
+		String directionParam = "asc";
+		if (direction.isPresent()) {
+			directionParam = direction.get();
 		}
 
-		Page<ComputerModel> currentPage = service.page(page, nbResults, search);
-		List<ComputerModel> computers = service.getAllByPage(currentPage, order, direction, search);
+		String searchParam = "";
+		if (search.isPresent()) {
+			searchParam = search.get();
+		}
 
-		request.setAttribute("computers", ComputerMapperDto.modelsToDtos(computers));
-		request.setAttribute("computersNb", currentPage.getNbResultTotal());
-		request.setAttribute("page", currentPage);
-		request.setAttribute("order", order);
-		request.setAttribute("direction", direction);
-		request.setAttribute("search", search);
+		Page<ComputerModel> currentPage = service.page(page, nbResultsParam, searchParam);
+		List<ComputerModel> computers = service.getAllByPage(currentPage, orderParam, directionParam, searchParam);
 
-		getServletContext().getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(request, response);
+		model.addAttribute("computers", ComputerMapperDto.modelsToDtos(computers));
+		model.addAttribute("computersNb", currentPage.getNbResultTotal());
+		model.addAttribute("page", currentPage);
+		model.addAttribute("order", orderParam);
+		model.addAttribute("direction", directionParam);
+		model.addAttribute("search", searchParam);
+
+		return "dashboard";
 	}
 }

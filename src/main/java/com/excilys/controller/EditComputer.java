@@ -1,21 +1,18 @@
 package com.excilys.controller;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.regex.Pattern;
-
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.excilys.mapper.ComputerMapperDto;
 import com.excilys.model.ComputerModel;
@@ -24,10 +21,9 @@ import com.excilys.service.CompanyServiceImpl;
 import com.excilys.service.ComputerService;
 import com.excilys.util.Regex;
 
-@SuppressWarnings("serial")
 @Controller
-@WebServlet("/edit")
-public class EditComputer extends HttpServlet {
+@RequestMapping("/edit")
+public class EditComputer {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EditComputer.class);
 	
@@ -37,37 +33,29 @@ public class EditComputer extends HttpServlet {
 	@Autowired
 	CompanyService companyService;
 
-	@Override
-	public void init() throws ServletException {
-		super.init();
-		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
-	}
-	
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		long id = Long.parseLong(req.getParameter("id"));
-		req.setAttribute("companies", companyService.getAll());
-		ComputerModel computer = service.getById(id);
-		req.setAttribute("computer", ComputerMapperDto.modelToDto(computer));
-		getServletContext().getRequestDispatcher("/WEB-INF/views/editComputer.jsp").forward(req, resp);
-	}
-	
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		
-		long computerId = Long.parseLong(req.getParameter("computerId"));
 
-		String name = req.getParameter("name");
+	@RequestMapping(method = RequestMethod.GET)
+	public String doGet(@RequestParam("id") long id, Model model) {
+		model.addAttribute("companies", companyService.getAll());
+		ComputerModel computer = service.getById(id);
+		model.addAttribute("computer", ComputerMapperDto.modelToDto(computer));
+		return "editComputer";
+	}
+	
+	@RequestMapping(method = RequestMethod.POST)
+	public String doPost(@RequestParam("computerId") long computerId,
+			@RequestParam("name") String name, 
+			@RequestParam("introduced") Optional<String> introduced,
+			@RequestParam("discontinued") Optional<String> discontinued,
+			@RequestParam("companyId") long companyId, Model model) {
+		
 		if (name != null) {
 			name = name.trim();
 			if (name.isEmpty()) {
-				req.setAttribute("errorName", "Name is required");
-				req.setAttribute("companies", new CompanyServiceImpl().getAll());
+				model.addAttribute("errorName", "Name is required");
+				model.addAttribute("companies", new CompanyServiceImpl().getAll());
 				LOGGER.error("Failure : Name is required");
-				getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(req, resp);
-				return;
+				return "edit";
 			}
 		}
 		
@@ -75,45 +63,41 @@ public class EditComputer extends HttpServlet {
 		LocalDateTime introducedDate = null;
 		LocalDateTime discontinuedDate = null;
 		
-		String introduced = req.getParameter("introduced");
-		if (introduced != null) {
-			if (!introduced.isEmpty()) {
-				if (!Pattern.matches(Regex.DATE_FORMAT.getRegex(), introduced.trim())) {
-					req.setAttribute("errorIntroduced", "Invalid format (yyyy-mm-dd hh:mm:ss)");
-					req.setAttribute("companies", companyService.getAll());
-					req.setAttribute("id", computerId);
+		String introducedParam = introduced.get();
+		if (introducedParam != null) {
+			if (!introducedParam.isEmpty()) {
+				if (!Pattern.matches(Regex.DATE_FORMAT.getRegex(), introducedParam.trim())) {
+					model.addAttribute("errorIntroduced", "Invalid format (yyyy-mm-dd hh:mm:ss)");
+					model.addAttribute("companies", companyService.getAll());
+					model.addAttribute("id", computerId);
 					ComputerModel computer = service.getById(computerId);
-					req.setAttribute("computer", computer);
+					model.addAttribute("computer", computer);
 					LOGGER.error("Failure : Bad format introduced date");
-					getServletContext().getRequestDispatcher("/WEB-INF/views/editComputer.jsp?id="+computerId).forward(req, resp);
-					return;
+					return "edit";
 				}
-				introducedDate = LocalDateTime.parse(introduced, formatter);
+				introducedDate = LocalDateTime.parse(introducedParam, formatter);
 			}
 		}
 		
-		String discontinued = req.getParameter("discontinued");
-		if (discontinued != null) {
-			if (!discontinued.isEmpty()) {
-				if (!Pattern.matches(Regex.DATE_FORMAT.getRegex(), discontinued.trim())) {
-					req.setAttribute("errorDiscontinued", "Invalid format (yyyy-mm-dd hh:mm:ss)");
-					req.setAttribute("companies", companyService.getAll());
-					req.setAttribute("id", computerId);
+		String discontinuedParam = discontinued.get();
+		if (discontinuedParam != null) {
+			if (!discontinuedParam.isEmpty()) {
+				if (!Pattern.matches(Regex.DATE_FORMAT.getRegex(), discontinuedParam.trim())) {
+					model.addAttribute("errorDiscontinued", "Invalid format (yyyy-mm-dd hh:mm:ss)");
+					model.addAttribute("companies", companyService.getAll());
+					model.addAttribute("id", computerId);
 					ComputerModel computer = service.getById(computerId);
-					req.setAttribute("computer", computer);
+					model.addAttribute("computer", computer);
 					LOGGER.error("Failure : Bad format discontinued date");
-					getServletContext().getRequestDispatcher("/WEB-INF/views/editComputer.jsp?id="+computerId).forward(req, resp);
-					return;
+					return "edit";
 				}
-				discontinuedDate = LocalDateTime.parse(discontinued, formatter);
+				discontinuedDate = LocalDateTime.parse(discontinuedParam, formatter);
 			}
 		}
 	
-		long companyId = Long.parseLong(req.getParameter("companyId"));
-		
 		service.update(computerId, name, introducedDate, discontinuedDate, companyId);
 		LOGGER.info("Successfully updated computer");
-		resp.sendRedirect("dashboard");
+		return "redirect:dashboard";
 	}
 
 }

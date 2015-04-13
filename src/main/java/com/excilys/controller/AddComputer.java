@@ -1,76 +1,60 @@
 package com.excilys.controller;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.excilys.mapper.CompanyMapperDto;
 import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
 import com.excilys.util.Regex;
 
-@SuppressWarnings("serial")
 @Controller
-@WebServlet("/add")
-public class AddComputer extends HttpServlet {
+@RequestMapping("/add")
+public class AddComputer {
 
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(AddComputer.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AddComputer.class);
 
 	@Autowired
 	ComputerService service;
 	
 	@Autowired
 	CompanyService companyService;
-	
-	@Override
-	public void init() throws ServletException {
-		super.init();
-		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
-	}
-	
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		req.setAttribute("companies", companyService.getAll());
-		ApplicationContext context = new ClassPathXmlApplicationContext("i18n/messageContext.xml");
-		String englishTitle = context.getMessage("add.computer",null, Locale.ENGLISH);
-		String frenchTitle = context.getMessage("add.computer",null, Locale.FRENCH);
 
-		getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(req, resp);
+	@RequestMapping(method = RequestMethod.GET)
+	public String doGet(Model model) {
+		model.addAttribute("companies", companyService.getAll());
+		return "addComputer";
 	}
 
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	@RequestMapping(method = RequestMethod.POST)
+	public String doPost(@RequestParam("name") String name, 
+						@RequestParam("introduced") Optional<String> introduced,
+						@RequestParam("discontinued") Optional<String> discontinued,
+						@RequestParam("companyId") long companyId, Model model) {
 
 		int nbErrors = 0;
 
-		String name = req.getParameter("name");
-		if (name != null) {
-			name = name.trim();
-			if (name.isEmpty()) {
-				req.setAttribute("errorName", "Name is required");
-				req.setAttribute("companies", CompanyMapperDto.modelsToDtos(companyService.getAll()));
+		String nameParam = name;
+		if (nameParam != null) {
+			nameParam = nameParam.trim();
+			if (nameParam.isEmpty()) {
+				model.addAttribute("errorName", "Name is required");
+				model.addAttribute("companies", CompanyMapperDto.modelsToDtos(companyService.getAll()));
 				nbErrors++;
 			} else {
-				req.setAttribute("name", name);
+				model.addAttribute("name", nameParam);
 			}
 		} else {
 			LOGGER.error("Error because of name is null");
@@ -80,32 +64,32 @@ public class AddComputer extends HttpServlet {
 		LocalDateTime introducedDate = null;
 		LocalDateTime discontinuedDate = null;
 
-		String introduced = req.getParameter("introduced");
-		if (introduced != null) {
-			if (!introduced.isEmpty()) {
-				if (!Pattern.matches(Regex.DATE_FORMAT.getRegex(), introduced.trim())) {
-					req.setAttribute("errorIntroduced", "Invalid format (yyyy-mm-dd hh:mm:ss)");
-					req.setAttribute("companies", CompanyMapperDto.modelsToDtos(companyService.getAll()));
+		String introducedParam = introduced.get();
+		if (introducedParam != null) {
+			if (!introducedParam.isEmpty()) {
+				if (!Pattern.matches(Regex.DATE_FORMAT.getRegex(), introducedParam.trim())) {
+					model.addAttribute("errorIntroduced", "Invalid format (yyyy-mm-dd hh:mm:ss)");
+					model.addAttribute("companies", CompanyMapperDto.modelsToDtos(companyService.getAll()));
 					nbErrors++;
 				} else {
-					introducedDate = LocalDateTime.parse(introduced, formatter);
-					req.setAttribute("introduced", introduced);
+					introducedDate = LocalDateTime.parse(introducedParam, formatter);
+					model.addAttribute("introduced", introducedParam);
 				}
 			}
 		} else {
 			LOGGER.error("Error because of introduced date is null");
 		}
 
-		String discontinued = req.getParameter("discontinued");
-		if (discontinued != null) {
-			if (!discontinued.isEmpty()) {
-				if (!Pattern.matches(Regex.DATE_FORMAT.getRegex(), discontinued.trim())) {
-					req.setAttribute("errorDiscontinued", "Invalid format (yyyy-mm-dd hh:mm:ss)");
-					req.setAttribute("companies", CompanyMapperDto.modelsToDtos(companyService.getAll()));
+		String discontinuedParam = discontinued.get();
+		if (discontinuedParam != null) {
+			if (!discontinuedParam.isEmpty()) {
+				if (!Pattern.matches(Regex.DATE_FORMAT.getRegex(), discontinuedParam.trim())) {
+					model.addAttribute("errorDiscontinued", "Invalid format (yyyy-mm-dd hh:mm:ss)");
+					model.addAttribute("companies", CompanyMapperDto.modelsToDtos(companyService.getAll()));
 					nbErrors++;
 				} else {
-					discontinuedDate = LocalDateTime.parse(discontinued, formatter);
-					req.setAttribute("discontinued", discontinued);
+					discontinuedDate = LocalDateTime.parse(discontinuedParam, formatter);
+					model.addAttribute("discontinued", discontinuedParam);
 
 				}
 			}
@@ -113,17 +97,16 @@ public class AddComputer extends HttpServlet {
 			LOGGER.error("Error because of discontinued date is null");
 		}
 
-		long companyId = Long.parseLong(req.getParameter("companyId"));
-		req.setAttribute("companyId", companyId);
+		long companyIdParam = companyId;
+		model.addAttribute("companyId", companyIdParam);
 
 		if (nbErrors != 0) {
-			getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(req, resp);
-			return;
+			return "addComputer";
 		}
 
 		service.create(name, introducedDate, discontinuedDate, companyId);
 
 		LOGGER.info("Successfully created computer");
-		resp.sendRedirect("dashboard");
+		return "redirect:dashboard";
 	}
 }
