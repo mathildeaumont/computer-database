@@ -55,7 +55,7 @@ public class EditComputer {
 				model.addAttribute("errorName", "Name is required");
 				model.addAttribute("companies", new CompanyServiceImpl().getAll());
 				LOGGER.error("Failure : Name is required");
-				return "edit";
+				return "editComputer";
 			}
 		}
 		
@@ -73,7 +73,7 @@ public class EditComputer {
 					ComputerModel computer = service.getById(computerId);
 					model.addAttribute("computer", computer);
 					LOGGER.error("Failure : Bad format introduced date");
-					return "edit";
+					return "editComputer";
 				}
 				introducedDate = LocalDateTime.parse(introducedParam, formatter);
 			}
@@ -89,7 +89,7 @@ public class EditComputer {
 					ComputerModel computer = service.getById(computerId);
 					model.addAttribute("computer", computer);
 					LOGGER.error("Failure : Bad format discontinued date");
-					return "edit";
+					return "editComputer";
 				}
 				discontinuedDate = LocalDateTime.parse(discontinuedParam, formatter);
 			}
