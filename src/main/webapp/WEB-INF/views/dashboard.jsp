@@ -1,6 +1,7 @@
 <%@ page pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="mylib"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <!DOCTYPE html>
 <html>
 <c:import url="head.jsp" />
@@ -10,7 +11,7 @@
     <section id="main">
         <div class="container">
             <h1 id="homeTitle">
-            	${computersNb} Computers found
+            	${computersNb} <spring:message code="label.found"/>
             </h1>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
@@ -21,8 +22,8 @@
                     </form>
                 </div>
                 <div class="pull-right">
-                    <a class="btn btn-success" id="addComputer" href="<c:url value="/add" />">Add Computer</a> 
-                    <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
+                    <a class="btn btn-success" id="addComputer" href="<c:url value="/add" />"><spring:message code="label.add"/></a> 
+                    <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();"><spring:message code="label.edit"/></a>
                 </div>
             </div>
         </div>
@@ -50,12 +51,12 @@
 							<c:choose>
 								<c:when test="${direction == 'asc'}">
 									<mylib:link url="dashboard" direction="desc" offset="1" order="compu.name" search="${search}" nbResults="${page.nbResults}">
-										Computer name
+										<spring:message code="computer.name"/>
 									</mylib:link>
 								</c:when>
 								<c:otherwise>
 									<mylib:link url="dashboard" direction="asc" offset="1" order="compu.name" search="${search}" nbResults="${page.nbResults}">
-										Computer name
+										<spring:message code="computer.name"/>
 									</mylib:link>
 								</c:otherwise>
 							</c:choose>
@@ -75,12 +76,12 @@
 							<c:choose>
 								<c:when test="${direction == 'asc'}">
 									<mylib:link url="dashboard" direction="desc" offset="1" order="compu.introduced" search="${search}" nbResults="${page.nbResults}">
-										Introduced date
+										<spring:message code="computer.introduced"/>
 									</mylib:link>
 								</c:when>
 								<c:otherwise>
 									<mylib:link url="dashboard" direction="asc" offset="1" order="compu.introduced" search="${search}" nbResults="${page.nbResults}">
-										Introduced date
+										<spring:message code="computer.introduced"/>
 									</mylib:link>
 								</c:otherwise>
 							</c:choose>
@@ -101,12 +102,12 @@
 							<c:choose>
 								<c:when test="${direction == 'asc'}">
 									<mylib:link url="dashboard" direction="desc" offset="1" order="compu.discontinued" search="${search}" nbResults="${page.nbResults}">
-										Discontinued date
+										<spring:message code="computer.discontinued"/>
 									</mylib:link>
 								</c:when>
 								<c:otherwise>
 									<mylib:link url="dashboard" direction="asc" offset="1" order="compu.discontinued" search="${search}" nbResults="${page.nbResults}">
-										Discontinued date
+										<spring:message code="computer.discontinued"/>
 									</mylib:link>
 								</c:otherwise>
 							</c:choose>
@@ -126,12 +127,12 @@
 							<c:choose>
 								<c:when test="${direction == 'asc'}">
 									<mylib:link url="dashboard" direction="desc" offset="1" order="company.name" search="${search}" nbResults="${page.nbResults}">
-										Company
+										<spring:message code="computer.company"/>
 									</mylib:link>
 								</c:when>
 								<c:otherwise>
 									<mylib:link url="dashboard" direction="asc" offset="1" order="company.name" search="${search}" nbResults="${page.nbResults}">
-										Company
+										<spring:message code="computer.company"/>
 									</mylib:link>
 								</c:otherwise>
 							</c:choose>

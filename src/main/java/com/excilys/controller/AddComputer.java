@@ -90,7 +90,6 @@ public class AddComputer {
 				} else {
 					discontinuedDate = LocalDateTime.parse(discontinuedParam, formatter);
 					model.addAttribute("discontinued", discontinuedParam);
-
 				}
 			}
 		} else {
