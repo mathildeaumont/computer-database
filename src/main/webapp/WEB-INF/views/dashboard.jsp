@@ -16,8 +16,8 @@
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
                     <form id="searchForm" action="<c:url value="/dashboard" />" method="GET" class="form-inline">
-                        <input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name" />
-                        <input type="submit" id="searchsubmit" value="Filter by name"
+                        <input type="search" id="searchbox" name="search" class="form-control" placeholder=<spring:message code="label.search"/> />
+                        <input type="submit" id="searchsubmit" value="<spring:message code="label.filter"/>"
                         class="btn btn-primary" />
                     </form>
                 </div>
@@ -184,5 +184,12 @@
 	<script src="<c:url value="/resources/js/jquery.min.js" />"></script>
 	<script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
 	<script src="<c:url value="/resources/js/dashboard.js" />"></script>
+	
+	<script type="text/javascript">
+		var strings = new Array();
+	 	strings['alert'] = "<spring:message code='delete.alert' javaScriptEscape='true' />"
+		strings['view'] = "<spring:message code='edit.view' javaScriptEscape='true' />"
+		strings['edit'] = "<spring:message code='edit.edit' javaScriptEscape='true' />"
+	</script>
 </body>
 </html>

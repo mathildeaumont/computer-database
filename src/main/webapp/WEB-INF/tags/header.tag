@@ -1,13 +1,13 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ attribute name="pageName" required="true" type="java.lang.String"
 	description="pageName"%>
 
 <header class="navbar navbar-inverse navbar-fixed-top">
 	<div class="container">
 		<a class="navbar-brand"
-			href="dashboard"> Application
-			- Computer Database </a> <span style="float: right"> 
+			href="dashboard"> <spring:message code="header.title"/> </a> <span style="float: right"> 
 			
 		<c:if test="${pageName == 'dashboard'}">
 				<a href="<c:url value="dashboard">

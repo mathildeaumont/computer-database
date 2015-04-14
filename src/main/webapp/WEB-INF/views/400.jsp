@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="mylib"%>
 <!DOCTYPE html>
 <html>
@@ -8,7 +9,7 @@
 	<section id="main">
 		<div class="container">	
 			<div class="alert alert-danger">
-				Error 400: Bad request
+				<spring:message code="error.400"/>
 				<br/>
 				<!-- stacktrace -->
 			</div>
