@@ -1,8 +1,15 @@
 package com.excilys.dto;
 
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class ComputerDto {
 
 	private long id;
+	
+	@NotEmpty
+	@Size(min = 2, max = 50)
 	private String name;
 	private String introducedDate;
 	private String discontinuedDate;

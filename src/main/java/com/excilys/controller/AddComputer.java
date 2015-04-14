@@ -2,19 +2,22 @@ package com.excilys.controller;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
+import java.util.Map;
 import java.util.regex.Pattern;
 
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import com.excilys.dto.ComputerDto;
 import com.excilys.mapper.CompanyMapperDto;
 import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
@@ -33,24 +36,22 @@ public class AddComputer {
 	CompanyService companyService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public String doGet(Model model) {
-		model.addAttribute("companies", companyService.getAll());
+	public String doGet(Map<String, Object> model) {
+		ComputerDto computer = new ComputerDto();
+	    model.put("addComputerForm", computer);
+	    model.put("companies", companyService.getAll());
 		return "addComputer";
 	}
-
+	
 	@RequestMapping(method = RequestMethod.POST)
-	public String doPost(@RequestParam("name") String name, 
-						@RequestParam("introduced") Optional<String> introduced,
-						@RequestParam("discontinued") Optional<String> discontinued,
-						@RequestParam("companyId") long companyId, Model model) {
-
+	public String doPost(@Valid @ModelAttribute("addComputerForm") ComputerDto computerForm, BindingResult result, Model model) {
+			
 		int nbErrors = 0;
 
-		String nameParam = name;
+		String nameParam = computerForm.getName();
 		if (nameParam != null) {
 			nameParam = nameParam.trim();
 			if (nameParam.isEmpty()) {
-				model.addAttribute("errorName", "Name is required");
 				model.addAttribute("companies", CompanyMapperDto.modelsToDtos(companyService.getAll()));
 				nbErrors++;
 			} else {
@@ -64,7 +65,7 @@ public class AddComputer {
 		LocalDateTime introducedDate = null;
 		LocalDateTime discontinuedDate = null;
 
-		String introducedParam = introduced.get();
+		String introducedParam = computerForm.getIntroducedDate();
 		if (introducedParam != null) {
 			if (!introducedParam.isEmpty()) {
 				if (!Pattern.matches(Regex.DATE_FORMAT.getRegex(), introducedParam.trim())) {
@@ -80,7 +81,7 @@ public class AddComputer {
 			LOGGER.error("Error because of introduced date is null");
 		}
 
-		String discontinuedParam = discontinued.get();
+		String discontinuedParam = computerForm.getDiscontinuedDate();
 		if (discontinuedParam != null) {
 			if (!discontinuedParam.isEmpty()) {
 				if (!Pattern.matches(Regex.DATE_FORMAT.getRegex(), discontinuedParam.trim())) {
@@ -96,14 +97,14 @@ public class AddComputer {
 			LOGGER.error("Error because of discontinued date is null");
 		}
 
-		long companyIdParam = companyId;
+		long companyIdParam = computerForm.getCompany().getId();
 		model.addAttribute("companyId", companyIdParam);
 
 		if (nbErrors != 0) {
 			return "addComputer";
 		}
 
-		service.create(name, introducedDate, discontinuedDate, companyId);
+		service.create(nameParam, introducedDate, discontinuedDate, companyIdParam);
 
 		LOGGER.info("Successfully created computer");
 		return "redirect:dashboard";
