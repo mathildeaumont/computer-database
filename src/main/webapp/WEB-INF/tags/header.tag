@@ -62,6 +62,21 @@
 				fr
 				</a>
 		</c:if>
+		
+		<c:if test="${pageName == 'error'}">
+				<a href="<c:url value="edit">
+							<c:param name="lang" value="en" />
+						</c:url>">
+				en
+				</a>
+				|
+				<a href="<c:url value="edit">
+							<c:param name="lang" value="fr" />
+						</c:url>">
+				fr
+				</a>
+		</c:if>
+		
 		</span>
 	</div>
 </header>

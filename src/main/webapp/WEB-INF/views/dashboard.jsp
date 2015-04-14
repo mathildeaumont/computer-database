@@ -64,10 +64,10 @@
 							<span class="right">
 								<c:choose>
 									<c:when test="${order == 'compu.name' && direction == 'asc'}">
-										<img src="${pageContext.request.contextPath}/img/fleche_bas.png" />
+										<img src="<c:url value="/resources/img/fleche_bas.png" />" />
 									</c:when>
 									<c:when test="${order == 'compu.name' && direction == 'desc'}">
-										<img src="${pageContext.request.contextPath}/img/fleche_haut.png" />
+										<img src="<c:url value="/resources/img/fleche_haut.png" />" />
 									</c:when>
 								</c:choose>
 							</span>
@@ -89,10 +89,10 @@
 							<span class="right">
 								<c:choose>
 									<c:when test="${order == 'compu.introduced' && direction == 'asc'}">
-										<img src="${pageContext.request.contextPath}/img/fleche_bas.png" />
+										<img src="<c:url value="/resources/img/fleche_bas.png" />" />
 									</c:when>
 									<c:when test="${order == 'compu.introduced' && direction == 'desc'}">
-										<img src="${pageContext.request.contextPath}/img/fleche_haut.png" />
+										<img src="<c:url value="/resources/img/fleche_haut.png" />" />
 									</c:when>
 								</c:choose>
 							</span>
@@ -115,10 +115,10 @@
 							<span class="right">
 								<c:choose>
 									<c:when test="${order == 'compu.discontinued' && direction == 'asc'}">
-										<img src="${pageContext.request.contextPath}/img/fleche_bas.png" />
+										<img src="<c:url value="/resources/img/fleche_bas.png" />" />
 									</c:when>
 									<c:when test="${order == 'compu.discontinued' && direction == 'desc'}">
-										<img src="${pageContext.request.contextPath}/img/fleche_haut.png" />
+										<img src="<c:url value="/resources/img/fleche_haut.png" />" />
 									</c:when>
 								</c:choose>
 							</span>
@@ -139,11 +139,11 @@
 							
 							<span class="right">
 								<c:choose>
-									<c:when test="${order == 'compa.name' && direction == 'asc'}">
-										<img src="${pageContext.request.contextPath}/img/fleche_bas.png" />
+									<c:when test="${order == 'company.name' && direction == 'asc'}">
+										<img src="<c:url value="/resources/img/fleche_bas.png" />" />
 									</c:when>
-									<c:when test="${order == 'compa.name' && direction == 'desc'}">
-										<img src="${pageContext.request.contextPath}/img/fleche_haut.png" />
+									<c:when test="${order == 'company.name' && direction == 'desc'}">
+										<img src="<c:url value="/resources/img/fleche_haut.png" />" />
 									</c:when>
 								</c:choose>
 							</span>
