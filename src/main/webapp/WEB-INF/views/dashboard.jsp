@@ -6,7 +6,7 @@
 <html>
 <c:import url="head.jsp" />
 <body>
-    <c:import url="header.jsp" />
+    <mylib:header pageName="dashboard" />
 
     <section id="main">
         <div class="container">
