@@ -44,7 +44,7 @@
                         </fieldset>
                         <div class="actions pull-right">
                             <input type="submit" value="<spring:message code="label.edit"/>" class="btn btn-primary">
-                            or
+                            <spring:message code="label.or"/>
                             <a href="dashboard" class="btn btn-default"><spring:message code="label.cancel"/></a>
                         </div>
                     </form>
