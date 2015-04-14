@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.h2.engine.SysProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -33,14 +34,13 @@ public class ComputerDaoImpl implements ComputerDao {
 	
 	public List<ComputerModel> getAllComputersByPage(Page<ComputerModel> page, String order, String direction, String search) {
 		List<Object> param = new ArrayList<Object>();
-		String query = "SELECT * FROM computer as compu left outer join company as company ON compu.company_id = company.id WHERE compu.name LIKE ? OR company.name LIKE ? ORDER BY ? ? LIMIT ? OFFSET ?;";
+		String query = "SELECT * FROM computer as compu left outer join company as company ON compu.company_id = company.id WHERE compu.name LIKE ? OR company.name LIKE ? ORDER BY %s %s LIMIT ? OFFSET ?;";
 		param.add("%" + search + "%");
 		param.add("%" + search + "%");
-		param.add(order);
-		param.add(direction);
 		param.add(page.getNbResults());
 		param.add(page.getOffset());
-		return jdbcTemplate.query(query, param.toArray(), computerMapper);
+		final String request = String.format(query, order, direction);
+		return jdbcTemplate.query(request, param.toArray(), computerMapper);
 	}
 	
 	public int getLength(String search) {
