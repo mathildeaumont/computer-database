@@ -13,17 +13,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -41,11 +40,11 @@ public class ComputerController {
 	CompanyService companyService;
 
 	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
-	public String doGet(@RequestParam("offset") Optional<Integer> offset, 
+	public ModelAndView doGet(@RequestParam("offset") Optional<Integer> offset, 
 						@RequestParam("nbResults") Optional<Integer> nbResults,
 						@RequestParam("order") Optional<String> order,
 						@RequestParam("direction") Optional<String> direction,
-						@RequestParam("search") Optional<String> search, Model model) {
+						@RequestParam("search") Optional<String> search, ModelAndView model) {
 
 		int page = 1;
 		if (offset.isPresent()) {
@@ -74,18 +73,19 @@ public class ComputerController {
 		Page<Computer> currentPage = service.page(page, nbResultsParam, searchParam);
 		List<Computer> computers = service.getAllByPage(currentPage, orderParam, directionParam, searchParam);
 
-		model.addAttribute("computers", ComputerMapperDto.modelsToDtos(computers));
-		model.addAttribute("computersNb", currentPage.getNbResultTotal());
-		model.addAttribute("page", currentPage);
-		model.addAttribute("order", orderParam);
-		model.addAttribute("direction", directionParam);
-		model.addAttribute("search", searchParam);
+		model.addObject("computers", ComputerMapperDto.modelsToDtos(computers));
+		model.addObject("computersNb", currentPage.getNbResultTotal());
+		model.addObject("page", currentPage);
+		model.addObject("order", orderParam);
+		model.addObject("direction", directionParam);
+		model.addObject("search", searchParam);
 
-		return "dashboard";
+		model.setViewName("dashboard");
+		return model;
 	}
 	
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
-	public String delete(@RequestParam("selection") String selected) {
+	public ModelAndView delete(@RequestParam("selection") String selected, ModelAndView model) {
 		if (selected != null&& !selected.isEmpty()) { 
 			String[] computerIds = selected.split(",");
 			if (computerIds != null && computerIds.length > 0) {
@@ -100,20 +100,22 @@ public class ComputerController {
 		} else {
 			LOGGER.error("Failure : Selection is empty");
 		}
-		return "redirect:dashboard";
+		model.setViewName("redirect:dashboard");
+		return model;
 	}
 	
 	
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
-	public String add(Map<String, Object> model) {
+	public ModelAndView add(ModelAndView model) {
 		ComputerDto computer = new ComputerDto();
-	    model.put("addComputerForm", computer);
-	    model.put("companies", companyService.getAll());
-		return "addComputer";
+	    model.addObject("addComputerForm", computer);
+	    model.addObject("companies", companyService.getAll());
+	    model.setViewName("addComputer");
+		return model;
 	}
 	
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public String add(@Valid @ModelAttribute("addComputerForm") ComputerDto computerForm, BindingResult result, Model model) {
+	public ModelAndView add(@Valid @ModelAttribute("addComputerForm") ComputerDto computerForm, BindingResult result, ModelAndView model) {
 			
 		int nbErrors = 0;
 
@@ -121,10 +123,10 @@ public class ComputerController {
 		if (nameParam != null) {
 			nameParam = nameParam.trim();
 			if (nameParam.isEmpty()) {
-				model.addAttribute("companies", CompanyMapperDto.modelsToDtos(companyService.getAll()));
+				model.addObject("companies", CompanyMapperDto.modelsToDtos(companyService.getAll()));
 				nbErrors++;
 			} else {
-				model.addAttribute("name", nameParam);
+				model.addObject("name", nameParam);
 			}
 		} else {
 			LOGGER.error("Error because of name is null");
@@ -138,12 +140,12 @@ public class ComputerController {
 		if (introducedParam != null) {
 			if (!introducedParam.isEmpty()) {
 				if (!Pattern.matches(Regex.DATE_FORMAT.getRegex(), introducedParam.trim())) {
-					model.addAttribute("errorIntroduced", "Invalid format (yyyy-mm-dd hh:mm:ss)");
-					model.addAttribute("companies", CompanyMapperDto.modelsToDtos(companyService.getAll()));
+					model.addObject("errorIntroduced", "Invalid format (yyyy-mm-dd hh:mm:ss)");
+					model.addObject("companies", CompanyMapperDto.modelsToDtos(companyService.getAll()));
 					nbErrors++;
 				} else {
 					introducedDate = LocalDateTime.parse(introducedParam, formatter);
-					model.addAttribute("introduced", introducedParam);
+					model.addObject("introduced", introducedParam);
 				}
 			}
 		} else {
@@ -154,12 +156,12 @@ public class ComputerController {
 		if (discontinuedParam != null) {
 			if (!discontinuedParam.isEmpty()) {
 				if (!Pattern.matches(Regex.DATE_FORMAT.getRegex(), discontinuedParam.trim())) {
-					model.addAttribute("errorDiscontinued", "Invalid format (yyyy-mm-dd hh:mm:ss)");
-					model.addAttribute("companies", CompanyMapperDto.modelsToDtos(companyService.getAll()));
+						model.addObject("errorDiscontinued", "Invalid format (yyyy-mm-dd hh:mm:ss)");
+						model.addObject("companies", CompanyMapperDto.modelsToDtos(companyService.getAll()));
 					nbErrors++;
 				} else {
 					discontinuedDate = LocalDateTime.parse(discontinuedParam, formatter);
-					model.addAttribute("discontinued", discontinuedParam);
+					model.addObject("discontinued", discontinuedParam);
 				}
 			}
 		} else {
@@ -167,40 +169,44 @@ public class ComputerController {
 		}
 
 		long companyIdParam = computerForm.getCompany().getId();
-		model.addAttribute("companyId", companyIdParam);
+		model.addObject("companyId", companyIdParam);
 
 		if (nbErrors != 0) {
-			return "addComputer";
+			model.setViewName("addComputer");
+			return model;
 		}
 
 		service.create(nameParam, introducedDate, discontinuedDate, companyIdParam);
 
 		LOGGER.info("Successfully created computer");
-		return "redirect:dashboard";
+		model.setViewName("redirect:dashboard");
+		return model;
 	}
 	
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public String edit(@RequestParam("id") long id, Model model) {
-		model.addAttribute("companies", companyService.getAll());
+	public ModelAndView edit(@RequestParam("id") long id, ModelAndView model) {
+		model.addObject("companies", companyService.getAll());
 		Computer computer = service.getById(id);
-		model.addAttribute("computer", ComputerMapperDto.modelToDto(computer));
-		return "editComputer";
+		model.addObject("computer", ComputerMapperDto.modelToDto(computer));
+		model.setViewName("editComputer");
+		return model;
 	}
 	
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
-	public String edit(@RequestParam("computerId") long computerId,
+	public ModelAndView edit(@RequestParam("computerId") long computerId,
 			@RequestParam("name") String name, 
 			@RequestParam("introduced") Optional<String> introduced,
 			@RequestParam("discontinued") Optional<String> discontinued,
-			@RequestParam("companyId") long companyId, Model model) {
+			@RequestParam("companyId") long companyId, ModelAndView model) {
 		
 		if (name != null) {
 			name = name.trim();
 			if (name.isEmpty()) {
-				model.addAttribute("errorName", "Name is required");
-				model.addAttribute("companies", new CompanyServiceImpl().getAll());
+				model.addObject("errorName", "Name is required");
+				model.addObject("companies", new CompanyServiceImpl().getAll());
 				LOGGER.error("Failure : Name is required");
-				return "editComputer";
+				model.setViewName("editComputer");
+				return model;
 			}
 		}
 		
@@ -212,13 +218,14 @@ public class ComputerController {
 		if (introducedParam != null) {
 			if (!introducedParam.isEmpty()) {
 				if (!Pattern.matches(Regex.DATE_FORMAT.getRegex(), introducedParam.trim())) {
-					model.addAttribute("errorIntroduced", "Invalid format (yyyy-mm-dd hh:mm:ss)");
-					model.addAttribute("companies", companyService.getAll());
-					model.addAttribute("id", computerId);
+					model.addObject("errorIntroduced", "Invalid format (yyyy-mm-dd hh:mm:ss)");
+					model.addObject("companies", companyService.getAll());
+					model.addObject("id", computerId);
 					Computer computer = service.getById(computerId);
-					model.addAttribute("computer", computer);
+					model.addObject("computer", computer);
 					LOGGER.error("Failure : Bad format introduced date");
-					return "editComputer";
+					model.setViewName("editComputer");
+					return model;
 				}
 				introducedDate = LocalDateTime.parse(introducedParam, formatter);
 			}
@@ -228,13 +235,14 @@ public class ComputerController {
 		if (discontinuedParam != null) {
 			if (!discontinuedParam.isEmpty()) {
 				if (!Pattern.matches(Regex.DATE_FORMAT.getRegex(), discontinuedParam.trim())) {
-					model.addAttribute("errorDiscontinued", "Invalid format (yyyy-mm-dd hh:mm:ss)");
-					model.addAttribute("companies", companyService.getAll());
-					model.addAttribute("id", computerId);
+					model.addObject("errorDiscontinued", "Invalid format (yyyy-mm-dd hh:mm:ss)");
+					model.addObject("companies", companyService.getAll());
+					model.addObject("id", computerId);
 					Computer computer = service.getById(computerId);
-					model.addAttribute("computer", computer);
+					model.addObject("computer", computer);
 					LOGGER.error("Failure : Bad format discontinued date");
-					return "editComputer";
+					model.setViewName("editComputer");
+					return model;
 				}
 				discontinuedDate = LocalDateTime.parse(discontinuedParam, formatter);
 			}
@@ -242,6 +250,7 @@ public class ComputerController {
 	
 		service.update(computerId, name, introducedDate, discontinuedDate, companyId);
 		LOGGER.info("Successfully updated computer");
-		return "redirect:dashboard";
+		model.setViewName("redirect:dashboard");
+		return model;
 	}
 }
