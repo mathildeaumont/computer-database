@@ -2,10 +2,10 @@ package com.excilys.service;
 
 import java.util.List;
 
-import com.excilys.model.CompanyModel;
+import com.excilys.model.Company;
 
 public interface CompanyService {
-	public List<CompanyModel> getAll();
+	public List<Company> getAll();
 	
 	public void delete(long companyId);
 }

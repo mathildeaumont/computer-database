@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-import com.excilys.model.CompanyModel;
-import com.excilys.model.ComputerModel;
+import com.excilys.model.Company;
+import com.excilys.model.Computer;
 import com.excilys.model.Page;
 import com.excilys.service.CompanyService;
 import com.excilys.service.CompanyServiceImpl;
@@ -16,9 +16,9 @@ import com.excilys.service.ComputerServiceImpl;
 
 public class ComputerDatabase {
 
-	public static void listToString(List<ComputerModel> computers) {
+	public static void listToString(List<Computer> computers) {
 		StringBuilder sb = new StringBuilder();
-		for (ComputerModel computer: computers) {
+		for (Computer computer: computers) {
 			sb.append(computer.toString());
 			sb.append("\n");
 		}
@@ -42,13 +42,13 @@ public class ComputerDatabase {
 			switch (in.trim()) {
 			case "computers": 
 				System.out.println("Computers list :");
-				List<ComputerModel> computers = computerService.getAll();
+				List<Computer> computers = computerService.getAll();
 				listToString(computers);
 				break;
 			case "companies": 
 				System.out.println("Companies list :");
-				List<CompanyModel> companies = companyService.getAll();
-				for (CompanyModel company : companies) {
+				List<Company> companies = companyService.getAll();
+				for (Company company : companies) {
 					System.out.println(company);
 				}
 				break;
@@ -57,7 +57,7 @@ public class ComputerDatabase {
 				in = scanIn.nextLine();
 				if (Pattern.matches("^\\d+$", in.trim())) {
 					id = Long.parseLong(in.trim());
-					ComputerModel c = computerService.getById(id);
+					Computer c = computerService.getById(id);
 					System.out.println(c);
 				} else {
 					System.err.println("A number is required");
@@ -179,7 +179,7 @@ public class ComputerDatabase {
 					System.err.println("A number is required");
 					break;
 				}
-				Page<ComputerModel> page = computerService.page(nbPage, nbResultByPage, "");
+				Page<Computer> page = computerService.page(nbPage, nbResultByPage, "");
 				computers = computerService.getAllByPage(page, "compu.id", "asc", "");
 				listToString(computers);
 				int nbPageTotal = computerService.getLength() / nbResultByPage;

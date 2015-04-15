@@ -9,17 +9,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import com.excilys.model.CompanyModelImpl;
-import com.excilys.model.ComputerModel;
-import com.excilys.model.ComputerModelImpl;
+import com.excilys.model.Company;
+import com.excilys.model.Computer;
 
 @Component
-public class ComputerMapper implements RowMapper<ComputerModel> {
+public class ComputerMapper implements RowMapper<Computer> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerMapper.class);
 	
-	public ComputerModel toModel(ResultSet result) {
-		ComputerModel computer = new ComputerModelImpl();
+	public Computer toModel(ResultSet result) {
+		Computer computer = new Computer();
 		try {
 			computer.setId(result.getLong("id"));
 			computer.setName(result.getString("name"));	
@@ -29,7 +28,7 @@ public class ComputerMapper implements RowMapper<ComputerModel> {
 			discontinued = result.getTimestamp("discontinued") == null ? null : result.getTimestamp("discontinued").toLocalDateTime();
 			computer.setIntroducedDate(introduced);
 			computer.setDiscontinuedDate(discontinued);
-			CompanyModelImpl company = new CompanyModelImpl();
+			Company company = new Company();
 			long companyId = result.getLong("company_id");
 			if (companyId != 0) {
 				company.setId(companyId);
@@ -44,12 +43,12 @@ public class ComputerMapper implements RowMapper<ComputerModel> {
 	}
 
 	@Override
-	public ComputerModel mapRow(ResultSet result, int rowNum) throws SQLException {
+	public Computer mapRow(ResultSet result, int rowNum) throws SQLException {
 		if (result == null) {
 			LOGGER.error("Mapper failed : result null");
 			throw new IllegalArgumentException();
 		}
-		ComputerModel computer = new ComputerModelImpl();
+		Computer computer = new Computer();
 		computer.setId(result.getLong("id"));
 		computer.setName(result.getString("name"));	
 		LocalDateTime introduced;
@@ -58,7 +57,7 @@ public class ComputerMapper implements RowMapper<ComputerModel> {
 		discontinued = result.getTimestamp("discontinued") == null ? null : result.getTimestamp("discontinued").toLocalDateTime();
 		computer.setIntroducedDate(introduced);
 		computer.setDiscontinuedDate(discontinued);
-		CompanyModelImpl company = new CompanyModelImpl();
+		Company company = new Company();
 		long companyId = result.getLong("company_id");
 		if (companyId != 0) {
 			company.setId(companyId);

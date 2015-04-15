@@ -3,7 +3,7 @@ package com.excilys.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.excilys.model.ComputerModel;
+import com.excilys.model.Computer;
 import com.excilys.model.Page;
 
 public interface ComputerService {
@@ -12,11 +12,11 @@ public interface ComputerService {
 	
 	public int getLength(String search);
 	
-	public List<ComputerModel> getAll();
+	public List<Computer> getAll();
 	
-	public List<ComputerModel> getAllByPage(Page<ComputerModel> page, String order, String direction, String search);
+	public List<Computer> getAllByPage(Page<Computer> page, String order, String direction, String search);
 	
-	public ComputerModel getById(long id);
+	public Computer getById(long id);
 	
 	public void create(String name, LocalDateTime introduced, LocalDateTime discontinued, long companyId);
 	
@@ -24,5 +24,5 @@ public interface ComputerService {
 	
 	public void delete(long computerId);
 	
-	public Page<ComputerModel> page(int nbPage, int nbResultByPage, String search);
+	public Page<Computer> page(int nbPage, int nbResultByPage, String search);
 }

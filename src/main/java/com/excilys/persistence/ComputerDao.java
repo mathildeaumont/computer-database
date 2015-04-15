@@ -2,7 +2,7 @@ package com.excilys.persistence;
 
 import java.util.List;
 
-import com.excilys.model.ComputerModel;
+import com.excilys.model.Computer;
 import com.excilys.model.Page;
 
 public interface ComputerDao {
@@ -11,15 +11,15 @@ public interface ComputerDao {
 
 	public int getLength(String search);
 	
-	public List<ComputerModel> getAllComputers();
+	public List<Computer> getAllComputers();
 	
-	public List<ComputerModel> getAllComputersByPage(Page<ComputerModel> page, String order, String direction, String search);
+	public List<Computer> getAllComputersByPage(Page<Computer> page, String order, String direction, String search);
 	
-	public ComputerModel getComputerDetails(long id);
+	public Computer getComputerDetails(long id);
 	
-	public void createComputer(ComputerModel computer);
+	public void createComputer(Computer computer);
 	
-	public void updateComputer(ComputerModel computer);
+	public void updateComputer(Computer computer);
 	
 	public void deleteComputer(long id);
 	

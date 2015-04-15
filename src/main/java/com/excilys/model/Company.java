@@ -1,15 +1,15 @@
 package com.excilys.model;
 
-public class CompanyModelImpl implements CompanyModel {
+public class Company {
 
 	private long id;
 	private String name;
 	
-	public CompanyModelImpl() {
+	public Company() {
 		
 	}
 	
-	public CompanyModelImpl(long id, String name) {
+	public Company(long id, String name) {
 		this.setId(id);
 		this.setName(name);
 	}
@@ -56,7 +56,7 @@ public class CompanyModelImpl implements CompanyModel {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CompanyModelImpl other = (CompanyModelImpl) obj;
+		Company other = (Company) obj;
 		if (id != other.id)
 			return false;
 		if (name == null) {

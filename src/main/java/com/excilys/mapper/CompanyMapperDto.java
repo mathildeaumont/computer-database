@@ -7,26 +7,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.excilys.dto.CompanyDto;
-import com.excilys.model.CompanyModel;
-import com.excilys.model.CompanyModelImpl;
+import com.excilys.model.Company;
 
 public class CompanyMapperDto {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(CompanyMapperDto.class);
 
-	public static CompanyModel dtoToModel(CompanyDto dto) {
+	public static Company dtoToModel(CompanyDto dto) {
 		if (dto == null) {
 			LOGGER.error("Mapper failed : dto null");
 			throw new IllegalArgumentException();
 		}
-		CompanyModel model = new CompanyModelImpl();
+		Company model = new Company();
 		model.setName(dto.getName());
 		model.setId(dto.getId());
 		LOGGER.info("Mapper succeed");
 		return model;
 	}
 	
-	public static CompanyDto modelToDto(CompanyModel model) {
+	public static CompanyDto modelToDto(Company model) {
 		if (model == null) {
 			LOGGER.error("Mapper failed : model null");
 			throw new IllegalArgumentException();
@@ -38,9 +37,9 @@ public class CompanyMapperDto {
 		return dto;
 	}
 	
-	public static List<CompanyDto> modelsToDtos(List<CompanyModel> models) {
+	public static List<CompanyDto> modelsToDtos(List<Company> models) {
 		List<CompanyDto> dtos = new ArrayList<CompanyDto>();
-		for (CompanyModel model : models) {
+		for (Company model : models) {
 			CompanyDto dto = modelToDto(model);
 			dtos.add(dto);
 		}

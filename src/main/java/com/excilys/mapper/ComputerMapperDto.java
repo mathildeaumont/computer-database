@@ -9,20 +9,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.excilys.dto.ComputerDto;
-import com.excilys.model.CompanyModelImpl;
-import com.excilys.model.ComputerModel;
-import com.excilys.model.ComputerModelImpl;
+import com.excilys.model.Company;
+import com.excilys.model.Computer;
 
 public class ComputerMapperDto {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerMapperDto.class);
 	
-	public static ComputerModel dtoToModel(ComputerDto dto) {
+	public static Computer dtoToModel(ComputerDto dto) {
 		if (dto == null) {
 			LOGGER.error("Mapper failed : dto null");
 			throw new IllegalArgumentException();
 		}
-		ComputerModel model = new ComputerModelImpl();
+		Computer model = new Computer();
 		
 		long id = dto.getId();
 		String name = dto.getName();
@@ -42,7 +41,7 @@ public class ComputerMapperDto {
 		return model;
 	}
 	
-	public static ComputerDto modelToDto(ComputerModel model) {
+	public static ComputerDto modelToDto(Computer model) {
 		if (model == null) {
 			LOGGER.error("Mapper failed : model null");
 			throw new IllegalArgumentException();
@@ -53,7 +52,7 @@ public class ComputerMapperDto {
 		String name = model.getName();
 		LocalDateTime introduced = model.getIntroducedDate();
 		LocalDateTime discontinued = model.getDiscontinuedDate();
-		CompanyModelImpl company = model.getCompany();
+		Company company = model.getCompany();
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		
@@ -71,17 +70,17 @@ public class ComputerMapperDto {
 		return dto;
 	}
 	
-	public static List<ComputerDto> modelsToDtos(List<ComputerModel> models) {
+	public static List<ComputerDto> modelsToDtos(List<Computer> models) {
 		List<ComputerDto> dtos = new ArrayList<ComputerDto>();
 		
-		for (ComputerModel model : models) {
+		for (Computer model : models) {
 			ComputerDto dto = new ComputerDto();
 			
 			long id = model.getId();
 			String name = model.getName();
 			LocalDateTime introduced = model.getIntroducedDate();
 			LocalDateTime discontinued = model.getDiscontinuedDate();
-			CompanyModelImpl company = model.getCompany();
+			Company company = model.getCompany();
 			
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		

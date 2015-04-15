@@ -1,6 +1,6 @@
 package com.excilys.controller;
 import com.excilys.mapper.ComputerMapperDto;
-import com.excilys.model.ComputerModel;
+import com.excilys.model.Computer;
 import com.excilys.model.Page;
 import com.excilys.service.ComputerService;
 
@@ -52,8 +52,8 @@ public class Dashboard {
 			searchParam = search.get();
 		}
 
-		Page<ComputerModel> currentPage = service.page(page, nbResultsParam, searchParam);
-		List<ComputerModel> computers = service.getAllByPage(currentPage, orderParam, directionParam, searchParam);
+		Page<Computer> currentPage = service.page(page, nbResultsParam, searchParam);
+		List<Computer> computers = service.getAllByPage(currentPage, orderParam, directionParam, searchParam);
 
 		model.addAttribute("computers", ComputerMapperDto.modelsToDtos(computers));
 		model.addAttribute("computersNb", currentPage.getNbResultTotal());

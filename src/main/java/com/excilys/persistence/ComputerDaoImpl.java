@@ -9,7 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.mapper.ComputerMapper;
-import com.excilys.model.ComputerModel;
+import com.excilys.model.Computer;
 import com.excilys.model.Page;
 
 @Repository
@@ -26,12 +26,12 @@ public class ComputerDaoImpl implements ComputerDao {
 		return jdbcTemplate.queryForObject("SELECT COUNT(*) as Total FROM computer", Integer.class);
 	}
 	
-	public List<ComputerModel> getAllComputers() {
+	public List<Computer> getAllComputers() {
 		return jdbcTemplate.query("SELECT * FROM computer as compu left "
 					+ "outer join company as compa ON compu.company_id = compa.id ORDER by compu.id;", computerMapper);
 	}
 	
-	public List<ComputerModel> getAllComputersByPage(Page<ComputerModel> page, String order, String direction, String search) {
+	public List<Computer> getAllComputersByPage(Page<Computer> page, String order, String direction, String search) {
 		List<Object> param = new ArrayList<Object>();
 		String query = "SELECT * FROM computer as compu left outer join company as company ON compu.company_id = company.id WHERE compu.name LIKE ? OR company.name LIKE ? ORDER BY %s %s LIMIT ? OFFSET ?;";
 		param.add("%" + search + "%");
@@ -51,13 +51,13 @@ public class ComputerDaoImpl implements ComputerDao {
 		return jdbcTemplate.queryForObject(query, param.toArray(), Integer.class);
 	}
 
-	public ComputerModel getComputerDetails(long idComputer) {
+	public Computer getComputerDetails(long idComputer) {
 		String query = "SELECT * FROM computer as compu left "
 				+ "outer join company as company ON compu.company_id = company.id WHERE compu.id = ? ORDER by compu.id;";
 		return jdbcTemplate.queryForObject(query, new Object[] { idComputer }, computerMapper);
 	}
 
-	public void createComputer(ComputerModel computer) {
+	public void createComputer(Computer computer) {
 		String query = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)";
 		Timestamp introduced = null;
 		if (computer.getIntroducedDate() != null) {
@@ -71,7 +71,7 @@ public class ComputerDaoImpl implements ComputerDao {
 				discontinued, computer.getCompany().getId()});
 	}
 
-	public void updateComputer(ComputerModel computer) {
+	public void updateComputer(Computer computer) {
 		Timestamp introduced = null;
 		if (computer.getIntroducedDate() != null) {
 			introduced = Timestamp.valueOf(computer.getIntroducedDate());

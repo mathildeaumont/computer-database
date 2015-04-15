@@ -2,19 +2,19 @@ package com.excilys.model;
 
 import java.time.LocalDateTime;
 
-public class ComputerModelImpl implements ComputerModel {
+public class Computer {
 
 	private long id;
 	private String name;
 	private LocalDateTime introducedDate;
 	private LocalDateTime discontinuedDate;
-	private CompanyModelImpl company;
+	private Company company;
 	
-	public ComputerModelImpl() {
+	public Computer() {
 		
 	}
 	
-	public ComputerModelImpl(long id, String name, LocalDateTime introducedDate, LocalDateTime discontinuedDate, CompanyModelImpl company) {
+	public Computer(long id, String name, LocalDateTime introducedDate, LocalDateTime discontinuedDate, Company company) {
 		this.id = id;
 		this.setName(name);
 		this.setIntroducedDate(introducedDate);
@@ -54,11 +54,11 @@ public class ComputerModelImpl implements ComputerModel {
 		this.discontinuedDate = discontinuedDate;
 	}
 
-	public CompanyModelImpl getCompany() {
+	public Company getCompany() {
 		return company;
 	}
 
-	public void setCompany(CompanyModelImpl company) {
+	public void setCompany(Company company) {
 		this.company = company;
 	}
 	
@@ -102,7 +102,7 @@ public class ComputerModelImpl implements ComputerModel {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ComputerModelImpl other = (ComputerModelImpl) obj;
+		Computer other = (Computer) obj;
 		if (company == null) {
 			if (other.company != null)
 				return false;
