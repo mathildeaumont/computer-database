@@ -4,6 +4,10 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -11,6 +15,8 @@ import org.springframework.stereotype.Repository;
 import com.excilys.mapper.ComputerMapper;
 import com.excilys.model.Computer;
 import com.excilys.model.Page;
+import com.excilys.model.QComputer;
+import com.mysema.query.jpa.impl.JPAQuery;
 
 @Repository
 public class ComputerDaoImpl implements ComputerDao {
@@ -21,14 +27,20 @@ public class ComputerDaoImpl implements ComputerDao {
 	@Autowired
 	private ComputerMapper computerMapper;
 
-	
+
 	public int getLength() {
 		return jdbcTemplate.queryForObject("SELECT COUNT(*) as Total FROM computer", Integer.class);
 	}
 	
 	public List<Computer> getAllComputers() {
-		return jdbcTemplate.query("SELECT * FROM computer as compu left "
-					+ "outer join company as compa ON compu.company_id = compa.id ORDER by compu.id;", computerMapper);
+	
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("ComputerDatabase_PU");
+		EntityManager em = emf.createEntityManager();
+		JPAQuery query = new JPAQuery(em);
+		QComputer computer = QComputer.computer;
+
+		List<Computer> computers = query.from(computer).list(computer);
+		return computers;
 	}
 	
 	public List<Computer> getAllComputersByPage(Page<Computer> page, String order, String direction, String search) {

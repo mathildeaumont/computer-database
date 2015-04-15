@@ -31,6 +31,13 @@
 		<property name="defaultEncoding" value="UTF-8" />
 	</bean>
 
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"> 
+        <property name="persistenceXmlLocation" value="classpath:persistence.xml"/>
+        <property name="persistenceUnitName" value="ComputerDatabase_PU"/>
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    
 	<context:component-scan
 		base-package="com.excilys.mapper, com.excilys.persistence, com.excilys.service" />
 </beans>

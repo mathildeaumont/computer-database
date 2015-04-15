@@ -3,7 +3,6 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="mylib"%>
 <!DOCTYPE html>
 <html>
-<html>
 <c:import url="head.jsp" />
 <body>
 	<mylib:header pageName="error" />
