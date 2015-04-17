@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 import com.excilys.dto.ComputerDto;
 import com.excilys.model.Company;
@@ -28,7 +29,12 @@ public class ComputerMapperDto {
 		String introduced = dto.getIntroducedDate();
 		String discontinued = dto.getDiscontinuedDate();
 		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		DateTimeFormatter formatter;
+		if (LocaleContextHolder.getLocale().toString().equals("fr")) {
+			formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+		} else {
+			formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		}
 		LocalDateTime introducedDate = LocalDateTime.parse(introduced, formatter);
 		LocalDateTime discontinuedDate = LocalDateTime.parse(discontinued, formatter);
 		
@@ -54,7 +60,12 @@ public class ComputerMapperDto {
 		LocalDateTime discontinued = model.getDiscontinuedDate();
 		Company company = model.getCompany();
 		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		DateTimeFormatter formatter;
+		if (LocaleContextHolder.getLocale().toString().equals("fr")) {
+			formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+		} else {
+			formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		}
 		
 		dto.setId(id);
 		dto.setName(name);
@@ -82,8 +93,13 @@ public class ComputerMapperDto {
 			LocalDateTime discontinued = model.getDiscontinuedDate();
 			Company company = model.getCompany();
 			
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-		
+			DateTimeFormatter formatter;
+			if (LocaleContextHolder.getLocale().toString().equals("fr")) {
+				formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+			} else {
+				formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+			}
+			
 			dto.setId(id);
 			dto.setName(name);
 			if (introduced != null) {

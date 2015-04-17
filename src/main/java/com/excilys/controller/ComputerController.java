@@ -7,11 +7,12 @@ import com.excilys.model.Page;
 import com.excilys.service.CompanyService;
 import com.excilys.service.CompanyServiceImpl;
 import com.excilys.service.ComputerService;
-import com.excilys.util.Regex;
+import com.excilys.util.Validator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,7 +25,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Pattern;
 
 import javax.validation.Valid;
 
@@ -120,7 +120,7 @@ public class ComputerController {
 		int nbErrors = 0;
 
 		String nameParam = computerForm.getName();
-		if (nameParam != null) {
+		if (Validator.isValidName(nameParam)) {
 			nameParam = nameParam.trim();
 			if (nameParam.isEmpty()) {
 				model.addObject("companies", CompanyMapperDto.modelsToDtos(companyService.getAll()));
@@ -128,46 +128,40 @@ public class ComputerController {
 			} else {
 				model.addObject("name", nameParam);
 			}
-		} else {
-			LOGGER.error("Error because of name is null");
 		}
 
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		DateTimeFormatter formatter;
+		String errorDate;
+		if (LocaleContextHolder.getLocale().toString().equals("fr")) {
+			formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+			errorDate = "Invalid format (dd-mm-yyyy hh:mm:ss)";
+		} else {
+			formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+			errorDate = "Invalid format (yyyy-mm-dd hh:mm:ss)";
+		}
 		LocalDateTime introducedDate = null;
 		LocalDateTime discontinuedDate = null;
 
 		String introducedParam = computerForm.getIntroducedDate();
-		if (introducedParam != null) {
-			if (!introducedParam.isEmpty()) {
-				if (!Pattern.matches(Regex.DATE_FORMAT.getRegex(), introducedParam.trim())) {
-					model.addObject("errorIntroduced", "Invalid format (yyyy-mm-dd hh:mm:ss)");
-					model.addObject("companies", CompanyMapperDto.modelsToDtos(companyService.getAll()));
-					nbErrors++;
-				} else {
-					introducedDate = LocalDateTime.parse(introducedParam, formatter);
-					model.addObject("introduced", introducedParam);
-				}
-			}
-		} else {
-			LOGGER.error("Error because of introduced date is null");
+		if (Validator.isValidDate(introducedParam) && !introducedParam.isEmpty()) {
+			introducedDate = LocalDateTime.parse(introducedParam, formatter);
+			model.addObject("introduced", introducedParam);
+		} else if (!introducedParam.isEmpty()) {
+			model.addObject("errorIntroduced", errorDate);
+			model.addObject("companies", CompanyMapperDto.modelsToDtos(companyService.getAll()));
+			nbErrors++;
 		}
 
 		String discontinuedParam = computerForm.getDiscontinuedDate();
-		if (discontinuedParam != null) {
-			if (!discontinuedParam.isEmpty()) {
-				if (!Pattern.matches(Regex.DATE_FORMAT.getRegex(), discontinuedParam.trim())) {
-						model.addObject("errorDiscontinued", "Invalid format (yyyy-mm-dd hh:mm:ss)");
-						model.addObject("companies", CompanyMapperDto.modelsToDtos(companyService.getAll()));
-					nbErrors++;
-				} else {
-					discontinuedDate = LocalDateTime.parse(discontinuedParam, formatter);
-					model.addObject("discontinued", discontinuedParam);
-				}
-			}
-		} else {
-			LOGGER.error("Error because of discontinued date is null");
+		if (Validator.isValidDate(discontinuedParam) && !discontinuedParam.isEmpty()) {
+			discontinuedDate = LocalDateTime.parse(discontinuedParam, formatter);
+			model.addObject("discontinued", discontinuedParam);
+		} else if (!discontinuedParam.isEmpty()) {
+			model.addObject("errorDiscontinued", errorDate);
+			model.addObject("companies", CompanyMapperDto.modelsToDtos(companyService.getAll()));
+			nbErrors++;
 		}
-
+		
 		long companyIdParam = computerForm.getCompany().getId();
 		model.addObject("companyId", companyIdParam);
 
@@ -199,7 +193,7 @@ public class ComputerController {
 			@RequestParam("discontinued") Optional<String> discontinued,
 			@RequestParam("companyId") long companyId, ModelAndView model) {
 		
-		if (name != null) {
+		if (Validator.isValidName(name)) {
 			name = name.trim();
 			if (name.isEmpty()) {
 				model.addObject("errorName", "Name is required");
@@ -210,44 +204,42 @@ public class ComputerController {
 			}
 		}
 		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		DateTimeFormatter formatter;
+		String errorDate;
+		if (LocaleContextHolder.getLocale().toString().equals("fr")) {
+			formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+			errorDate = "Invalid format (dd-mm-yyyy hh:mm:ss)";
+		} else {
+			formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+			errorDate = "Invalid format (yyyy-mm-dd hh:mm:ss)";
+		}
 		LocalDateTime introducedDate = null;
 		LocalDateTime discontinuedDate = null;
 		
 		String introducedParam = introduced.get();
-		if (introducedParam != null) {
-			if (!introducedParam.isEmpty()) {
-				if (!Pattern.matches(Regex.DATE_FORMAT.getRegex(), introducedParam.trim())) {
-					model.addObject("errorIntroduced", "Invalid format (yyyy-mm-dd hh:mm:ss)");
-					model.addObject("companies", companyService.getAll());
-					model.addObject("id", computerId);
-					Computer computer = service.getById(computerId);
-					model.addObject("computer", computer);
-					LOGGER.error("Failure : Bad format introduced date");
-					model.setViewName("editComputer");
-					return model;
-				}
-				introducedDate = LocalDateTime.parse(introducedParam, formatter);
-			}
+		if (Validator.isValidDate(introducedParam)) {
+			model.addObject("errorIntroduced", errorDate);
+			model.addObject("companies", companyService.getAll());
+			model.addObject("id", computerId);
+			Computer computer = service.getById(computerId);
+			model.addObject("computer", computer);
+			model.setViewName("editComputer");
+			return model;
 		}
-		
+		introducedDate = LocalDateTime.parse(introducedParam, formatter);
+
 		String discontinuedParam = discontinued.get();
-		if (discontinuedParam != null) {
-			if (!discontinuedParam.isEmpty()) {
-				if (!Pattern.matches(Regex.DATE_FORMAT.getRegex(), discontinuedParam.trim())) {
-					model.addObject("errorDiscontinued", "Invalid format (yyyy-mm-dd hh:mm:ss)");
-					model.addObject("companies", companyService.getAll());
-					model.addObject("id", computerId);
-					Computer computer = service.getById(computerId);
-					model.addObject("computer", computer);
-					LOGGER.error("Failure : Bad format discontinued date");
-					model.setViewName("editComputer");
-					return model;
-				}
-				discontinuedDate = LocalDateTime.parse(discontinuedParam, formatter);
-			}
+		if (Validator.isValidDate(discontinuedParam)) {
+			model.addObject("errorDiscontinued", errorDate);
+			model.addObject("companies", companyService.getAll());
+			model.addObject("id", computerId);
+			Computer computer = service.getById(computerId);
+			model.addObject("computer", computer);
+			model.setViewName("editComputer");
+			return model;
 		}
-	
+		discontinuedDate = LocalDateTime.parse(discontinuedParam, formatter);
+			
 		service.update(computerId, name, introducedDate, discontinuedDate, companyId);
 		LOGGER.info("Successfully updated computer");
 		model.setViewName("redirect:dashboard");
