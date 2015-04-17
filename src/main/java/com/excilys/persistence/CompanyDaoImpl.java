@@ -4,12 +4,15 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+
 import com.excilys.model.Company;
 import com.excilys.model.QCompany;
+import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 
 @Repository
@@ -34,6 +37,15 @@ public class CompanyDaoImpl implements CompanyDao {
 	}
 
 	public void delete(long companyId) {
-		jdbcTemplate.update("DELETE FROM company WHERE company_id = ?;", companyId);
+		EntityManager em = entityManagerFactory.createEntityManager();
+		EntityTransaction transaction = em.getTransaction();
+		QCompany company = QCompany.company;
+		try {
+			transaction.begin();
+			new JPADeleteClause(em, company).where(company.id.eq(companyId)).execute();
+			transaction.commit();
+		} catch (Exception e) {
+			transaction.rollback();
+		}
 	}
 }
