@@ -50,7 +50,7 @@ public class CompanyDaoTest {
 		final Company company1 = new Company(1, "Test");
 		final Company company2 = new Company(2, "Test2");
 		// WHEN
-		List<Company> companies = daoFactory.getCompanyDAO().getAllCompanies();
+		List<Company> companies = daoFactory.getCompanyDAO().getAll();
 		// THEN
 		Assertions.assertThat(companies).isNotNull();
 		Assertions.assertThat(companies).isNotEmpty();
@@ -65,7 +65,7 @@ public class CompanyDaoTest {
 		DBUtil.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
 				"src/test/java/com/excilys/persistence/data/getCompaniesEmpty.xml")));
 		// WHEN
-		List<Company> companies = daoFactory.getCompanyDAO().getAllCompanies();
+		List<Company> companies = daoFactory.getCompanyDAO().getAll();
 		// THEN
 		Assertions.assertThat(companies).isNotNull();
 		Assertions.assertThat(companies).isEmpty();

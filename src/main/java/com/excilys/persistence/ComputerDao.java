@@ -11,17 +11,17 @@ public interface ComputerDao {
 
 	public int getLength(String search);
 	
-	public List<Computer> getAllComputers();
+	public List<Computer> getAll();
 	
-	public List<Computer> getAllComputersByPage(Page<Computer> page, String order, String direction, String search);
+	public List<Computer> getAllByPage(Page<Computer> page, String order, String direction, String search);
 	
-	public Computer getComputerDetails(long id);
+	public Computer getDetails(long id);
 	
-	public void createComputer(Computer computer);
+	public void create(Computer computer);
 	
-	public void updateComputer(Computer computer);
+	public void update(Computer computer);
 	
-	public void deleteComputer(long id);
+	public void delete(long id);
 	
-	public void deleteComputerByCompanyId(long companyId);
+	public void deleteByCompanyId(long companyId);
 }

@@ -8,8 +8,6 @@ import javax.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-
-import com.excilys.mapper.CompanyMapper;
 import com.excilys.model.Company;
 import com.excilys.model.QCompany;
 import com.mysema.query.jpa.impl.JPAQuery;
@@ -21,15 +19,12 @@ public class CompanyDaoImpl implements CompanyDao {
 	private DaoFactory daoFactory;
 
 	@Autowired
-	private CompanyMapper companyMapper;
-
-	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
 	@Autowired
 	private EntityManagerFactory entityManagerFactory;
 
-	public List<Company> getAllCompanies() {
+	public List<Company> getAll() {
 		EntityManager em = entityManagerFactory.createEntityManager();
 		JPAQuery query = new JPAQuery(em);
 		QCompany company = QCompany.company;
@@ -38,7 +33,7 @@ public class CompanyDaoImpl implements CompanyDao {
 		return companies;
 	}
 
-	public void deleteCompany(long companyId) {
+	public void delete(long companyId) {
 		jdbcTemplate.update("DELETE FROM company WHERE company_id = ?;", companyId);
 	}
 }

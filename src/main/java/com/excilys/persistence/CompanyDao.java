@@ -5,7 +5,7 @@ import java.util.List;
 import com.excilys.model.Company;
 public interface CompanyDao {
 
-	public List<Company> getAllCompanies();
+	public List<Company> getAll();
 	
-	public void deleteCompany(long companyId);
+	public void delete(long companyId);
 }

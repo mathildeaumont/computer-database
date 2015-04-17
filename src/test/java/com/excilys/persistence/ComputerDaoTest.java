@@ -52,7 +52,7 @@ public class ComputerDaoTest {
 				2012, 5, 1, 0, 0, 0), null, company);
 		final Computer computer2 = new Computer(2, "Computer2", null, null, company);
 		// WHEN
-		List<Computer> computers = daoFactory.getComputerDAO().getAllComputers();
+		List<Computer> computers = daoFactory.getComputerDAO().getAll();
 		// THEN
 		Assertions.assertThat(computers).isNotNull();
 		Assertions.assertThat(computers).isNotEmpty();
@@ -67,7 +67,7 @@ public class ComputerDaoTest {
 		DBUtil.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
 				"src/test/java/com/excilys/persistence/data/getComputersEmpty.xml")));
 		// WHEN
-		List<Computer> computers = daoFactory.getComputerDAO().getAllComputers();
+		List<Computer> computers = daoFactory.getComputerDAO().getAll();
 		// THEN
 		Assertions.assertThat(computers).isNotNull();
 		Assertions.assertThat(computers).isEmpty();
@@ -107,7 +107,7 @@ public class ComputerDaoTest {
 		final int computerId = 1;
 		final Computer computer = new Computer(computerId, name, introduced, null, company);
 		// WHEN
-		Computer comp = daoFactory.getComputerDAO().getComputerDetails(computerId);
+		Computer comp = daoFactory.getComputerDAO().getDetails(computerId);
 		// THEN
 		Assertions.assertThat(comp).isEqualTo(computer);
 		Assertions.assertThat(comp.getId()).isEqualTo(1);
@@ -124,7 +124,7 @@ public class ComputerDaoTest {
 				"src/test/java/com/excilys/persistence/data/getComputers.xml")));
 		final int computerId = 3;
 		// WHEN
-		Computer comp = daoFactory.getComputerDAO().getComputerDetails(computerId);
+		Computer comp = daoFactory.getComputerDAO().getDetails(computerId);
 		// THEN
 		Assertions.assertThat(comp).isNull();
 	}
@@ -141,8 +141,8 @@ public class ComputerDaoTest {
 		computer.setIntroducedDate(introduced);
 		final int nbComputers = 1;
 		// WHEN
-		daoFactory.getComputerDAO().createComputer(computer);
-		List<Computer> computers = daoFactory.getComputerDAO().getAllComputers();
+		daoFactory.getComputerDAO().create(computer);
+		List<Computer> computers = daoFactory.getComputerDAO().getAll();
 		// THEN
 		Assertions.assertThat(computers.size()).isEqualTo(nbComputers);
 	}
@@ -153,12 +153,12 @@ public class ComputerDaoTest {
 		DBUtil.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
 				"src/test/java/com/excilys/persistence/data/updateComputer.xml")));
 		final int computerId = 1;
-		Computer computer = daoFactory.getComputerDAO().getComputerDetails(computerId);
+		Computer computer = daoFactory.getComputerDAO().getDetails(computerId);
 		final String name = "Test";
 		// WHEN
 		computer.setName(name);
-		daoFactory.getComputerDAO().updateComputer(computer);
-		computer = daoFactory.getComputerDAO().getComputerDetails(computerId);
+		daoFactory.getComputerDAO().update(computer);
+		computer = daoFactory.getComputerDAO().getDetails(computerId);
 		// THEN
 		Assertions.assertThat(computer.getName()).isEqualTo(name);
 	}
@@ -169,9 +169,9 @@ public class ComputerDaoTest {
         DBUtil.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
         		"src/test/java/com/excilys/persistence/data/deleteComputer.xml")));
 		final int computerId = 1;
-		daoFactory.getComputerDAO().deleteComputer(computerId);
+		daoFactory.getComputerDAO().delete(computerId);
         // WHEN
-        final List<Computer> computers = daoFactory.getComputerDAO().getAllComputers();
+        final List<Computer> computers = daoFactory.getComputerDAO().getAll();
         // THEN
         Assertions.assertThat(computers).isNotNull();
         Assertions.assertThat(computers).isEmpty();
@@ -184,9 +184,9 @@ public class ComputerDaoTest {
         		"src/test/java/com/excilys/persistence/data/deleteComputer.xml")));
 		final int computerId = 2;
 		final int computersNb = 1;
-		daoFactory.getComputerDAO().deleteComputer(computerId);
+		daoFactory.getComputerDAO().delete(computerId);
         // WHEN
-        final List<Computer> computers = daoFactory.getComputerDAO().getAllComputers();
+        final List<Computer> computers = daoFactory.getComputerDAO().getAll();
         // THEN
         Assertions.assertThat(computers).isNotNull();
         Assertions.assertThat(computers.size()).isEqualTo(computersNb);

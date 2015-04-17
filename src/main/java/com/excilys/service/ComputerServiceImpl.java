@@ -35,15 +35,15 @@ public class ComputerServiceImpl implements ComputerService {
 	}
 	
 	public List<Computer> getAll() {
-		return computerDao.getAllComputers();
+		return computerDao.getAll();
 	}
 	
 	public List<Computer> getAllByPage(Page<Computer> page, String order, String direction, String search) {
-		return computerDao.getAllComputersByPage(page, order, direction, search);
+		return computerDao.getAllByPage(page, order, direction, search);
 	}
 	
 	public Computer getById(long id) {
-		return computerDao.getComputerDetails(id);
+		return computerDao.getDetails(id);
 	}
 	
 	public void create(String name, LocalDateTime introduced, LocalDateTime discontinued, long companyId) {
@@ -54,18 +54,18 @@ public class ComputerServiceImpl implements ComputerService {
 		computer.setDiscontinuedDate(discontinued);
 		computer.setIntroducedDate(introduced);
 		computer.setCompany((Company) company);
-		computerDao.createComputer(computer);
+		computerDao.create(computer);
 	}
 	
 	public void update(long computerId, String name, LocalDateTime introduced, LocalDateTime discontinued, long companyId) {
 		Company company = new Company();
 		company.setId(companyId);
 		Computer computer = new Computer(computerId, name, introduced, discontinued, (Company) company);
-		computerDao.updateComputer(computer);
+		computerDao.update(computer);
 	}
 	
 	public void delete(long computerId) {
-		computerDao.deleteComputer(computerId);
+		computerDao.delete(computerId);
 	}
 	
 	public Page<Computer> page(int nbPage, int nbResultByPage, String search) {

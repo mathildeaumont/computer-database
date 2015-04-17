@@ -1,6 +1,5 @@
 package com.excilys.persistence;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -12,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.excilys.mapper.ComputerMapper;
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
 import com.excilys.model.Page;
@@ -30,9 +27,6 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	
-	@Autowired
-	private ComputerMapper computerMapper;
 
 	@Autowired
 	private EntityManagerFactory entityManagerFactory;
@@ -45,7 +39,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	    return (int) query.count();
 	}
 	
-	public List<Computer> getAllComputers() {	
+	public List<Computer> getAll() {	
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("ComputerDatabase_PU");
 		EntityManager em = emf.createEntityManager();
 		JPAQuery query = new JPAQuery(em);
@@ -57,7 +51,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public List<Computer> getAllComputersByPage(Page<Computer> page, String order, String direction, String search) {
+	public List<Computer> getAllByPage(Page<Computer> page, String order, String direction, String search) {
 		EntityManager em = entityManagerFactory.createEntityManager();
 		JPAQuery query = new JPAQuery(em);
 		QComputer computer = QComputer.computer;
@@ -91,7 +85,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	    return (int) query.count();
 	}
 
-	public Computer getComputerDetails(long idComputer) {
+	public Computer getDetails(long idComputer) {
 		EntityManager em = entityManagerFactory.createEntityManager();
 		JPAQuery query = new JPAQuery(em);
 		QComputer computer = QComputer.computer;
@@ -101,10 +95,9 @@ public class ComputerDaoImpl implements ComputerDao {
 	}
 
 	@Transactional
-	public void createComputer(Computer compu) {
+	public void create(Computer compu) {
 		EntityManager em = entityManagerFactory.createEntityManager();
 		EntityTransaction transaction = em.getTransaction();
-		QComputer computer = QComputer.computer;
 		try {
 			transaction.begin();
 			em.persist(compu);						
@@ -115,7 +108,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	}
 
 	@Transactional
-	public void updateComputer(Computer compu) {
+	public void update(Computer compu) {
 		EntityManager em = entityManagerFactory.createEntityManager();
 		EntityTransaction transaction = em.getTransaction();
 		QComputer computer = QComputer.computer;
@@ -134,7 +127,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	}
 
 	@Transactional
-	public void deleteComputer(long computerId) {
+	public void delete(long computerId) {
 		EntityManager em = entityManagerFactory.createEntityManager();
 		EntityTransaction transaction = em.getTransaction();
 		QComputer computer = QComputer.computer;
@@ -147,7 +140,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		}
 	}
 	
-	public void deleteComputerByCompanyId(long companyId) {
+	public void deleteByCompanyId(long companyId) {
 		EntityManager em = entityManagerFactory.createEntityManager();
 		EntityTransaction transaction = em.getTransaction();
 		QComputer computer = QComputer.computer;

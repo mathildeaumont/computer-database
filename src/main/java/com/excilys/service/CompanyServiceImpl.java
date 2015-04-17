@@ -26,13 +26,13 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	public List<Company> getAll() {
-		return companyDao.getAllCompanies();
+		return companyDao.getAll();
 	}
 
 	@Transactional
 	public void delete(long companyId) {
 		ComputerDao computerDao = new ComputerDaoImpl();
-		computerDao.deleteComputerByCompanyId(companyId);
-		companyDao.deleteCompany(companyId);
+		computerDao.deleteByCompanyId(companyId);
+		companyDao.delete(companyId);
 	}
 }
