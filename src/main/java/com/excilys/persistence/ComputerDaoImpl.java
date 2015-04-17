@@ -1,22 +1,29 @@
 package com.excilys.persistence;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.mapper.ComputerMapper;
+import com.excilys.model.Company;
 import com.excilys.model.Computer;
 import com.excilys.model.Page;
+import com.excilys.model.QCompany;
 import com.excilys.model.QComputer;
+import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
+import com.mysema.query.jpa.impl.JPAUpdateClause;
+import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.path.PathBuilder;
 
 @Repository
 public class ComputerDaoImpl implements ComputerDao {
@@ -27,83 +34,130 @@ public class ComputerDaoImpl implements ComputerDao {
 	@Autowired
 	private ComputerMapper computerMapper;
 
+	@Autowired
+	private EntityManagerFactory entityManagerFactory;
 
 	public int getLength() {
-		return jdbcTemplate.queryForObject("SELECT COUNT(*) as Total FROM computer", Integer.class);
+		EntityManager em = entityManagerFactory.createEntityManager();
+		JPAQuery query = new JPAQuery(em);
+		QComputer computer = QComputer.computer;
+	    query = query.from(computer);
+	    return (int) query.count();
 	}
 	
-	public List<Computer> getAllComputers() {
-	
+	public List<Computer> getAllComputers() {	
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("ComputerDatabase_PU");
 		EntityManager em = emf.createEntityManager();
 		JPAQuery query = new JPAQuery(em);
 		QComputer computer = QComputer.computer;
 
 		List<Computer> computers = query.from(computer).list(computer);
+		em.close();
 		return computers;
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public List<Computer> getAllComputersByPage(Page<Computer> page, String order, String direction, String search) {
-		List<Object> param = new ArrayList<Object>();
-		String query = "SELECT * FROM computer as compu left outer join company as company ON compu.company_id = company.id WHERE compu.name LIKE ? OR company.name LIKE ? ORDER BY %s %s LIMIT ? OFFSET ?;";
-		param.add("%" + search + "%");
-		param.add("%" + search + "%");
-		param.add(page.getNbResults());
-		param.add(page.getOffset());
-		final String request = String.format(query, order, direction);
-		return jdbcTemplate.query(request, param.toArray(), computerMapper);
+		EntityManager em = entityManagerFactory.createEntityManager();
+		JPAQuery query = new JPAQuery(em);
+		QComputer computer = QComputer.computer;
+	    QCompany company = QCompany.company;
+		query = query.from(computer).leftJoin(computer.company, company)
+										.where(computer.name.contains(search).or(company.name.contains(search)))
+										.limit(page.getNbResults())
+										.offset(page.getOffset());
+		if (!order.isEmpty()) {
+			order = order.split("\\.")[1];
+			PathBuilder orderBy;
+			if (order.contains("_")) {
+				orderBy = new PathBuilder(Company.class, "company");
+				order = order.split("_")[1];
+			} else {
+				orderBy = new PathBuilder(Computer.class, "computer");
+			}
+			query = query.orderBy(new OrderSpecifier<Comparable>(direction.equals("desc") ? com.mysema.query.types.Order.DESC : 
+			com.mysema.query.types.Order.ASC, orderBy.get(order)));
+		}
+		return query.list(computer);
 	}
 	
 	public int getLength(String search) {
-		List<Object> param = new ArrayList<Object>();
-		String query = "SELECT COUNT(*) as Total FROM computer as compu left "
-				+ "outer join company as compa ON compu.company_id = compa.id WHERE compu.name LIKE ? OR compa.name LIKE ? ;";
-		param.add("%" + search + "%");
-		param.add("%" + search + "%");
-		return jdbcTemplate.queryForObject(query, param.toArray(), Integer.class);
+		EntityManager em = entityManagerFactory.createEntityManager();
+		JPAQuery query = new JPAQuery(em);
+		QComputer computer = QComputer.computer;
+	    QCompany company = QCompany.company;
+	    query = query.from(computer).leftJoin(computer.company, company)
+				.where(computer.name.contains(search).or(company.name.contains(search)));
+	    return (int) query.count();
 	}
 
 	public Computer getComputerDetails(long idComputer) {
-		String query = "SELECT * FROM computer as compu left "
-				+ "outer join company as company ON compu.company_id = company.id WHERE compu.id = ? ORDER by compu.id;";
-		return jdbcTemplate.queryForObject(query, new Object[] { idComputer }, computerMapper);
+		EntityManager em = entityManagerFactory.createEntityManager();
+		JPAQuery query = new JPAQuery(em);
+		QComputer computer = QComputer.computer;
+	    QCompany company = QCompany.company;
+	    query = query.from(computer).leftJoin(computer.company, company).where(computer.id.eq(idComputer));
+	    return query.uniqueResult(computer);
 	}
 
-	public void createComputer(Computer computer) {
-		String query = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)";
-		Timestamp introduced = null;
-		if (computer.getIntroducedDate() != null) {
-			introduced = Timestamp.valueOf(computer.getIntroducedDate());
+	@Transactional
+	public void createComputer(Computer compu) {
+		EntityManager em = entityManagerFactory.createEntityManager();
+		EntityTransaction transaction = em.getTransaction();
+		QComputer computer = QComputer.computer;
+		try {
+			transaction.begin();
+			em.persist(compu);						
+			transaction.commit();
+		} catch (Exception e) {
+			transaction.rollback();
 		}
-		Timestamp discontinued = null;
-		if (computer.getDiscontinuedDate() != null) {
-			discontinued = Timestamp.valueOf(computer.getIntroducedDate());
-		}
-		jdbcTemplate.update(query, new Object[] {computer.getName(), introduced, 
-				discontinued, computer.getCompany().getId()});
 	}
 
-	public void updateComputer(Computer computer) {
-		Timestamp introduced = null;
-		if (computer.getIntroducedDate() != null) {
-			introduced = Timestamp.valueOf(computer.getIntroducedDate());
+	@Transactional
+	public void updateComputer(Computer compu) {
+		EntityManager em = entityManagerFactory.createEntityManager();
+		EntityTransaction transaction = em.getTransaction();
+		QComputer computer = QComputer.computer;
+		try {
+			transaction.begin();
+			new JPAUpdateClause(em, computer).where(computer.id.eq(compu.getId()))
+											.set(computer.name, compu.getName())
+											.set(computer.introducedDate, compu.getIntroducedDate())
+											.set(computer.discontinuedDate, compu.getDiscontinuedDate())
+											.set(computer.company, compu.getCompany())
+											.execute();	
+			transaction.commit();
+		} catch (Exception e) {
+			transaction.rollback();
 		}
-		Timestamp discontinued = null;
-		if (computer.getDiscontinuedDate() != null) {
-			discontinued = Timestamp.valueOf(computer.getIntroducedDate());
-		}
-		String query = "UPDATE computer set name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?;";
-		jdbcTemplate.update(query, new Object[] { computer.getName(), introduced, discontinued, 
-				computer.getCompany().getId(), computer.getId()});
 	}
 
+	@Transactional
 	public void deleteComputer(long computerId) {
-		jdbcTemplate.update("DELETE FROM computer WHERE id = ?;", computerId);
+		EntityManager em = entityManagerFactory.createEntityManager();
+		EntityTransaction transaction = em.getTransaction();
+		QComputer computer = QComputer.computer;
+		try {
+			transaction.begin();
+			new JPADeleteClause(em, computer).where(computer.id.eq(computerId)).execute();
+			transaction.commit();
+		} catch (Exception e) {
+			transaction.rollback();
+		}
 	}
 	
 	public void deleteComputerByCompanyId(long companyId) {
-		String query = "DELETE FROM computer WHERE company = ?;";
-		jdbcTemplate.update(query, companyId);
+		EntityManager em = entityManagerFactory.createEntityManager();
+		EntityTransaction transaction = em.getTransaction();
+		QComputer computer = QComputer.computer;
+		try {
+			transaction.begin();
+			new JPADeleteClause(em, computer).where(computer.company.id.eq(companyId)).execute();
+			transaction.commit();
+		} catch (Exception e) {
+			transaction.rollback();
+		}
 	}
 
 }

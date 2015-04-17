@@ -92,7 +92,10 @@ public class ComputerMapperDto {
 			if (discontinued != null) {
 				dto.setDiscontinuedDate(discontinued.format(formatter));
 			}
-			dto.setCompany(CompanyMapperDto.modelToDto(company));
+			
+			if (company != null) {
+				dto.setCompany(CompanyMapperDto.modelToDto(company));
+			}
 
 			dtos.add(dto);
 		}

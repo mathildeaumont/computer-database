@@ -75,12 +75,12 @@
                         <th>
 							<c:choose>
 								<c:when test="${direction == 'asc'}">
-									<mylib:link url="dashboard" direction="desc" offset="1" order="compu.introduced" search="${search}" nbResults="${page.nbResults}">
+									<mylib:link url="dashboard" direction="desc" offset="1" order="compu.introducedDate" search="${search}" nbResults="${page.nbResults}">
 										<spring:message code="computer.introduced"/>
 									</mylib:link>
 								</c:when>
 								<c:otherwise>
-									<mylib:link url="dashboard" direction="asc" offset="1" order="compu.introduced" search="${search}" nbResults="${page.nbResults}">
+									<mylib:link url="dashboard" direction="asc" offset="1" order="compu.introducedDate" search="${search}" nbResults="${page.nbResults}">
 										<spring:message code="computer.introduced"/>
 									</mylib:link>
 								</c:otherwise>
@@ -101,12 +101,12 @@
                         <th>
 							<c:choose>
 								<c:when test="${direction == 'asc'}">
-									<mylib:link url="dashboard" direction="desc" offset="1" order="compu.discontinued" search="${search}" nbResults="${page.nbResults}">
+									<mylib:link url="dashboard" direction="desc" offset="1" order="compu.discontinuedDate" search="${search}" nbResults="${page.nbResults}">
 										<spring:message code="computer.discontinued"/>
 									</mylib:link>
 								</c:when>
 								<c:otherwise>
-									<mylib:link url="dashboard" direction="asc" offset="1" order="compu.discontinued" search="${search}" nbResults="${page.nbResults}">
+									<mylib:link url="dashboard" direction="asc" offset="1" order="compu.discontinuedDate" search="${search}" nbResults="${page.nbResults}">
 										<spring:message code="computer.discontinued"/>
 									</mylib:link>
 								</c:otherwise>
@@ -126,12 +126,12 @@
                         <th>
 							<c:choose>
 								<c:when test="${direction == 'asc'}">
-									<mylib:link url="dashboard" direction="desc" offset="1" order="company.name" search="${search}" nbResults="${page.nbResults}">
+									<mylib:link url="dashboard" direction="desc" offset="1" order="compu.company_name" search="${search}" nbResults="${page.nbResults}">
 										<spring:message code="computer.company"/>
 									</mylib:link>
 								</c:when>
 								<c:otherwise>
-									<mylib:link url="dashboard" direction="asc" offset="1" order="company.name" search="${search}" nbResults="${page.nbResults}">
+									<mylib:link url="dashboard" direction="asc" offset="1" order="compu.company_name" search="${search}" nbResults="${page.nbResults}">
 										<spring:message code="computer.company"/>
 									</mylib:link>
 								</c:otherwise>

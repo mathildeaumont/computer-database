@@ -1,17 +1,24 @@
 package com.excilys.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+
 @Entity
 @Table(name="computer")
-public class Computer {
+public class Computer implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@Column(name = "id") 
@@ -21,13 +28,14 @@ public class Computer {
 	private String name;
 	
 	@Column(name = "introduced") 
+	@Type(type="com.excilys.mapper.DateTimeMapper")
 	private LocalDateTime introducedDate;
 	
 	@Column(name = "discontinued") 
+	@Type(type="com.excilys.mapper.DateTimeMapper")
 	private LocalDateTime discontinuedDate;
 	
 	@OneToOne
-	@JoinColumn(name="id")
 	private Company company;
 	
 	public Computer() {
