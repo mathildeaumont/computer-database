@@ -8,7 +8,6 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import com.excilys.model.Company;
@@ -24,9 +23,6 @@ import com.mysema.query.types.path.PathBuilder;
 
 @Repository
 public class ComputerDaoImpl implements ComputerDao {
-
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
 
 	@Autowired
 	private EntityManagerFactory entityManagerFactory;

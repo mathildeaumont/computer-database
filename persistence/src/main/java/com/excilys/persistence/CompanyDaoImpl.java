@@ -7,7 +7,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.model.Company;
@@ -17,9 +16,6 @@ import com.mysema.query.jpa.impl.JPAQuery;
 
 @Repository
 public class CompanyDaoImpl implements CompanyDao {
-
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
 	
 	@Autowired
 	private EntityManagerFactory entityManagerFactory;
