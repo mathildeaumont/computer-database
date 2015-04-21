@@ -1,8 +1,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:sec="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 						http://www.springframework.org/schema/context
@@ -10,7 +10,9 @@
 						http://www.springframework.org/schema/mvc
 						http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
 						http://www.springframework.org/schema/tx
-						http://www.springframework.org/schema/tx/spring-tx.xsd">
+						http://www.springframework.org/schema/tx/spring-tx.xsd
+						http://www.springframework.org/schema/security
+		  				http://www.springframework.org/schema/security/spring-security.xsd">
 
 	<context:property-placeholder location="classpath:config.properties" />
 
@@ -19,7 +21,7 @@
 		p:driverClassName="${driver}" p:url="${url}" p:username="${user}"
 		p:password="${pwd}" />
 
-	<tx:annotation-driven transaction-manager="transactionManager"/>
+	<tx:annotation-driven transaction-manager="transactionManager" />
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
@@ -31,12 +33,42 @@
 		<property name="defaultEncoding" value="UTF-8" />
 	</bean>
 
-    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"> 
-        <property name="persistenceXmlLocation" value="classpath:META-INF/persistence.xml"/>
-        <property name="persistenceUnitName" value="ComputerDatabase_PU"/>
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
-    
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceXmlLocation" value="classpath:META-INF/persistence.xml" />
+		<property name="persistenceUnitName" value="ComputerDatabase_PU" />
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+
+	<sec:http>
+		<sec:intercept-url pattern="/login*" access="isAnonymous()" />
+		<sec:intercept-url pattern="/**"
+			access="hasAnyRole('USER', 'ADMIN')" />
+		<sec:form-login login-processing-url="/perform_login"
+			login-page="/loginPage" authentication-failure-url="/loginError"
+			username-parameter="username" password-parameter="password"
+			authentication-success-handler-ref="simpleUrlAuthenticationSuccessHandler" />
+		<sec:logout logout-success-url="/logout" />
+	</sec:http>
+
+	<sec:authentication-manager>
+		<sec:authentication-provider>
+			<!-- <sec:user-service> <sec:user name="jimi" password="jimispassword" 
+				authorities="ROLE_USER, ROLE_ADMIN" /> <sec:user name="bob" password="bobspassword" 
+				authorities="ROLE_USER" /> </sec:user-service> -->
+			<sec:jdbc-user-service data-source-ref="dataSource" />
+		</sec:authentication-provider>
+	</sec:authentication-manager>
+	
+	<bean id="simpleUrlAuthenticationSuccessHandler"
+		class="org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler">
+		<property name="defaultTargetUrl" value="/dashboard" />
+		<property name="targetUrlParameter" value="spring-security-redirect" />
+	</bean>
+	<!-- <bean id="authenticationSuccessHandler" class="com.example.CustomSimpleURLAuthenticationSuccessHandler"> 
+		<property name="defaultTargetUrl" value="/dashboard" /> </bean> -->
+
 	<context:component-scan
 		base-package="com.excilys.mapper, com.excilys.persistence, com.excilys.service" />
 </beans>

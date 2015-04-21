@@ -6,6 +6,7 @@
 		<jta-data-source>java:/DefaultDS</jta-data-source>
 		<class>com.excilys.model.Computer</class>
 		<class>com.excilys.model.Company</class>
+		<class>com.excilys.model.User</class>
 		<properties>
          <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
       </properties>

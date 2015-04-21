@@ -6,6 +6,13 @@
 
 <header class="navbar navbar-inverse navbar-fixed-top">
 	<div class="container">
+		
+		<c:url var="logoutUrl" value="/logout"/>
+		<form action="${logoutUrl}" method="post">
+		  <input type="submit" value="Log out" />
+		  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+		</form>
+				
 		<a class="navbar-brand"
 			href="dashboard"> <spring:message code="header.title"/> </a> <span style="float: right"> 
 			
