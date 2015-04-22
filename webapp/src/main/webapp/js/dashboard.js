@@ -91,3 +91,13 @@ $(document).keydown(function(e) {
     }
 });
 
+// Enable/disable flags
+$(function() {
+	if (strings['lang'] === 'fr') {
+		$("#fr").removeClass("flagDisable");
+		$("#en").addClass("flagDisable");
+	} else if (strings['lang'] === 'en') {
+		$("#en").removeClass("flagDisable");
+		$("#fr").addClass("flagDisable");
+	} 
+});

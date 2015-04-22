@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="mylib"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <c:import url="head.jsp" />
@@ -22,8 +23,10 @@
                     </form>
                 </div>
                 <div class="pull-right">
-                    <a class="btn btn-success" id="addComputer" href="<c:url value="/add" />"><spring:message code="label.add"/></a> 
-                    <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();"><spring:message code="label.edit"/></a>
+                	<sec:authorize access="hasRole('ADMIN')">
+	                    <a class="btn btn-success" id="addComputer" href="<c:url value="/add" />"><spring:message code="label.add"/></a> 
+	                    <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();"><spring:message code="label.edit"/></a>
+                    </sec:authorize>
                 </div>
             </div>
         </div>
@@ -38,15 +41,17 @@
                     <tr>
                         <!-- Variable declarations for passing labels as parameters -->
                         <!-- Table header for Computer Name -->
-
+ 						<sec:authorize access="hasRole('ADMIN')">
                         <th class="editMode" style="width: 60px; height: 22px;">
                             <input type="checkbox" id="selectall" /> 
+                            
                             <span style="vertical-align: top;">
                                  -  <a href="#" id="deleteSelected" onclick="$.fn.deleteSelected();">
                                         <i class="fa fa-trash-o fa-lg"></i>
                                     </a>
                             </span>
                         </th>
+                        </sec:authorize>
                         <th> 
 							<c:choose>
 								<c:when test="${direction == 'asc'}">
@@ -155,8 +160,10 @@
 				<tbody id="results">
 					<c:forEach items="${computers}" var="computer">
 						<tr>
-							<td class="editMode"><input type="checkbox" name="cb"
-								class="cb" value="${computer.id}" /></td>
+							<sec:authorize access="hasRole('ADMIN')">
+								<td class="editMode"><input type="checkbox" name="cb"
+									class="cb" value="${computer.id}" /></td>
+							</sec:authorize>
 							<td><a
 								href="<c:url value="/edit?id=${computer.id}" />">${computer.name}</a>
 							</td>
@@ -185,11 +192,5 @@
 	<script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
 	<script src="<c:url value="/resources/js/dashboard.js" />"></script>
 	
-	<script type="text/javascript">
-		var strings = new Array();
-	 	strings['alert'] = "<spring:message code='delete.alert' javaScriptEscape='true' />"
-		strings['view'] = "<spring:message code='edit.view' javaScriptEscape='true' />"
-		strings['edit'] = "<spring:message code='edit.edit' javaScriptEscape='true' />"
-	</script>
 </body>
 </html>

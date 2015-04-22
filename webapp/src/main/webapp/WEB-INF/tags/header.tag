@@ -4,18 +4,34 @@
 <%@ attribute name="pageName" required="true" type="java.lang.String"
 	description="pageName"%>
 
+<script type="text/javascript">
+	var strings = new Array();
+ 	strings['alert'] = "<spring:message code='delete.alert' javaScriptEscape='true' />"
+ 	strings['view'] = "<spring:message code='edit.view' javaScriptEscape='true' />"
+	strings['edit'] = "<spring:message code='edit.edit' javaScriptEscape='true' />"
+	strings['lang'] = "<spring:message code='lang' javaScriptEscape='true' />"
+</script>
+
 <header class="navbar navbar-inverse navbar-fixed-top">
 	<div class="container">
 		
-		<c:url var="logoutUrl" value="/logout"/>
-		<form action="${logoutUrl}" method="post">
-		  <input type="submit" value="Log out" />
-		  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-		</form>
-				
 		<a class="navbar-brand"
-			href="dashboard"> <spring:message code="header.title"/> </a> <span style="float: right"> 
+				href="dashboard"> <spring:message code="header.title"/> </a> 
+		<c:if test="${pageName != 'login'}">
+				<div id="logout"> 
+					<c:url var="logoutUrl" value="/logout"/>
+					<form action="${logoutUrl}" method="post">
+						<button type="submit" class="btn btn-danger">
+						  <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> <spring:message code="login.logout"/>
+						</button>
+				  		
+				  		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+					</form>
+				</div>
+		</c:if>			
 			
+		<span class="flags"> 
+		
 		<c:if test="${pageName == 'dashboard'}">
 				<a href="<c:url value="dashboard">
 							<c:param name="offset" value="${page.currentPage}" />
@@ -25,9 +41,9 @@
 							<c:param name="search" value="${search}" />
 							<c:param name="lang" value="en" />
 						</c:url>">
-				en
+				<img id="en" class="flagEn" src="<c:url value="/resources/img/en.png" />" width=40 height=20 />
 				</a>
-				|
+				
 				<a href="<c:url value="dashboard">
 							<c:param name="offset" value="${page.currentPage}" />
 							<c:param name="nbResults" value="${page.nbResults}" />
@@ -36,7 +52,7 @@
 							<c:param name="search" value="${search}" />
 							<c:param name="lang" value="fr" />
 						</c:url>">
-				fr
+				<img id="fr" class="flagFr" src="<c:url value="/resources/img/fr.png" />" width=40 height=20 />
 				</a>
 		</c:if>
 		
@@ -44,13 +60,13 @@
 				<a href="<c:url value="add">
 							<c:param name="lang" value="en" />
 						</c:url>">
-				en
+				<img id="en" src="<c:url value="/resources/img/en.png" />" width=40 height=20 />
 				</a>
-				|
+				
 				<a href="<c:url value="add">
 							<c:param name="lang" value="fr" />
 						</c:url>">
-				fr
+				<img id="fr" src="<c:url value="/resources/img/fr.png" />" width=40 height=20 />
 				</a>
 		</c:if>
 		
@@ -59,14 +75,14 @@
 							<c:param name="id" value="${computer.id}" />
 							<c:param name="lang" value="en" />
 						</c:url>">
-				en
+				<img id="en" src="<c:url value="/resources/img/en.png" />" width=40 height=20 />
 				</a>
-				|
+				
 				<a href="<c:url value="edit">
 							<c:param name="id" value="${computer.id}" />
 							<c:param name="lang" value="fr" />
 						</c:url>">
-				fr
+				<img id="fr" src="<c:url value="/resources/img/fr.png" />" width=40 height=20 />
 				</a>
 		</c:if>
 		
@@ -74,13 +90,27 @@
 				<a href="<c:url value="${pageContext.request.contextPath}">
 							<c:param name="lang" value="en" />
 						</c:url>">
-				en
+				<img id="en" src="<c:url value="/resources/img/en.png" />" width=40 height=20 />
 				</a>
-				|
+				
 				<a href="<c:url value="${pageContext.request.contextPath}">
 							<c:param name="lang" value="fr" />
 						</c:url>">
-				fr
+				<img id="fr" src="<c:url value="/resources/img/fr.png" />" width=40 height=20 />
+				</a>
+		</c:if>
+		
+		<c:if test="${pageName == 'login'}">
+				<a href="<c:url value="loginPage">
+							<c:param name="lang" value="en" />
+						</c:url>">
+				<img id="en" src="<c:url value="/resources/img/en.png" />" width=40 height=20 />
+				</a>
+				
+				<a href="<c:url value="loginPage">
+							<c:param name="lang" value="fr" />
+						</c:url>">
+				<img id="fr" src="<c:url value="/resources/img/fr.png" />" width=40 height=20 />
 				</a>
 		</c:if>
 		

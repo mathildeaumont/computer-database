@@ -50,4 +50,17 @@ label.valid, div.valid {
 	color: green !important;
 }
 
+.flags {
+	margin-top: 10px;
+	margin-right: 20px;
+	float: right;
+}
 
+#logout {
+	margin-top: 7px;
+	float: right;
+}
+
+.flagDisable {
+	opacity: 0.2;
+})
