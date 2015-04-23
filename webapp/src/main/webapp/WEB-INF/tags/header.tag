@@ -16,7 +16,7 @@
 	<div class="container">
 		
 		<a class="navbar-brand"
-				href="dashboard"> <spring:message code="header.title"/> </a> 
+				href="${pageContext.request.contextPath}/dashboard"> <spring:message code="header.title"/> </a> 
 		<c:if test="${pageName != 'login'}">
 				<div id="logout"> 
 					<c:url var="logoutUrl" value="/logout"/>

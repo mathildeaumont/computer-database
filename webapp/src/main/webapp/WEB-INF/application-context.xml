@@ -14,18 +14,10 @@
 						http://www.springframework.org/schema/security
 		  				http://www.springframework.org/schema/security/spring-security.xsd">
 
+	<import resource="classpath:/application-context-service.xml" />
+	
 	<context:property-placeholder location="classpath:config.properties" />
 
-	<bean id="dataSource"
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-		p:driverClassName="${driver}" p:url="${url}" p:username="${user}"
-		p:password="${pwd}" />
-
-	<tx:annotation-driven transaction-manager="transactionManager" />
-	<bean id="transactionManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
 
 	<bean id="messageSource"
 		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
@@ -33,12 +25,6 @@
 		<property name="defaultEncoding" value="UTF-8" />
 	</bean>
 
-	<bean id="entityManagerFactory"
-		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-		<property name="persistenceXmlLocation" value="classpath:META-INF/persistence.xml" />
-		<property name="persistenceUnitName" value="ComputerDatabase_PU" />
-		<property name="dataSource" ref="dataSource" />
-	</bean>
 
 
 	<sec:http>
