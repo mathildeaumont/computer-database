@@ -1,14 +1,12 @@
 package com.excilys.webservice;
 
-
-import java.time.LocalDateTime;
-
 import javax.jws.WebMethod;
 import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
+
+import com.excilys.model.Computer;
+import com.excilys.model.Page;
 
 @WebService
-@SOAPBinding
 public interface ComputerWebservice {
 	
 	@WebMethod
@@ -21,15 +19,23 @@ public interface ComputerWebservice {
 	public String getComputerById(long id);
 	
 	@WebMethod
-	public void createComputer(String name, LocalDateTime introduced, LocalDateTime discontinued, long company);
+	public String getAllByPage(Page<Computer> page, String order, String direction, String search);
 	
 	@WebMethod
-	public void updateComputer(long computerId, String name, LocalDateTime introduced, LocalDateTime discontinued, long company);
+	public void createComputer(String name, String introduced, String discontinued, long company);
+	
+	@WebMethod
+	public void updateComputer(long computerId, String name, String introduced, String discontinued, long company);
 	
 	@WebMethod
 	public void deleteCompany(long id);
 	
 	@WebMethod
 	public void deleteComputer(long id);
+	
+	@WebMethod
+	public int getLengthComputers();
 
+	@WebMethod
+	public Page<Computer> pageComputers(int nbPage, int nbResultByPage, String search);
 }

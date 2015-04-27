@@ -117,4 +117,21 @@ public class ComputerDto {
 		return true;
 	}
 	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(id);
+		sb.append(" \t");
+		sb.append(name);
+		sb.append(" \t\t");
+		sb.append(introducedDate);
+		sb.append(" \t");
+		sb.append(discontinuedDate);
+		sb.append(" \t");
+ 		if (company != null) {
+ 			sb.append(company.getName());
+ 		}
+ 		sb.append("\n");
+		return sb.toString();
+	}
 }

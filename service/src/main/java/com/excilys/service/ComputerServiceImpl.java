@@ -3,9 +3,9 @@ package com.excilys.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
@@ -42,6 +42,7 @@ public class ComputerServiceImpl implements ComputerService {
 		return computerDao.getDetails(id);
 	}
 	
+	@Transactional
 	public void create(String name, LocalDateTime introduced, LocalDateTime discontinued, long companyId) {
 		Company company = new Company();
 		company.setId(companyId);
@@ -53,6 +54,7 @@ public class ComputerServiceImpl implements ComputerService {
 		computerDao.create(computer);
 	}
 	
+	@Transactional
 	public void update(long computerId, String name, LocalDateTime introduced, LocalDateTime discontinued, long companyId) {
 		Company company = new Company();
 		company.setId(companyId);

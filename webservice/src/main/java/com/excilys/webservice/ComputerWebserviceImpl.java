@@ -1,12 +1,17 @@
 package com.excilys.webservice;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.jws.WebService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.excilys.mapper.CompanyMapperDto;
+import com.excilys.mapper.ComputerMapperDto;
+import com.excilys.model.Computer;
+import com.excilys.model.Page;
 import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
 
@@ -21,27 +26,57 @@ public class ComputerWebserviceImpl implements ComputerWebservice {
 
 	@Override
 	public String getCompanies() {
-		return companyService.getAll().toString();
+		return CompanyMapperDto.modelsToDtos(companyService.getAll()).toString();
 	}
 
 	@Override
 	public String getComputers() {
-		return computerService.getAll().toString();
+		return ComputerMapperDto.modelsToDtos(computerService.getAll()).toString();
+	}
+	
+	public String getAllByPage(Page<Computer> page, String order, String direction, String search) {
+		return computerService.getAllByPage(page, order, direction, search).toString();
 	}
 
 	@Override
 	public String getComputerById(long id) {
-		return computerService.getById(id).toString();
+		return ComputerMapperDto.modelToDto(computerService.getById(id)).toString();
 	}
 
 	@Override
-	public void createComputer(String name, LocalDateTime introduced, LocalDateTime discontinued, long company) {
-		computerService.create(name, introduced, discontinued, company);
+	public void createComputer(String name, String introduced, String discontinued, long company) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		LocalDateTime introducedDate;
+		LocalDateTime discontinuedDate;
+		if (introduced != null) {
+			introducedDate = LocalDateTime.parse(introduced, formatter);
+		} else {
+			introducedDate = null;
+		}
+		if (discontinued != null) {
+			discontinuedDate = LocalDateTime.parse(discontinued, formatter);
+		} else {
+			discontinuedDate = null;
+		}
+		computerService.create(name, introducedDate, discontinuedDate, company);
 	}
 
 	@Override
-	public void updateComputer(long computerId, String name, LocalDateTime introduced, LocalDateTime discontinued, long company) {
-		computerService.update(computerId, name, introduced, discontinued, company);
+	public void updateComputer(long computerId, String name, String introduced, String discontinued, long company) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		LocalDateTime introducedDate;
+		LocalDateTime discontinuedDate;
+		if (introduced != null) {
+			introducedDate = LocalDateTime.parse(introduced, formatter);
+		} else {
+			introducedDate = null;
+		}
+		if (discontinued != null) {
+			discontinuedDate = LocalDateTime.parse(discontinued, formatter);
+		} else {
+			discontinuedDate = null;
+		}
+		computerService.update(computerId, name, introducedDate, discontinuedDate, company);
 	}
 
 	@Override
@@ -52,5 +87,15 @@ public class ComputerWebserviceImpl implements ComputerWebservice {
 	@Override
 	public void deleteComputer(long id) {
 		computerService.delete(id);
+	}
+	
+	@Override
+	public int getLengthComputers() {
+		return computerService.getLength();
+	}
+	
+	@Override
+	public Page<Computer> pageComputers(int nbPage, int nbResultByPage, String search) {
+		return computerService.page(nbPage, nbResultByPage, search);
 	}
 }

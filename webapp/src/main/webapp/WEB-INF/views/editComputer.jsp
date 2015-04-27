@@ -42,7 +42,8 @@
                                     	<option value="${company.id}" <c:if test="${company.id == computer.company.id }">selected</c:if>>${company.name}</option>
                                     </c:forEach>
                                 </select>
-                            </div>     
+                            </div>   
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />  
                         </fieldset>
                         <div class="actions pull-right">
                             <input type="submit" value="<spring:message code="label.edit"/>" class="btn btn-primary">

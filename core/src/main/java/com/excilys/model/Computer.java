@@ -104,6 +104,7 @@ public class Computer implements Serializable {
  		if (company != null) {
  			sb.append(company.getName());
  		}
+ 		sb.append("\n");
 		return sb.toString();
 	}
 

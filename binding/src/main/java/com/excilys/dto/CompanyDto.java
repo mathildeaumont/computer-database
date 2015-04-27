@@ -58,4 +58,14 @@ public class CompanyDto {
 		return true;
 	}
 	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(id);
+		sb.append(" \t");
+		sb.append(name);
+		sb.append("\n");
+		return sb.toString();
+	}
+	
 }

@@ -1,10 +1,17 @@
 package com.excilys.ui;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
+
+import javax.xml.namespace.QName;
+import javax.xml.ws.Service;
+
+import org.springframework.stereotype.Component;
 
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
@@ -13,9 +20,26 @@ import com.excilys.service.CompanyService;
 import com.excilys.service.CompanyServiceImpl;
 import com.excilys.service.ComputerService;
 import com.excilys.service.ComputerServiceImpl;
+import com.excilys.webservice.ComputerWebservice;
 
+@Component
 public class ComputerDatabase {
 
+	private final URL url;
+	private final QName qname;
+	private final Service service;
+	private final ComputerWebservice ws;
+	
+	public ComputerWebservice getWebservice() {
+		return ws;
+	}
+	public ComputerDatabase() throws MalformedURLException {
+		url = new URL("http://localhost:9898/webservice/computers?wsdl");
+		qname = new QName("http://webservice.excilys.com/", "ComputerWebserviceImplService");
+		service = Service.create(url, qname);
+		ws = service.getPort(ComputerWebservice.class);
+	}
+	 
 	public static void listToString(List<Computer> computers) {
 		StringBuilder sb = new StringBuilder();
 		for (Computer computer: computers) {
@@ -26,8 +50,10 @@ public class ComputerDatabase {
 	}
 
 	public static void main(String[] args) throws Exception {
-		ComputerService computerService = new ComputerServiceImpl();
-		CompanyService companyService = new CompanyServiceImpl();
+		ComputerDatabase cd = new ComputerDatabase();
+		ComputerWebservice webservice = cd.getWebservice();
+		//ComputerService computerService = new ComputerServiceImpl();
+		//CompanyService companyService = new CompanyServiceImpl();
 		String in = "";
 		Scanner scanIn = new Scanner(System.in);
 		boolean isOk = false;
@@ -35,30 +61,26 @@ public class ComputerDatabase {
 			in = scanIn.nextLine();
 			long id;
 			String name;
-			LocalDateTime introduced;
-			LocalDateTime discontinued;
+			String introduced;
+			String discontinued;
 			long companyId;
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 			switch (in.trim()) {
 			case "computers": 
 				System.out.println("Computers list :");
-				List<Computer> computers = computerService.getAll();
-				listToString(computers);
+				System.out.println(webservice.getComputers());
 				break;
 			case "companies": 
 				System.out.println("Companies list :");
-				List<Company> companies = companyService.getAll();
-				for (Company company : companies) {
-					System.out.println(company);
-				}
+				System.out.println(webservice.getCompanies());
 				break;
 			case "details":
 				System.out.println("Enter a computer id :");
 				in = scanIn.nextLine();
 				if (Pattern.matches("^\\d+$", in.trim())) {
 					id = Long.parseLong(in.trim());
-					Computer c = computerService.getById(id);
-					System.out.println(c);
+					//Computer c = computerService.getById(id);
+					System.out.println(webservice.getComputerById(id));
 				} else {
 					System.err.println("A number is required");
 				}
@@ -73,11 +95,13 @@ public class ComputerDatabase {
 					in = scanIn.nextLine();
 					if (!in.equals("")) {
 						if (Pattern.matches("^\\d{4}-(0[1-9]|1[012])-((0[1-9]|[12][0-9]|3[01]) (20|21|22|23|[01]\\d|\\d)(([:][0-5]\\d){1,2})(([:][0-5]\\d){1,2}))$", in.trim())) {
-							introduced = LocalDateTime.parse(in.trim(), formatter);
+							introduced = in.trim();
 							isOk = true;
 						} else {
 							System.err.println("Bad date format");
 						}
+					} else {
+						isOk = true;
 					}
 				}
 				isOk = false;
@@ -87,14 +111,16 @@ public class ComputerDatabase {
 					in = scanIn.nextLine();
 					if (!in.equals("")) {
 						if (Pattern.matches("^\\d{4}-(0[1-9]|1[012])-((0[1-9]|[12][0-9]|3[01]) (20|21|22|23|[01]\\d|\\d)(([:][0-5]\\d){1,2})(([:][0-5]\\d){1,2}))$", in.trim())) {
-							discontinued = LocalDateTime.parse(in.trim(), formatter);
+							discontinued = in.trim();
 							isOk = true;
 						} else {
 							System.err.println("Bad date format");
 						}
+					} else {
+						isOk = true;
 					}
 				}
-				computerService.create(name, introduced, discontinued, 44);
+				webservice.createComputer(name, introduced, discontinued, 43);
 				break;
 			case "update":
 				System.out.println("Enter a computer id :");
@@ -115,11 +141,13 @@ public class ComputerDatabase {
 					in = scanIn.nextLine();
 					if (!in.equals("")) {
 						if (Pattern.matches("^\\d{4}-(0[1-9]|1[012])-((0[1-9]|[12][0-9]|3[01]) (20|21|22|23|[01]\\d|\\d)(([:][0-5]\\d){1,2})(([:][0-5]\\d){1,2}))$", in.trim())) {
-							introduced = LocalDateTime.parse(in.trim(), formatter);
+							introduced = in.trim();
 							isOk = true;
 						} else {
 							System.err.println("Bad date format");
 						}
+					} else {
+						isOk = true;
 					}
 				}
 				isOk = false;
@@ -129,11 +157,13 @@ public class ComputerDatabase {
 					in = scanIn.nextLine();
 					if (!in.equals("")) {
 						if (Pattern.matches("^\\d{4}-(0[1-9]|1[012])-((0[1-9]|[12][0-9]|3[01]) (20|21|22|23|[01]\\d|\\d)(([:][0-5]\\d){1,2})(([:][0-5]\\d){1,2}))$", in.trim())) {
-							discontinued = LocalDateTime.parse(in.trim(), formatter);
+							discontinued = in.trim();
 							isOk = true;
 						} else {
 							System.err.println("Bad date format");
 						}
+					} else {
+						isOk = true;
 					}
 				}
 				System.out.println("Enter a company id :");
@@ -147,14 +177,14 @@ public class ComputerDatabase {
 						break;
 					}
 				}
-				computerService.update(id, name, introduced, discontinued, companyId);
+				webservice.updateComputer(id, name, introduced, discontinued, companyId);
 				break;
 			case "delete":
 				System.out.println("Enter a computer id :");
 				in = scanIn.nextLine();
 				if (Pattern.matches("^\\d+$", in.trim())) {
 					id = Long.parseLong(in.trim());
-					computerService.delete(id);
+					webservice.deleteComputer(id);
 				} else {
 					System.err.println("A number is required");
 					break;
@@ -179,10 +209,9 @@ public class ComputerDatabase {
 					System.err.println("A number is required");
 					break;
 				}
-				Page<Computer> page = computerService.page(nbPage, nbResultByPage, "");
-				computers = computerService.getAllByPage(page, "compu.id", "asc", "");
-				listToString(computers);
-				int nbPageTotal = computerService.getLength() / nbResultByPage;
+				Page<Computer> page = webservice.pageComputers(nbPage, nbResultByPage, "");
+				System.out.println(webservice.getAllByPage(page, "compu.id", "asc", ""));
+				int nbPageTotal = webservice.getLengthComputers() / nbResultByPage;
 				System.out.println("page " + nbPage + "/" + nbPageTotal);
 				while (!in.equals("stop")) {
 					in = scanIn.nextLine();
@@ -190,18 +219,16 @@ public class ComputerDatabase {
 					case "next" :
 						if (nbPage < nbPageTotal) {
 							nbPage++;
-							page = computerService.page(nbPage, nbResultByPage, "");
-							computers = computerService.getAllByPage(page, "compu.id", "asc", "");
-							listToString(computers);
+							page = webservice.pageComputers(nbPage, nbResultByPage, "");
+							System.out.println(webservice.getAllByPage(page, "compu.id", "asc", ""));
 							System.out.println("page " + nbPage + "/" + nbPageTotal);
 						}
 						break;
 					case "previous" :
 						if (nbPage > 1) {
 							nbPage--;
-							page = computerService.page(nbPage, nbResultByPage, "");
-							computers = computerService.getAllByPage(page, "compu.id", "asc", "");
-							listToString(computers);
+							page = webservice.pageComputers(nbPage, nbResultByPage, "");
+							System.out.println(webservice.getAllByPage(page, "compu.id", "asc", ""));
 							System.out.println("page " + nbPage + "/" + nbPageTotal);
 						}
 						break;
@@ -215,7 +242,7 @@ public class ComputerDatabase {
 				in = scanIn.nextLine();
 				if (Pattern.matches("^\\d+$", in.trim())) {
 					id = Long.parseLong(in.trim());
-					companyService.delete(id);
+					webservice.deleteCompany(id);
 				} else {
 					System.err.println("A number is required");
 					break;

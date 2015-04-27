@@ -143,7 +143,7 @@ public class ComputerController {
 		LocalDateTime discontinuedDate = null;
 
 		String introducedParam = computerForm.getIntroducedDate();
-		if (Validator.isValidDate(introducedParam) && !introducedParam.isEmpty()) {
+		if (!Validator.isValidDate(introducedParam) && !introducedParam.isEmpty()) {
 			introducedDate = LocalDateTime.parse(introducedParam, formatter);
 			model.addObject("introduced", introducedParam);
 		} else if (!introducedParam.isEmpty()) {
@@ -153,7 +153,7 @@ public class ComputerController {
 		}
 
 		String discontinuedParam = computerForm.getDiscontinuedDate();
-		if (Validator.isValidDate(discontinuedParam) && !discontinuedParam.isEmpty()) {
+		if (!Validator.isValidDate(discontinuedParam) && !discontinuedParam.isEmpty()) {
 			discontinuedDate = LocalDateTime.parse(discontinuedParam, formatter);
 			model.addObject("discontinued", discontinuedParam);
 		} else if (!discontinuedParam.isEmpty()) {
@@ -217,7 +217,7 @@ public class ComputerController {
 		LocalDateTime discontinuedDate = null;
 		
 		String introducedParam = introduced.get();
-		if (Validator.isValidDate(introducedParam)) {
+		if (!Validator.isValidDate(introducedParam) && !introducedParam.isEmpty()) {
 			model.addObject("errorIntroduced", errorDate);
 			model.addObject("companies", companyService.getAll());
 			model.addObject("id", computerId);
@@ -226,10 +226,12 @@ public class ComputerController {
 			model.setViewName("editComputer");
 			return model;
 		}
-		introducedDate = LocalDateTime.parse(introducedParam, formatter);
+		if (!introducedParam.isEmpty()) {
+			introducedDate = LocalDateTime.parse(introducedParam, formatter);
+		}
 
 		String discontinuedParam = discontinued.get();
-		if (Validator.isValidDate(discontinuedParam)) {
+		if (!Validator.isValidDate(discontinuedParam) && !discontinuedParam.isEmpty()) {
 			model.addObject("errorDiscontinued", errorDate);
 			model.addObject("companies", companyService.getAll());
 			model.addObject("id", computerId);
@@ -238,8 +240,10 @@ public class ComputerController {
 			model.setViewName("editComputer");
 			return model;
 		}
-		discontinuedDate = LocalDateTime.parse(discontinuedParam, formatter);
-			
+		if (!discontinuedParam.isEmpty()) {
+			discontinuedDate = LocalDateTime.parse(discontinuedParam, formatter);
+		}
+	
 		service.update(computerId, name, introducedDate, discontinuedDate, companyId);
 		LOGGER.info("Successfully updated computer");
 		model.setViewName("redirect:dashboard");

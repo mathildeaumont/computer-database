@@ -9,6 +9,9 @@ public class Page<T> {
 	private int totalPages;
 	private int nbResultTotal;
 	
+	public Page() {
+	}
+	
 	public Page(int currentPage, int nbResults, int offset, int totalPages, int nbResultTotal) {
 		this.setNbResults(nbResults);
 		this.setOffset(offset);

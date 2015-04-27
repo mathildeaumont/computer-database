@@ -10,6 +10,7 @@ import javax.persistence.Persistence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
 import com.excilys.model.Page;
@@ -36,8 +37,8 @@ public class ComputerDaoImpl implements ComputerDao {
 	}
 	
 	public List<Computer> getAll() {	
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("ComputerDatabase_PU");
-		EntityManager em = emf.createEntityManager();
+		//EntityManagerFactory emf = Persistence.createEntityManagerFactory("ComputerDatabase_PU");
+		EntityManager em = entityManagerFactory.createEntityManager();
 		JPAQuery query = new JPAQuery(em);
 		QComputer computer = QComputer.computer;
 
@@ -136,6 +137,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		}
 	}
 	
+	@Transactional
 	public void deleteByCompanyId(long companyId) {
 		EntityManager em = entityManagerFactory.createEntityManager();
 		EntityTransaction transaction = em.getTransaction();
@@ -148,5 +150,4 @@ public class ComputerDaoImpl implements ComputerDao {
 			transaction.rollback();
 		}
 	}
-
 }

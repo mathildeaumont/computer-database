@@ -8,6 +8,7 @@ import javax.persistence.EntityTransaction;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.model.Company;
 import com.excilys.model.QCompany;
@@ -16,7 +17,7 @@ import com.mysema.query.jpa.impl.JPAQuery;
 
 @Repository
 public class CompanyDaoImpl implements CompanyDao {
-	
+
 	@Autowired
 	private EntityManagerFactory entityManagerFactory;
 
@@ -29,6 +30,7 @@ public class CompanyDaoImpl implements CompanyDao {
 		return companies;
 	}
 
+	@Transactional
 	public void delete(long companyId) {
 		EntityManager em = entityManagerFactory.createEntityManager();
 		EntityTransaction transaction = em.getTransaction();
