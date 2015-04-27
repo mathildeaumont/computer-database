@@ -44,6 +44,7 @@
 		<springframework.version>4.1.6.RELEASE</springframework.version>
 		<spring.security.version>4.0.0.RELEASE</spring.security.version>
 		<javax.ws.version>2.2.11</javax.ws.version>
+		<jackson.version>2.5.2</jackson.version>
 	</properties>
 
 	<dependencies>
@@ -293,6 +294,23 @@
 				<version>${javax.ws.version}</version>
 			</dependency>
 
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-core</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-annotations</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
 		</dependencies>
 
 	</dependencyManagement>
