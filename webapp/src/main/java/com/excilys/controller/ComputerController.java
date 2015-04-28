@@ -115,7 +115,9 @@ public class ComputerController {
 	}
 	
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public ModelAndView add(@Valid @ModelAttribute("addComputerForm") ComputerDto computerForm, BindingResult result, ModelAndView model) {
+	public ModelAndView add(@Valid @ModelAttribute("addComputerForm") ComputerDto computerForm, 
+			@RequestParam("introduced") Optional<String> introduced,
+			@RequestParam("discontinued") Optional<String> discontinued, BindingResult result, ModelAndView model) {
 			
 		int nbErrors = 0;
 
@@ -142,7 +144,7 @@ public class ComputerController {
 		LocalDateTime introducedDate = null;
 		LocalDateTime discontinuedDate = null;
 
-		String introducedParam = computerForm.getIntroducedDate();
+		String introducedParam = introduced.get();
 		if (Validator.isValidDate(introducedParam) && !introducedParam.isEmpty()) {
 			introducedDate = LocalDateTime.parse(introducedParam, formatter);
 			model.addObject("introduced", introducedParam);
@@ -152,7 +154,7 @@ public class ComputerController {
 			nbErrors++;
 		}
 
-		String discontinuedParam = computerForm.getDiscontinuedDate();
+		String discontinuedParam = discontinued.get();
 		if (Validator.isValidDate(discontinuedParam) && !discontinuedParam.isEmpty()) {
 			discontinuedDate = LocalDateTime.parse(discontinuedParam, formatter);
 			model.addObject("discontinued", discontinuedParam);
@@ -164,7 +166,7 @@ public class ComputerController {
 		
 		long companyIdParam = computerForm.getCompany().getId();
 		model.addObject("companyId", companyIdParam);
-
+		
 		if (nbErrors != 0) {
 			model.setViewName("addComputer");
 			return model;

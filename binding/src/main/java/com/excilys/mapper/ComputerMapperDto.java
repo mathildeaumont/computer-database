@@ -59,6 +59,10 @@ public class ComputerMapperDto {
 		LocalDateTime introduced = model.getIntroducedDate();
 		LocalDateTime discontinued = model.getDiscontinuedDate();
 		Company company = model.getCompany();
+		if (company == null) {
+			company = new Company();
+			company.setId(0);
+		}
 		
 		DateTimeFormatter formatter;
 		if (LocaleContextHolder.getLocale().toString().equals("fr")) {

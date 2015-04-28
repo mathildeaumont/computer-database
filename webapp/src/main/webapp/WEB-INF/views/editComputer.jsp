@@ -38,6 +38,7 @@
                             <div class="form-group">
                                 <label for="companyId"><spring:message code="computer.company"/></label>
                                 <select class="form-control" id="companyId" name="companyId" >
+                               		<option value="0">--</option>
                                     <c:forEach items="${companies}" var="company">
                                     	<option value="${company.id}" <c:if test="${company.id == computer.company.id }">selected</c:if>>${company.name}</option>
                                     </c:forEach>

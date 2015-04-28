@@ -15,32 +15,63 @@
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2 box">
                     <h1><spring:message code="label.add"/></h1>
-                    <form:form action="add" method="POST" id="addComputerForm" commandName="addComputerForm">
+                    <form:form action="add" method="POST" id="addComputerForm2" commandName="addComputerForm">
                         <fieldset>
                             <div class="form-group">
                                 <label for="computerName"><spring:message code="computer.name"/></label>
                                 <form:input type="text" class="form-control" id="computerName" name="name" value="${name}" placeholder="Computer name" path="name" />
                                 <div id="errorName">${errorName}</div>
-                                <form:errors path="name" />
                             </div>
                             <div class="form-group">
                                 <label for="introduced"><spring:message code="computer.introduced"/></label>
-                                <form:input type="datetime" class="form-control" id="introduced" name="introduced" value="${introduced}" placeholder="Introduced date" path="introducedDate" />
+                                <input type="datetime" class="form-control" id="introduced" name="introduced" value="${introduced}" placeholder="Introduced date" path="introducedDate" />
                                 <div id="errorIntroduced">${errorIntroduced}</div>
                             </div>
                             <div class="form-group">
                                 <label for="discontinued"><spring:message code="computer.discontinued"/>e</label>
-                                <form:input type="datetime" class="form-control" id="discontinued" name="discontinued" value="${discontinued}" placeholder="Discontinued date" path="discontinuedDate"/>
+                                <input type="datetime" class="form-control" id="discontinued" name="discontinued" value="${discontinued}" placeholder="Discontinued date" path="discontinuedDate"/>
                                 <div id="errorDiscontinued">${errorDiscontinued}</div>
                             </div>
                             <div class="form-group">
                                 <label for="companyId"><spring:message code="computer.company"/></label>
                                 <form:select class="form-control" id="companyId" name="companyId" path="company.id">
+                                	<option value="0">--</option>
                                 	<c:forEach items="${companies}" var="company">
                                 		<option value="${company.id}" <c:if test="${company.id == companyId }">selected</c:if>>${company.name}</option>
                                     </c:forEach>
                                 </form:select>
                             </div>
+                            
+                            <!-- 
+                            <form action="<c:url value="/edit?id=${computer.id}" />" method="POST" id="editComputerForm">
+                        <input type="hidden" name="computerId" value="${computer.id}"/>
+                        <fieldset>
+                            <div class="form-group">
+                                <label for="computerName"><spring:message code="computer.name"/></label>
+                                <input type="text" class="form-control" id="computerName" name="name" placeholder="Computer name" value="${computer.name}">
+                            	<div id="errorName">${errorName}</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="introduced"><spring:message code="computer.introduced"/></label>
+                                <input type="datetime" class="form-control" id="introduced" name="introduced" placeholder="Introduced date" value="${computer.introducedDate}">
+                            	<div id="errorIntroduced">${errorIntroduced}</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="discontinued"><spring:message code="computer.discontinued"/></label>
+                                <input type="datetime" class="form-control" id="discontinued" name="discontinued" placeholder="Discontinued date" value="${computer.discontinuedDate}">
+                            	<div id="errorDiscontinued">${errorDiscontinued}</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="companyId"><spring:message code="computer.company"/></label>
+                                <select class="form-control" id="companyId" name="companyId" >
+                               		<option value="0">--</option>
+                                    <c:forEach items="${companies}" var="company">
+                                    	<option value="${company.id}" <c:if test="${company.id == computer.company.id }">selected</c:if>>${company.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div> 
+                            
+                             -->
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />                 
                         </fieldset>
                         <div class="actions pull-right">

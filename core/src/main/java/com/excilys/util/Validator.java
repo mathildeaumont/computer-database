@@ -20,7 +20,7 @@ public class Validator {
 	}
 	
 	public static boolean isValidDate(String date) {
-		System.out.println("DATE : " +date);
+		System.out.println("DATE : " + date);
 		if (date != null) {
 			if (!date.isEmpty()) {
 				String locale = LocaleContextHolder.getLocale().toString();

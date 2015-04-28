@@ -50,15 +50,23 @@ public class ComputerServiceImpl implements ComputerService {
 		computer.setName(name);
 		computer.setDiscontinuedDate(discontinued);
 		computer.setIntroducedDate(introduced);
-		computer.setCompany((Company) company);
+		if (companyId != 0) {
+			computer.setCompany((Company) company);
+		} else {
+			computer.setCompany(null);
+		}
 		computerDao.create(computer);
 	}
 	
 	@Transactional
 	public void update(long computerId, String name, LocalDateTime introduced, LocalDateTime discontinued, long companyId) {
 		Company company = new Company();
-		company.setId(companyId);
-		Computer computer = new Computer(computerId, name, introduced, discontinued, (Company) company);
+		if (companyId == 0) {
+			company = null;
+		} else {
+			company.setId(companyId);
+		}
+		Computer computer = new Computer(computerId, name, introduced, discontinued, company);
 		computerDao.update(computer);
 	}
 	
