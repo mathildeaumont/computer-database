@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="http://java.sun.com/xml/ns/persistence"
 	version="2.0">
-	<persistence-unit name="ComputerDatabase_PU"
+	<persistence-unit name="ComputerDatabase_TEST"
 		transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<jta-data-source>java:/DefaultDS</jta-data-source>
@@ -9,10 +9,11 @@
 		<class>com.excilys.model.Company</class>
 		<class>com.excilys.model.User</class>
 		<properties>
-			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
-			<property key="hibernate.show_sql">true</property>
-			<property key="hibernate.format_sql">true</property>
-			<property key="hibernate.hbm2ddl.auto">create</property>
+			<property name="connection.driver_class" value="org.h2.Driver" />
+			<property name="hibernate.connection.url" value="jdbc:h2:./db/repository" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
 		</properties>
 	</persistence-unit>
 </persistence>

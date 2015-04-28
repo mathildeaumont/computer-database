@@ -33,7 +33,7 @@
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 						</fieldset>
 						<div class="actions pull-right">
-							<button type="submit" class="btn btn-success">
+							<button id="loginForm" type="submit" class="btn btn-success">
 								<span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>   
 								<spring:message code="login.connect"/>
 							</button>

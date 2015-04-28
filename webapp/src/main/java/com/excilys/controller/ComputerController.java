@@ -143,7 +143,7 @@ public class ComputerController {
 		LocalDateTime discontinuedDate = null;
 
 		String introducedParam = computerForm.getIntroducedDate();
-		if (!Validator.isValidDate(introducedParam) && !introducedParam.isEmpty()) {
+		if (Validator.isValidDate(introducedParam) && !introducedParam.isEmpty()) {
 			introducedDate = LocalDateTime.parse(introducedParam, formatter);
 			model.addObject("introduced", introducedParam);
 		} else if (!introducedParam.isEmpty()) {
@@ -153,7 +153,7 @@ public class ComputerController {
 		}
 
 		String discontinuedParam = computerForm.getDiscontinuedDate();
-		if (!Validator.isValidDate(discontinuedParam) && !discontinuedParam.isEmpty()) {
+		if (Validator.isValidDate(discontinuedParam) && !discontinuedParam.isEmpty()) {
 			discontinuedDate = LocalDateTime.parse(discontinuedParam, formatter);
 			model.addObject("discontinued", discontinuedParam);
 		} else if (!discontinuedParam.isEmpty()) {

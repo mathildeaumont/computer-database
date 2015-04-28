@@ -44,14 +44,14 @@
 		<springframework.version>4.1.6.RELEASE</springframework.version>
 		<spring.security.version>4.0.0.RELEASE</spring.security.version>
 		<javax.ws.version>2.2.11</javax.ws.version>
-		<jackson.version>2.5.2</jackson.version>
+		<jackson.version>2.5.3</jackson.version>
+		<dbunit.test.version>1.4.0</dbunit.test.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -65,15 +65,19 @@
 		<dependency>
 			<groupId>org.dbunit</groupId>
 			<artifactId>dbunit</artifactId>
-			<version>${dbunit.version}</version>
 			<scope>test</scope>
-
+			<version>${dbunit.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.slf4j</groupId>
 					<artifactId>slf4j-api</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>com.excilys.ebi.spring-dbunit</groupId>
+			<artifactId>spring-dbunit-test</artifactId>
 		</dependency>
 
 		<dependency>
@@ -299,18 +303,32 @@
 				<artifactId>jackson-core</artifactId>
 				<version>${jackson.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-databind</artifactId>
 				<version>${jackson.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-annotations</artifactId>
 				<version>${jackson.version}</version>
 			</dependency>
+
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit.version}</version>
+				<scope>test</scope>
+			</dependency>
+			
+			<dependency>
+				<groupId>com.excilys.ebi.spring-dbunit</groupId>
+				<artifactId>spring-dbunit-test</artifactId>
+				<version>${dbunit.test.version}</version>
+			</dependency>
+
 		</dependencies>
 
 	</dependencyManagement>

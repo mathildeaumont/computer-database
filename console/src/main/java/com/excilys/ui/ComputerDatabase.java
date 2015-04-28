@@ -2,8 +2,6 @@ package com.excilys.ui;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -13,13 +11,8 @@ import javax.xml.ws.Service;
 
 import org.springframework.stereotype.Component;
 
-import com.excilys.model.Company;
 import com.excilys.model.Computer;
 import com.excilys.model.Page;
-import com.excilys.service.CompanyService;
-import com.excilys.service.CompanyServiceImpl;
-import com.excilys.service.ComputerService;
-import com.excilys.service.ComputerServiceImpl;
 import com.excilys.webservice.ComputerWebservice;
 
 @Component
@@ -52,8 +45,6 @@ public class ComputerDatabase {
 	public static void main(String[] args) throws Exception {
 		ComputerDatabase cd = new ComputerDatabase();
 		ComputerWebservice webservice = cd.getWebservice();
-		//ComputerService computerService = new ComputerServiceImpl();
-		//CompanyService companyService = new CompanyServiceImpl();
 		String in = "";
 		Scanner scanIn = new Scanner(System.in);
 		boolean isOk = false;
@@ -64,7 +55,6 @@ public class ComputerDatabase {
 			String introduced;
 			String discontinued;
 			long companyId;
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 			switch (in.trim()) {
 			case "computers": 
 				System.out.println("Computers list :");
@@ -79,7 +69,6 @@ public class ComputerDatabase {
 				in = scanIn.nextLine();
 				if (Pattern.matches("^\\d+$", in.trim())) {
 					id = Long.parseLong(in.trim());
-					//Computer c = computerService.getById(id);
 					System.out.println(webservice.getComputerById(id));
 				} else {
 					System.err.println("A number is required");
