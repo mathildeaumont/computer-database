@@ -32,9 +32,7 @@ public class ComputerMapperDto {
 		if (dto == null) {
 			LOGGER.error("Mapper failed : dto null");
 			throw new IllegalArgumentException();
-		}
-		Computer model = new Computer();
-		
+		}		
 		long id = dto.getId();
 		String name = dto.getName();
 		String introduced = dto.getIntroducedDate();
@@ -49,13 +47,14 @@ public class ComputerMapperDto {
 		LocalDateTime introducedDate = LocalDateTime.parse(introduced, formatter);
 		LocalDateTime discontinuedDate = LocalDateTime.parse(discontinued, formatter);
 		
-		model.setId(id);
-		model.setName(name);
-		model.setIntroducedDate(introducedDate);
-		model.setDiscontinuedDate(discontinuedDate);
+		Computer computer = Computer.builder().id(id)
+											  .name(name)
+											  .introduced(introducedDate)
+											  .discontinued(discontinuedDate)
+											  .build();
 
 		LOGGER.info("Mapper succeed");
-		return model;
+		return computer;
 	}
 	
 	/**

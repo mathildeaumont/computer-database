@@ -121,9 +121,10 @@ public class ComputerDaoTest {
 		// GIVEN
 		final String name = "Computer2";
 		final LocalDateTime introduced = LocalDateTime.of(2012, 5, 1, 0, 0, 0);
-		final Computer computer = new Computer();
-		computer.setName(name);
-		computer.setIntroducedDate(introduced);
+		final Computer computer = Computer.builder()
+										  .name(name)
+										  .introduced(introduced)
+										  .build();
 		final int nbComputers = 1;
 		// WHEN
 		computerDao.create(computer);
