@@ -49,6 +49,8 @@
 	</properties>
 
 	<dependencies>
+
+		<!-- TESTS -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -78,12 +80,6 @@
 		<dependency>
 			<groupId>com.excilys.ebi.spring-dbunit</groupId>
 			<artifactId>spring-dbunit-test</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<version>${h2database.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -98,8 +94,18 @@
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-firefox-driver</artifactId>
 			<version>${selenium.version}</version>
+			<scope>test</scope>
 		</dependency>
 
+		<!-- BASE DE TEST -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>${h2database.version}</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<!-- FRONT VIEWS -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
@@ -110,14 +116,17 @@
 			<artifactId>standard</artifactId>
 		</dependency>
 
+		<!-- SPRING -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 		</dependency>
 
+		<!-- LOGS -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 
 		<dependency>
@@ -126,6 +135,7 @@
 			<scope>runtime</scope>
 		</dependency>
 
+		<!-- QUERYDSL -->
 		<dependency>
 			<groupId>com.mysema.querydsl</groupId>
 			<artifactId>querydsl-apt</artifactId>
@@ -179,6 +189,7 @@
 				<version>${project.version}</version>
 			</dependency>
 
+			<!-- VERSION SPRING -->
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-framework-bom</artifactId>
@@ -187,12 +198,14 @@
 				<scope>import</scope>
 			</dependency>
 
+			<!-- MYSQL -->
 			<dependency>
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
 				<version>${mysql.version}</version>
 			</dependency>
 
+			<!-- QUERYDSL -->
 			<dependency>
 				<groupId>com.mysema.querydsl</groupId>
 				<artifactId>querydsl-apt</artifactId>
@@ -206,6 +219,7 @@
 				<version>${querydsl.version}</version>
 			</dependency>
 
+			<!-- LOGS -->
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>jcl-over-slf4j</artifactId>
@@ -219,6 +233,7 @@
 				<scope>runtime</scope>
 			</dependency>
 
+			<!-- FRONT VIEWS -->
 			<dependency>
 				<groupId>javax.servlet</groupId>
 				<artifactId>javax.servlet-api</artifactId>
@@ -244,12 +259,7 @@
 				<version>${taglibs.version}</version>
 			</dependency>
 
-			<dependency>
-				<groupId>dom4j</groupId>
-				<artifactId>dom4j</artifactId>
-				<version>${dom4j.version}</version>
-			</dependency>
-
+			<!-- VALIDATION -->
 			<dependency>
 				<groupId>javax.validation</groupId>
 				<artifactId>validation-api</artifactId>
@@ -262,6 +272,7 @@
 				<version>${hibernate.validator.version}</version>
 			</dependency>
 
+			<!-- HIBERNATE -->
 			<dependency>
 				<groupId>org.hibernate.javax.persistence</groupId>
 				<artifactId>hibernate-jpa-2.0-api</artifactId>
@@ -274,6 +285,7 @@
 				<version>${hibernate.entitymanager}</version>
 			</dependency>
 
+			<!-- SPRING SECUTIRY -->
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-web</artifactId>
@@ -292,12 +304,14 @@
 				<version>${spring.security.version}</version>
 			</dependency>
 
+			<!-- WEBSERVICES JAX-WS -->
 			<dependency>
 				<groupId>javax.xml.ws</groupId>
 				<artifactId>jaxws-api</artifactId>
 				<version>${javax.ws.version}</version>
 			</dependency>
-
+			
+			<!-- JACKSON -->
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-core</artifactId>
@@ -316,25 +330,28 @@
 				<version>${jackson.version}</version>
 			</dependency>
 
+			<!-- TESTS -->
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>${junit.version}</version>
 				<scope>test</scope>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>com.excilys.ebi.spring-dbunit</groupId>
 				<artifactId>spring-dbunit-test</artifactId>
 				<version>${dbunit.test.version}</version>
+				<scope>test</scope>
 			</dependency>
 
 		</dependencies>
 
 	</dependencyManagement>
 
-	<!-- Repo for Spring releases -->
+	
 	<repositories>
+		<!-- Repo for Spring releases -->
 		<repository>
 			<id>io.spring.repo.maven.release</id>
 			<url>http://repo.spring.io/release/</url>
@@ -343,16 +360,18 @@
 			</snapshots>
 		</repository>
 
+		<!-- Repo vide, commons logging -->
 		<repository>
-			<id>spring-milestone</id>
-			<name>Spring Milestone Repository</name>
-			<url>http://repo.springsource.org/milestone</url>
+			<id>version99</id>
+			<!-- highly available repository serving empty artifacts -->
+			<url>http://version99.qos.ch/</url>
 		</repository>
 	</repositories>
 
 
 	<build>
 		<plugins>
+			<!-- Java 1.8 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -363,6 +382,7 @@
 				</configuration>
 			</plugin>
 
+			<!-- Passe les tests -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
@@ -371,6 +391,7 @@
 				</configuration>
 			</plugin>
 
+			<!-- Permet de générer les QClass pour QueryDSL -->
 			<plugin>
 				<groupId>com.mysema.maven</groupId>
 				<artifactId>apt-maven-plugin</artifactId>

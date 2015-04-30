@@ -28,19 +28,37 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ComputerController.
+ */
 @Controller
 public class ComputerController {
 
+	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerController.class);
 
+	/** The service. */
 	@Autowired 
 	ComputerService service;
 	
+	/** The company service. */
 	@Autowired
 	CompanyService companyService;
 
+	/**
+	 * Get dashboard.
+	 *
+	 * @param offset the offset
+	 * @param nbResults the nb results
+	 * @param order the order
+	 * @param direction the direction
+	 * @param search the search
+	 * @param model the model
+	 * @return the model and view
+	 */
 	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
-	public ModelAndView doGet(@RequestParam("offset") Optional<Integer> offset, 
+	public ModelAndView dashboard(@RequestParam("offset") Optional<Integer> offset, 
 						@RequestParam("nbResults") Optional<Integer> nbResults,
 						@RequestParam("order") Optional<String> order,
 						@RequestParam("direction") Optional<String> direction,
@@ -84,6 +102,13 @@ public class ComputerController {
 		return model;
 	}
 	
+	/**
+	 * Delete.
+	 *
+	 * @param selected the selected
+	 * @param model the model
+	 * @return the model and view
+	 */
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	public ModelAndView delete(@RequestParam("selection") String selected, ModelAndView model) {
 		if (selected != null&& !selected.isEmpty()) { 
@@ -105,6 +130,12 @@ public class ComputerController {
 	}
 	
 	
+	/**
+	 * Adds the computer.
+	 *
+	 * @param model the model
+	 * @return the model and view
+	 */
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public ModelAndView add(ModelAndView model) {
 		ComputerDto computer = new ComputerDto();
@@ -114,6 +145,16 @@ public class ComputerController {
 		return model;
 	}
 	
+	/**
+	 * Adds the computer.
+	 *
+	 * @param computerForm the computer form
+	 * @param introduced the introduced
+	 * @param discontinued the discontinued
+	 * @param result the result
+	 * @param model the model
+	 * @return the model and view
+	 */
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public ModelAndView add(@Valid @ModelAttribute("addComputerForm") ComputerDto computerForm, 
 			@RequestParam("introduced") Optional<String> introduced,
@@ -179,6 +220,13 @@ public class ComputerController {
 		return model;
 	}
 	
+	/**
+	 * Edits the computer.
+	 *
+	 * @param id the id
+	 * @param model the model
+	 * @return the model and view
+	 */
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam("id") long id, ModelAndView model) {
 		model.addObject("companies", companyService.getAll());
@@ -188,6 +236,17 @@ public class ComputerController {
 		return model;
 	}
 	
+	/**
+	 * Edits the computer.
+	 *
+	 * @param computerId the computer id
+	 * @param name the name
+	 * @param introduced the introduced
+	 * @param discontinued the discontinued
+	 * @param companyId the company id
+	 * @param model the model
+	 * @return the model and view
+	 */
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
 	public ModelAndView edit(@RequestParam("computerId") long computerId,
 			@RequestParam("name") String name, 

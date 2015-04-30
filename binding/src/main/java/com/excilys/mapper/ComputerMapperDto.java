@@ -13,10 +13,21 @@ import com.excilys.dto.ComputerDto;
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ComputerMapperDto.
+ */
 public class ComputerMapperDto {
 
+	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerMapperDto.class);
 	
+	/**
+	 * Dto to model.
+	 *
+	 * @param dto the dto
+	 * @return the computer
+	 */
 	public static Computer dtoToModel(ComputerDto dto) {
 		if (dto == null) {
 			LOGGER.error("Mapper failed : dto null");
@@ -47,6 +58,12 @@ public class ComputerMapperDto {
 		return model;
 	}
 	
+	/**
+	 * Model to dto.
+	 *
+	 * @param model the model
+	 * @return the computer dto
+	 */
 	public static ComputerDto modelToDto(Computer model) {
 		if (model == null) {
 			LOGGER.error("Mapper failed : model null");
@@ -85,6 +102,12 @@ public class ComputerMapperDto {
 		return dto;
 	}
 	
+	/**
+	 * Models to dtos.
+	 *
+	 * @param models the models
+	 * @return the list
+	 */
 	public static List<ComputerDto> modelsToDtos(List<Computer> models) {
 		List<ComputerDto> dtos = new ArrayList<ComputerDto>();
 		

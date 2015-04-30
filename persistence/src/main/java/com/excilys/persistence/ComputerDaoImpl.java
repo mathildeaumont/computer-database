@@ -21,12 +21,20 @@ import com.mysema.query.jpa.impl.JPAUpdateClause;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.path.PathBuilder;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ComputerDaoImpl.
+ */
 @Repository
 public class ComputerDaoImpl implements ComputerDao {
 
+	/** The entity manager factory. */
 	@Autowired
 	private EntityManagerFactory entityManagerFactory;
 
+	/* (non-Javadoc)
+	 * @see com.excilys.persistence.ComputerDao#getLength()
+	 */
 	public int getLength() {
 		EntityManager em = entityManagerFactory.createEntityManager();
 		JPAQuery query = new JPAQuery(em);
@@ -35,6 +43,9 @@ public class ComputerDaoImpl implements ComputerDao {
 	    return (int) query.count();
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.excilys.persistence.ComputerDao#getAll()
+	 */
 	public List<Computer> getAll() {	
 		//EntityManagerFactory emf = Persistence.createEntityManagerFactory("ComputerDatabase_PU");
 		EntityManager em = entityManagerFactory.createEntityManager();
@@ -46,6 +57,9 @@ public class ComputerDaoImpl implements ComputerDao {
 		return computers;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.excilys.persistence.ComputerDao#getAllByPage(com.excilys.model.Page, java.lang.String, java.lang.String, java.lang.String)
+	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public List<Computer> getAllByPage(Page<Computer> page, String order, String direction, String search) {
 		EntityManager em = entityManagerFactory.createEntityManager();
@@ -71,6 +85,9 @@ public class ComputerDaoImpl implements ComputerDao {
 		return query.list(computer);
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.excilys.persistence.ComputerDao#getLength(java.lang.String)
+	 */
 	public int getLength(String search) {
 		EntityManager em = entityManagerFactory.createEntityManager();
 		JPAQuery query = new JPAQuery(em);
@@ -81,6 +98,9 @@ public class ComputerDaoImpl implements ComputerDao {
 	    return (int) query.count();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.excilys.persistence.ComputerDao#getDetails(long)
+	 */
 	public Computer getDetails(long idComputer) {
 		EntityManager em = entityManagerFactory.createEntityManager();
 		JPAQuery query = new JPAQuery(em);
@@ -90,6 +110,9 @@ public class ComputerDaoImpl implements ComputerDao {
 	    return query.uniqueResult(computer);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.excilys.persistence.ComputerDao#create(com.excilys.model.Computer)
+	 */
 	@Transactional
 	public void create(Computer compu) {
 		EntityManager em = entityManagerFactory.createEntityManager();
@@ -103,6 +126,9 @@ public class ComputerDaoImpl implements ComputerDao {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.excilys.persistence.ComputerDao#update(com.excilys.model.Computer)
+	 */
 	@Transactional
 	public void update(Computer compu) {
 		EntityManager em = entityManagerFactory.createEntityManager();
@@ -122,6 +148,9 @@ public class ComputerDaoImpl implements ComputerDao {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.excilys.persistence.ComputerDao#delete(long)
+	 */
 	@Transactional
 	public void delete(long computerId) {
 		EntityManager em = entityManagerFactory.createEntityManager();
@@ -136,6 +165,9 @@ public class ComputerDaoImpl implements ComputerDao {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.excilys.persistence.ComputerDao#deleteByCompanyId(long)
+	 */
 	@Transactional
 	public void deleteByCompanyId(long companyId) {
 		EntityManager em = entityManagerFactory.createEntityManager();

@@ -1,18 +1,11 @@
 package com.excilys.persistence;
 
-import java.io.File;
-import java.io.IOException;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.junit.After;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -25,7 +18,6 @@ import com.excilys.ebi.spring.dbunit.test.DataSet;
 import com.excilys.ebi.spring.dbunit.test.RollbackTransactionalDataSetTestExecutionListener;
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
-import com.excilys.util.DBUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:application-context-persistence-test.xml" })
@@ -47,9 +39,9 @@ public class ComputerDaoTest {
 		final int size = 2;
 		final Company company = new Company(1, "Company");
 
-		final Computer computer1 = new Computer(1, "Computer1", LocalDateTime.of(
-				2012, 5, 1, 0, 0, 0), null, company);
-		final Computer computer2 = new Computer(2, "Computer2", null, null, company);
+		final Computer computer1 = Computer.builder().id(1).name("Computer1")
+														.introduced(LocalDateTime.of(2012, 5, 1, 0, 0, 0)).company(company).build();
+		final Computer computer2 = Computer.builder().id(2).name("Computer2").company(company).build();
 		// WHEN
 		List<Computer> computers = computerDao.getAll();
 		// THEN
@@ -100,7 +92,7 @@ public class ComputerDaoTest {
 		final String name = "Computer1";
 		final LocalDateTime introduced = LocalDateTime.of(2012, 5, 1, 0, 0, 0);
 		final int computerId = 1;
-		final Computer computer = new Computer(computerId, name, introduced, null, company);
+		final Computer computer = Computer.builder().id(computerId).name(name).introduced(introduced).company(company).build();
 		// WHEN
 		Computer comp = computerDao.getDetails(computerId);
 		// THEN

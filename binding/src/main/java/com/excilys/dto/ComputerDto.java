@@ -4,21 +4,45 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ComputerDto.
+ */
 public class ComputerDto {
 
+	/** The id. */
 	private long id;
 	
+	/** The name. */
 	@NotEmpty
 	@Size(min = 2, max = 50)
 	private String name;
+	
+	/** The introduced date. */
 	private String introducedDate;
+	
+	/** The discontinued date. */
 	private String discontinuedDate;
+	
+	/** The company. */
 	private CompanyDto company;
 	
+	/**
+	 * Instantiates a new computer dto.
+	 */
 	public ComputerDto() {
 		company = new CompanyDto();
 	}
 	
+	/**
+	 * Instantiates a new computer dto.
+	 *
+	 * @param id the id
+	 * @param name the name
+	 * @param introduced the introduced
+	 * @param discontinued the discontinued
+	 * @param company the company
+	 */
 	public ComputerDto(long id, String name, String introduced, String discontinued, CompanyDto company) {
 		this.id = id;
 		this.name = name;
@@ -27,47 +51,106 @@ public class ComputerDto {
 		this.company = company;
 	}
 
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Sets the name.
+	 *
+	 * @param name the new name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Gets the introduced date.
+	 *
+	 * @return the introduced date
+	 */
 	public String getIntroducedDate() {
+		if (introducedDate == null) {
+			return "";
+		}
 		return introducedDate;
 	}
 
+	/**
+	 * Sets the introduced date.
+	 *
+	 * @param introduced the new introduced date
+	 */
 	public void setIntroducedDate(String introduced) {
 		this.introducedDate = introduced;
 	}
 
+	/**
+	 * Gets the discontinued date.
+	 *
+	 * @return the discontinued date
+	 */
 	public String getDiscontinuedDate() {
+		if (discontinuedDate == null) {
+			return "";
+		}
 		return discontinuedDate;
 	}
 
+	/**
+	 * Sets the discontinued date.
+	 *
+	 * @param discontinued the new discontinued date
+	 */
 	public void setDiscontinuedDate(String discontinued) {
 		this.discontinuedDate = discontinued;
 	}	
 
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
 	public long getId() {
 		return id;
 	}
 
+	/**
+	 * Sets the id.
+	 *
+	 * @param id the new id
+	 */
 	public void setId(long id) {
 		this.id = id;
 	}
 
 
+	/**
+	 * Gets the company.
+	 *
+	 * @return the company
+	 */
 	public CompanyDto getCompany() {
 		return company;
 	}
 
+	/**
+	 * Sets the company.
+	 *
+	 * @param company the new company
+	 */
 	public void setCompany(CompanyDto company) {
 		this.company = company;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -83,6 +166,9 @@ public class ComputerDto {
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -117,6 +203,9 @@ public class ComputerDto {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

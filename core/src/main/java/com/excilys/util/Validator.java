@@ -6,10 +6,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.i18n.LocaleContextHolder;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Validator.
+ */
 public class Validator {
 
+	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(Validator.class);
 	
+	/**
+	 * Checks if is valid name.
+	 *
+	 * @param name the name
+	 * @return true, if is valid name
+	 */
 	public static boolean isValidName(String name) {
 		if (name == null) {
 			LOGGER.error("Error because of name is null");
@@ -19,8 +30,13 @@ public class Validator {
 		return name != null;
 	}
 	
+	/**
+	 * Checks if is valid date.
+	 *
+	 * @param date the date
+	 * @return true, if is valid date
+	 */
 	public static boolean isValidDate(String date) {
-		System.out.println("DATE : " + date);
 		if (date != null) {
 			if (!date.isEmpty()) {
 				String locale = LocaleContextHolder.getLocale().toString();

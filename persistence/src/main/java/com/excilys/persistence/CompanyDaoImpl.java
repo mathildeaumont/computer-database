@@ -15,12 +15,20 @@ import com.excilys.model.QCompany;
 import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CompanyDaoImpl.
+ */
 @Repository
 public class CompanyDaoImpl implements CompanyDao {
 
+	/** The entity manager factory. */
 	@Autowired
 	private EntityManagerFactory entityManagerFactory;
 
+	/* (non-Javadoc)
+	 * @see com.excilys.persistence.CompanyDao#getAll()
+	 */
 	public List<Company> getAll() {
 		EntityManager em = entityManagerFactory.createEntityManager();
 		JPAQuery query = new JPAQuery(em);
@@ -30,6 +38,9 @@ public class CompanyDaoImpl implements CompanyDao {
 		return companies;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.excilys.persistence.CompanyDao#delete(long)
+	 */
 	@Transactional
 	public void delete(long companyId) {
 		EntityManager em = entityManagerFactory.createEntityManager();

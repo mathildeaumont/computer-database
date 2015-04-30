@@ -94,10 +94,10 @@
 							
 							<span class="right">
 								<c:choose>
-									<c:when test="${order == 'compu.introduced' && direction == 'asc'}">
+									<c:when test="${order == 'compu.introducedDate' && direction == 'asc'}">
 										<img src="<c:url value="/resources/img/fleche_bas.png" />" />
 									</c:when>
-									<c:when test="${order == 'compu.introduced' && direction == 'desc'}">
+									<c:when test="${order == 'compu.introducedDate' && direction == 'desc'}">
 										<img src="<c:url value="/resources/img/fleche_haut.png" />" />
 									</c:when>
 								</c:choose>
@@ -120,10 +120,10 @@
 							
 							<span class="right">
 								<c:choose>
-									<c:when test="${order == 'compu.discontinued' && direction == 'asc'}">
+									<c:when test="${order == 'compu.discontinuedDate' && direction == 'asc'}">
 										<img src="<c:url value="/resources/img/fleche_bas.png" />" />
 									</c:when>
-									<c:when test="${order == 'compu.discontinued' && direction == 'desc'}">
+									<c:when test="${order == 'compu.discontinuedDate' && direction == 'desc'}">
 										<img src="<c:url value="/resources/img/fleche_haut.png" />" />
 									</c:when>
 								</c:choose>
@@ -145,10 +145,10 @@
 							
 							<span class="right">
 								<c:choose>
-									<c:when test="${order == 'company.name' && direction == 'asc'}">
+									<c:when test="${order == 'compu.company_name' && direction == 'asc'}">
 										<img src="<c:url value="/resources/img/fleche_bas.png" />" />
 									</c:when>
-									<c:when test="${order == 'company.name' && direction == 'desc'}">
+									<c:when test="${order == 'compu.company_name' && direction == 'desc'}">
 										<img src="<c:url value="/resources/img/fleche_haut.png" />" />
 									</c:when>
 								</c:choose>
