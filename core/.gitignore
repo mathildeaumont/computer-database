@@ -4,3 +4,4 @@ target/
 .project
 .settings/*
 persistence/target/
+.iml
