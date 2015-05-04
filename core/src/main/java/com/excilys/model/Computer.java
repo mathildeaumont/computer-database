@@ -1,16 +1,12 @@
 package com.excilys.model;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
 import org.hibernate.annotations.Type;
-
 // TODO: Auto-generated Javadoc
 /**
  * The Class Computer.
@@ -18,33 +14,26 @@ import org.hibernate.annotations.Type;
 @Entity
 @Table(name="computer")
 public class Computer implements Serializable {
-
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
-
 	/** The id. */
 	@Id
-	@Column(name = "id") 
+	@Column(name = "id")
 	private long id;
-	
 	/** The name. */
-	@Column(name = "name") 
+	@Column(name = "name")
 	private String name;
-	
 	/** The introduced date. */
-	@Column(name = "introduced") 
+	@Column(name = "introduced")
 	@Type(type="com.excilys.mapper.DateTimeMapper")
 	private LocalDateTime introducedDate;
-	
 	/** The discontinued date. */
-	@Column(name = "discontinued") 
+	@Column(name = "discontinued")
 	@Type(type="com.excilys.mapper.DateTimeMapper")
 	private LocalDateTime discontinuedDate;
-	
 	/** The company. */
 	@OneToOne
 	private Company company;
-	
 	/**
 	 * Gets the id.
 	 *
@@ -53,7 +42,6 @@ public class Computer implements Serializable {
 	public long getId() {
 		return id;
 	}
-
 	/**
 	 * Sets the id.
 	 *
@@ -62,7 +50,6 @@ public class Computer implements Serializable {
 	public void setId(long id) {
 		this.id = id;
 	}
-
 	/**
 	 * Gets the name.
 	 *
@@ -71,7 +58,6 @@ public class Computer implements Serializable {
 	public String getName() {
 		return name;
 	}
-
 	/**
 	 * Sets the name.
 	 *
@@ -80,7 +66,6 @@ public class Computer implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	/**
 	 * Gets the introduced date.
 	 *
@@ -89,7 +74,6 @@ public class Computer implements Serializable {
 	public LocalDateTime getIntroducedDate() {
 		return introducedDate;
 	}
-
 	/**
 	 * Sets the introduced date.
 	 *
@@ -98,7 +82,6 @@ public class Computer implements Serializable {
 	public void setIntroducedDate(LocalDateTime introducedDate) {
 		this.introducedDate = introducedDate;
 	}
-
 	/**
 	 * Gets the discontinued date.
 	 *
@@ -107,7 +90,6 @@ public class Computer implements Serializable {
 	public LocalDateTime getDiscontinuedDate() {
 		return discontinuedDate;
 	}
-
 	/**
 	 * Sets the discontinued date.
 	 *
@@ -116,7 +98,6 @@ public class Computer implements Serializable {
 	public void setDiscontinuedDate(LocalDateTime discontinuedDate) {
 		this.discontinuedDate = discontinuedDate;
 	}
-
 	/**
 	 * Gets the company.
 	 *
@@ -125,7 +106,6 @@ public class Computer implements Serializable {
 	public Company getCompany() {
 		return company;
 	}
-
 	/**
 	 * Sets the company.
 	 *
@@ -134,11 +114,9 @@ public class Computer implements Serializable {
 	public void setCompany(Company company) {
 		this.company = company;
 	}
-	
-	
 	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
+    * @see java.lang.Object#toString()
+    */
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -150,16 +128,15 @@ public class Computer implements Serializable {
 		sb.append(" \t");
 		sb.append(discontinuedDate);
 		sb.append(" \t");
- 		if (company != null) {
- 			sb.append(company.getName());
- 		}
- 		sb.append("\n");
+		if (company != null) {
+			sb.append(company.getName());
+		}
+		sb.append("\n");
 		return sb.toString();
 	}
-
 	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
+    * @see java.lang.Object#hashCode()
+    */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -174,10 +151,9 @@ public class Computer implements Serializable {
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
-
 	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
+    * @see java.lang.Object#equals(java.lang.Object)
+    */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -211,22 +187,18 @@ public class Computer implements Serializable {
 			return false;
 		return true;
 	}
-	
 	/**
 	 * The Class Builder.
 	 */
 	public static class Builder {
-		
 		/** The c. */
 		Computer c;
-		
 		/**
 		 * Instantiates a new builder.
 		 */
 		private Builder() {
 			c = new Computer();
 		}
-		
 		/**
 		 * Id.
 		 *
@@ -237,8 +209,6 @@ public class Computer implements Serializable {
 			c.id = id;
 			return this;
 		}
-		
-		
 		/**
 		 * Name.
 		 *
@@ -249,7 +219,6 @@ public class Computer implements Serializable {
 			c.name = name;
 			return this;
 		}
-		
 		/**
 		 * Introduced.
 		 *
@@ -260,7 +229,6 @@ public class Computer implements Serializable {
 			c.introducedDate = introduced;
 			return this;
 		}
-		
 		/**
 		 * Discontinued.
 		 *
@@ -271,7 +239,6 @@ public class Computer implements Serializable {
 			c.discontinuedDate = discontinued;
 			return this;
 		}
-		
 		/**
 		 * Company.
 		 *
@@ -282,7 +249,6 @@ public class Computer implements Serializable {
 			c.company = company;
 			return this;
 		}
-		
 		/**
 		 * Builds the computer.
 		 *
@@ -292,7 +258,6 @@ public class Computer implements Serializable {
 			return c;
 		}
 	}
-
 	/**
 	 * Builder.
 	 *
